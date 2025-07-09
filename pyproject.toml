@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "intelligent_error_diagnosis"
+version = "0.1.0"
+dependencies = [
+    "google-genai",
+    "torch",
+    "transformers"
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 80
+indent-width = 2
+
+[tool.ruff.format]
+docstring-code-format = true
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.pycodestyle]
+max-doc-length = 80
