@@ -2,5 +2,8 @@ Metadata-Version: 2.4
 Name: intelligent_error_diagnosis
 Version: 0.1.0
 Requires-Dist: google-genai
+Requires-Dist: pydantic
+Requires-Dist: pytest
 Requires-Dist: torch
 Requires-Dist: transformers
+Requires-Dist: scikit-learn

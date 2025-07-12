@@ -7,8 +7,11 @@ name = "intelligent_error_diagnosis"
 version = "0.1.0"
 dependencies = [
     "google-genai",
+    "pydantic",
+    "pytest",
     "torch",
-    "transformers"
+    "transformers",
+    "scikit-learn",
 ]
 
 [tool.setuptools.packages.find]

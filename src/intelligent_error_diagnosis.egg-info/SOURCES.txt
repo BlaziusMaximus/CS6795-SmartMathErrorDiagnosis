@@ -5,6 +5,7 @@ src/intelligent_error_diagnosis.egg-info/SOURCES.txt
 src/intelligent_error_diagnosis.egg-info/dependency_links.txt
 src/intelligent_error_diagnosis.egg-info/requires.txt
 src/intelligent_error_diagnosis.egg-info/top_level.txt
+tests/test_failure_data_generator.py
 tests/test_graph.py
 tests/test_teacher.py
 tests/test_teacher_integration.py

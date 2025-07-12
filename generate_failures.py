@@ -1,6 +1,6 @@
 import argparse
 import json
-import os
+from pathlib import Path
 from src.graph import KnowledgeGraph
 from src.teacher import TeacherModel
 from src.failure_data_generator import FailureDataGenerator
@@ -36,12 +36,14 @@ def generate_failures(
     start_nodes = [
       node.id
       for node in knowledge_graph.nodes.values()
-      if node.problem_and_solution is not None
+      if node.problems_and_solutions
     ]
     print(f"Found {len(start_nodes)} problem nodes to process.")
 
   for i, node_id in enumerate(start_nodes):
-    print(f"\n--- Processing Start Node {i+1}/{len(start_nodes)}: {node_id} ---")
+    print(
+      f"\n--- Processing Start Node {i + 1}/{len(start_nodes)}: {node_id} ---"
+    )
     # Generate the raw dataset for the current start node
     raw_dataset = failure_data_generator.generate_error_dataset(
       start_node_id=node_id, max_depth=max_depth
@@ -54,16 +56,15 @@ def generate_failures(
     return
 
   # Ensure the output directory exists
-  output_dir = os.path.dirname(output_file)
-  if output_dir:
-    os.makedirs(output_dir, exist_ok=True)
+  output_path = Path(output_file)
+  output_path.parent.mkdir(parents=True, exist_ok=True)
 
   # Save the dataset to a file
-  with open(output_file, "w") as f:
+  with open(output_path, "w") as f:
     json.dump(full_dataset, f, indent=2)
 
   print(f"\nSuccessfully generated {len(full_dataset)} training examples.")
-  print(f"Dataset saved to {output_file}")
+  print(f"Dataset saved to {output_path}")
 
 
 if __name__ == "__main__":
@@ -95,5 +96,3 @@ if __name__ == "__main__":
     max_depth=args.max_depth,
     output_file=args.output_file,
   )
-
-

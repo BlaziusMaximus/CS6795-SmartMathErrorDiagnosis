@@ -1,3 +1,6 @@
 google-genai
+pydantic
+pytest
 torch
 transformers
+scikit-learn
