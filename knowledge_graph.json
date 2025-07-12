@@ -3,10 +3,28 @@
     "id": "1023",
     "name": "Solving Systems of Equations Using Inverse Matrices",
     "description": "We can write a system of three linear equations in three variables in the form AX = B. If the matrix A is invertible, we can find a solution by pre-multiplying both sides by A-inverse to get X = A-inverse * B.",
-    "problem_and_solution": {
-      "problem": "Solve the system: x+2y-z=2, 2x+5y=7, -x-y+3z=4 using the inverse of the coefficient matrix.",
-      "solution": "Step 1: Represent the system as AX=B. A=[[1,2,-1],[2,5,0],[-1,-1,3]], B=[[2],[7],[4]]. Step 2: Calculate the inverse of A. Step 3: Compute X = A_inv * B to find the values of x, y, and z."
-    },
+    "problems_and_solutions": [
+      {
+        "problem": "Solve the following system of linear equations using the inverse matrix method: \n x + 2y + 3z = 3 \n 2x + 5y + 3z = 5 \n x + 8z = 17",
+        "solution": "Step 1: Represent the system as AX = B.\nA = [[1, 2, 3], [2, 5, 3], [1, 0, 8]]\nX = [[x], [y], [z]]\nB = [[3], [5], [17]]\n\nStep 2: Calculate the determinant of A.\ndet(A) = 1(5*8 - 3*0) - 2(2*8 - 3*1) + 3(2*0 - 5*1)\ndet(A) = 1(40) - 2(16 - 3) + 3(-5)\ndet(A) = 40 - 2(13) - 15 = 40 - 26 - 15 = -1\n\nStep 3: Calculate the matrix of cofactors.\nC = [[40, -13, -5], [-16, 5, 2], [-9, 3, 1]]\n\nStep 4: Find the adjugate (transpose of the cofactor matrix).\nadj(A) = [[40, -16, -9], [-13, 5, 3], [-5, 2, 1]]\n\nStep 5: Calculate the inverse matrix, A_inv = (1/det(A)) * adj(A).\nA_inv = (1/-1) * [[40, -16, -9], [-13, 5, 3], [-5, 2, 1]] = [[-40, 16, 9], [13, -5, -3], [5, -2, -1]]\n\nStep 6: Solve for X = A_inv * B.\nX = [[-40, 16, 9], [13, -5, -3], [5, -2, -1]] * [[3], [5], [17]]\nX = [[-40*3 + 16*5 + 9*17], [13*3 + -5*5 + -3*17], [5*3 + -2*5 + -1*17]]\nX = [[-120 + 80 + 153], [39 - 25 - 51], [15 - 10 - 17]]\nX = [[113], [-37], [-12]]\n\nThe solution is x=113, y=-37, z=-12."
+      },
+      {
+        "problem": "Consider the system: \n 2x - y - 2z = -1 \n 4x + y + 2z = 1 \n 8x - y + z = 5 \n Find the values of x, y, and z by calculating the inverse of the coefficient matrix.",
+        "solution": "Step 1: Represent the system as AX = B.\nA = [[2, -1, -2], [4, 1, 2], [8, -1, 1]]\nX = [[x], [y], [z]]\nB = [[-1], [1], [5]]\n\nStep 2: Calculate the determinant of A.\ndet(A) = 2(1*1 - 2*-1) - (-1)(4*1 - 2*8) + (-2)(4*-1 - 1*8)\ndet(A) = 2(1 + 2) + 1(4 - 16) - 2(-4 - 8)\ndet(A) = 2(3) + 1(-12) - 2(-12) = 6 - 12 + 24 = 18\n\nStep 3: Calculate the matrix of cofactors.\nC = [[3, 12, -12], [3, 18, -6], [0, -12, 6]]\n\nStep 4: Find the adjugate (transpose of the cofactor matrix).\nadj(A) = [[3, 3, 0], [12, 18, -12], [-12, -6, 6]]\n\nStep 5: Calculate the inverse matrix, A_inv = (1/det(A)) * adj(A).\nA_inv = (1/18) * [[3, 3, 0], [12, 18, -12], [-12, -6, 6]]\n\nStep 6: Solve for X = A_inv * B.\nX = (1/18) * [[3, 3, 0], [12, 18, -12], [-12, -6, 6]] * [[-1], [1], [5]]\nX = (1/18) * [[3*-1 + 3*1 + 0*5], [12*-1 + 18*1 + -12*5], [-12*-1 + -6*1 + 6*5]]\nX = (1/18) * [[-3 + 3 + 0], [-12 + 18 - 60], [12 - 6 + 30]]\nX = (1/18) * [[0], [-54], [36]]\nX = [[0], [-3], [2]]\n\nThe solution is x=0, y=-3, z=2."
+      },
+      {
+        "problem": "A system of equations is defined as: \n 2y + z = 4 - 3x \n x + y = 3z + 1 \n 5x - 2z = y + 2 \n First, represent this system in the form AX=B, and then solve for X using the inverse matrix method.",
+        "solution": "Step 1: Rearrange the equations into standard form (ax + by + cz = d).\n3x + 2y + z = 4\nx + y - 3z = 1\n5x - y - 2z = 2\n\nStep 2: Represent the system as AX = B.\nA = [[3, 2, 1], [1, 1, -3], [5, -1, -2]]\nX = [[x], [y], [z]]\nB = [[4], [1], [2]]\n\nStep 3: Calculate the determinant of A.\ndet(A) = 3(1*-2 - -3*-1) - 2(1*-2 - -3*5) + 1(1*-1 - 1*5)\ndet(A) = 3(-2 - 3) - 2(-2 + 15) + 1(-1 - 5)\ndet(A) = 3(-5) - 2(13) - 6 = -15 - 26 - 6 = -47\n\nStep 4: Calculate the matrix of cofactors and the adjugate matrix.\nC = [[-5, -13, -6], [5, -11, 13], [-7, 10, 1]]\nadj(A) = [[-5, 5, -7], [-13, -11, 10], [-6, 13, 1]]\n\nStep 5: Calculate the inverse matrix.\nA_inv = (1/-47) * [[-5, 5, -7], [-13, -11, 10], [-6, 13, 1]]\n\nStep 6: Solve for X = A_inv * B.\nX = (1/-47) * [[-5, 5, -7], [-13, -11, 10], [-6, 13, 1]] * [[4], [1], [2]]\nX = (1/-47) * [[-20 + 5 - 14], [-52 - 11 + 20], [-24 + 13 + 2]]\nX = (1/-47) * [[-29], [-43], [-9]]\n\nThe solution is x=29/47, y=43/47, z=9/47."
+      },
+      {
+        "problem": "Given the system AX=B, where A = [[1, 1, 2], [1, 2, 1], [2, 1, 4]] and B = [[10], [12], [22]]. The inverse of A is A_inv = [[7/2, -1, -3/2], [-1, 0, 1], [-3/2, 1/2, 1/2]]. Use this information to find the solution vector X.",
+        "solution": "Step 1: The problem provides A, B, and A_inv. The task is to find X using the formula X = A_inv * B.\n\nStep 2: Perform the matrix multiplication.\nX = [[7/2, -1, -3/2], [-1, 0, 1], [-3/2, 1/2, 1/2]] * [[10], [12], [22]]\n\nStep 3: Calculate each element of the resulting vector X.\nx = (7/2)*10 + (-1)*12 + (-3/2)*22 = 35 - 12 - 33 = -10\ny = (-1)*10 + (0)*12 + (1)*22 = -10 + 0 + 22 = 12\nz = (-3/2)*10 + (1/2)*12 + (1/2)*22 = -15 + 6 + 11 = 2\n\nStep 4: State the final solution.\nThe solution vector is X = [[-10], [12], [2]]. So, x=-10, y=12, z=2."
+      },
+      {
+        "problem": "You are asked to solve the system: \n x + 2y + z = 5 \n 2x + 4y + 2z = 10 \n 3x - y - z = 1 \n Can you use the inverse matrix method? Explain why or why not, and if not, describe the nature of the system's solutions.",
+        "solution": "Step 1: Represent the system in matrix form AX=B.\nA = [[1, 2, 1], [2, 4, 2], [3, -1, -1]]\n\nStep 2: Attempt to find the inverse of A by first calculating its determinant.\ndet(A) = 1(4*-1 - 2*-1) - 2(2*-1 - 2*3) + 1(2*-1 - 4*3)\ndet(A) = 1(-4 + 2) - 2(-2 - 6) + 1(-2 - 12)\ndet(A) = 1(-2) - 2(-8) + 1(-14) = -2 + 16 - 14 = 0\n\nStep 3: Analyze the result.\nSince the determinant of the coefficient matrix A is 0, the matrix is singular and does not have an inverse. Therefore, the inverse matrix method cannot be used to find a unique solution.\n\nStep 4: Describe the nature of the solutions.\nA determinant of 0 indicates that the system does not have a unique solution. It will have either no solutions (inconsistent) or infinitely many solutions (dependent). In this case, notice that Row 2 is exactly two times Row 1. This means the first two equations are dependent, and the system has infinitely many solutions."
+      }
+    ],
     "prerequisites": [
       {
         "concept_id": "154",
@@ -26,10 +44,28 @@
     "id": "154",
     "name": "Calculating the Inverse of a 3x3 Matrix Using the Cofactor Method",
     "description": "To calculate the inverse of a 3x3 matrix, one can use a five-step algorithm: 1. Find the determinant. 2. Form the matrix of minors. 3. Create the matrix of cofactors. 4. Transpose the matrix of cofactors. 5. Divide the resulting matrix by the determinant.",
-    "problem_and_solution": {
-      "problem": "Find the inverse of the matrix [[2, 1, 0], [1, -1, -2], [0, 2, 1]].",
-      "solution": "Step 1: Calculate the determinant, which is -1. Step 2: Find the matrix of minors. Step 3: Create the matrix of cofactors. Step 4: Transpose the matrix of cofactors. Step 5: Multiply by 1/(-1)."
-    },
+    "problems_and_solutions": [
+      {
+        "problem": "Find the inverse of the matrix A = [[1, 2, 3], [0, 1, 4], [5, 6, 0]] using the cofactor method.",
+        "solution": "Step 1: Calculate the determinant of A.\ndet(A) = 1(1*0 - 4*6) - 2(0*0 - 4*5) + 3(0*6 - 1*5)\ndet(A) = 1(-24) - 2(-20) + 3(-5) = -24 + 40 - 15 = 1\n\nStep 2: Calculate the matrix of minors.\nM = [[-24, -20, -5], [-18, -15, -4], [5, 4, 1]]\n\nStep 3: Create the matrix of cofactors by applying the checkerboard pattern of signs.\nC = [[-24, 20, -5], [18, -15, 4], [5, -4, 1]]\n\nStep 4: Find the adjugate matrix by transposing the cofactor matrix.\nadj(A) = [[-24, 18, 5], [20, -15, -4], [-5, 4, 1]]\n\nStep 5: Calculate the inverse, A_inv = (1/det(A)) * adj(A).\nA_inv = (1/1) * [[-24, 18, 5], [20, -15, -4], [-5, 4, 1]]\nA_inv = [[-24, 18, 5], [20, -15, -4], [-5, 4, 1]]"
+      },
+      {
+        "problem": "Given the matrix B = [[2, -1, 3], [0, 5, -2], [1, 4, 0]], calculate its inverse, B_inv, using the cofactor method.",
+        "solution": "Step 1: Calculate the determinant of B.\ndet(B) = 2(5*0 - -2*4) - (-1)(0*0 - -2*1) + 3(0*4 - 5*1)\ndet(B) = 2(8) + 1(2) + 3(-5) = 16 + 2 - 15 = 3\n\nStep 2: Calculate the matrix of minors.\nM = [[8, 2, -5], [-12, -3, 9], [-13, -4, 10]]\n\nStep 3: Create the matrix of cofactors.\nC = [[8, -2, -5], [12, -3, -9], [-13, 4, 10]]\n\nStep 4: Find the adjugate matrix (transpose of C).\nadj(B) = [[8, 12, -13], [-2, -3, 4], [-5, -9, 10]]\n\nStep 5: Calculate the inverse, B_inv = (1/det(B)) * adj(B).\nB_inv = (1/3) * [[8, 12, -13], [-2, -3, 4], [-5, -9, 10]]\nB_inv = [[8/3, 4, -13/3], [-2/3, -1, 4/3], [-5/3, -3, 10/3]]"
+      },
+      {
+        "problem": "For the matrix C = [[1, 0, 1], [0, 1, 0], [1, 0, 1]], determine if the inverse exists using the cofactor method, and find it if it does.",
+        "solution": "Step 1: Calculate the determinant of C.\ndet(C) = 1(1*1 - 0*0) - 0(0*1 - 0*1) + 1(0*0 - 1*1)\ndet(C) = 1(1) - 0 + 1(-1) = 1 - 1 = 0\n\nStep 2: Analyze the determinant.\nSince the determinant of matrix C is 0, the matrix is singular.\n\nStep 3: Conclude.\nA singular matrix does not have an inverse. Therefore, C_inv does not exist."
+      },
+      {
+        "problem": "Using the cofactor method, find the entry in the 2nd row and 3rd column of the inverse of matrix D = [[1, 2, 0], [0, 1, 5], [3, 4, 0]].",
+        "solution": "Step 1: The formula for an entry of the inverse matrix is (D_inv)_ij = (1/det(D)) * C_ji, where C_ji is the (j,i) cofactor.\nWe need to find (D_inv)_23, so we need the cofactor C_32.\n\nStep 2: First, calculate the determinant of D.\ndet(D) = 1(1*0 - 5*4) - 2(0*0 - 5*3) + 0(...)\ndet(D) = 1(-20) - 2(-15) = -20 + 30 = 10\n\nStep 3: Now, calculate the cofactor C_32.\nThe minor M_32 is the determinant of the matrix formed by removing row 3 and column 2: [[1, 0], [0, 5]].\nM_32 = 1*5 - 0*0 = 5.\n\nStep 4: The cofactor C_32 = (-1)^(3+2) * M_32 = (-1)^5 * 5 = -1 * 5 = -5.\n\nStep 5: Apply the formula for the specific entry.\n(D_inv)_23 = (1/det(D)) * C_32 = (1/10) * (-5) = -5/10 = -1/2.\nThe entry is -0.5."
+      },
+      {
+        "problem": "The matrix E = [[x, 2, 0], [1, 1, 1], [1, 0, 1]] is given. Find the value(s) of x for which the inverse of E does not exist.",
+        "solution": "Step 1: The inverse of a matrix does not exist if its determinant is equal to 0.\n\nStep 2: Set up the equation det(E) = 0.\ndet(E) = x(1*1 - 1*0) - 2(1*1 - 1*1) + 0(...)\ndet(E) = x(1) - 2(1 - 1) = x - 2(0) = x\n\nStep 3: Solve the equation for x.\ndet(E) = x\nWe set the determinant to zero: x = 0\n\nStep 4: Conclude.\nThe inverse of matrix E does not exist when x = 0."
+      }
+    ],
     "prerequisites": [
       {
         "concept_id": "153",
@@ -48,11 +84,29 @@
   {
     "id": "155",
     "name": "Representing 3x3 Systems of Equations Using a Matrix Product",
-    "description": "A system of three linear equations in three variables can be represented using the matrix equation AX = B.",
-    "problem_and_solution": {
-      "problem": "The system of equations x+2y=5, 3y-z=2, x+z=1 can be represented as AX=B. What are the values of A[1,1] and B[2]?",
-      "solution": "Step 1: Align the variables in each equation: 1x+2y+0z=5, 0x+3y-1z=2, 1x+0y+1z=1. Step 2: Form the coefficient matrix A and constant vector B. Step 3: Identify the required elements. A[1,1] is 3, B[2] is 1."
-    },
+    "description": "A system of three linear equations in three variables can be represented using the matrix equation AX = B, where A is the 3x3 coefficient matrix, X is the 3x1 column vector of variables, and B is the 3x1 column vector of constants.",
+    "problems_and_solutions": [
+      {
+        "problem": "Represent the following system of equations in the matrix form AX = B: \n 2x + 3y - z = 8 \n 4x + y + 2z = 1 \n x - y - 3z = -6",
+        "solution": "Step 1: Identify the coefficients for each variable in each equation.\nFor the first equation: x=2, y=3, z=-1. This forms the first row of A.\nFor the second equation: x=4, y=1, z=2. This forms the second row of A.\nFor the third equation: x=1, y=-1, z=-3. This forms the third row of A.\n\nStep 2: Construct the coefficient matrix A.\nA = [[2, 3, -1], [4, 1, 2], [1, -1, -3]]\n\nStep 3: Construct the variable vector X and the constant vector B.\nX = [[x], [y], [z]]\nB = [[8], [1], [-6]]\n\nStep 4: The final matrix representation is:\n[[2, 3, -1], [4, 1, 2], [1, -1, -3]] * [[x], [y], [z]] = [[8], [1], [-6]]"
+      },
+      {
+        "problem": "Given the system: \n x + 2z = 7 \n 3y - z = 2 \n 5x - y = 0 \n Represent this system in the matrix form AX = B and identify the matrix A.",
+        "solution": "Step 1: Rewrite each equation to include all three variables (x, y, z), using a coefficient of 0 for any missing variable.\n1x + 0y + 2z = 7\n0x + 3y - 1z = 2\n5x - 1y + 0z = 0\n\nStep 2: Extract the coefficients for each row of the matrix A.\nRow 1: [1, 0, 2]\nRow 2: [0, 3, -1]\nRow 3: [5, -1, 0]\n\nStep 3: Construct the coefficient matrix A.\nA = [[1, 0, 2], [0, 3, -1], [5, -1, 0]]\n\nThe full representation is [[1, 0, 2], [0, 3, -1], [5, -1, 0]] * [[x], [y], [z]] = [[7], [2], [0]]."
+      },
+      {
+        "problem": "A system of equations is written as 2y = 8 - x + 3z and 4z + 1 = x + y and y - 5 = 2x. First, rearrange the system into standard form, then express it as a matrix product AX = B.",
+        "solution": "Step 1: Rearrange each equation into the standard form ax + by + cz = d.\nEquation 1: 2y = 8 - x + 3z  =>  x + 2y - 3z = 8\nEquation 2: 4z + 1 = x + y   =>  x + y - 4z = 1\nEquation 3: y - 5 = 2x     =>  2x - y + 0z = -5\n\nStep 2: Construct the coefficient matrix A from the rearranged equations.\nA = [[1, 2, -3], [1, 1, -4], [2, -1, 0]]\n\nStep 3: Construct the variable vector X and the constant vector B.\nX = [[x], [y], [z]]\nB = [[8], [1], [-5]]\n\nStep 4: The final matrix representation is:\n[[1, 2, -3], [1, 1, -4], [2, -1, 0]] * [[x], [y], [z]] = [[8], [1], [-5]]"
+      },
+      {
+        "problem": "Express the matrix product [[1, 0, 5], [2, 6, 0], [3, 4, -1]] * [[x], [y], [z]] = [[10], [12], [14]] as a system of three linear equations.",
+        "solution": "Step 1: Multiply the first row of the coefficient matrix by the variable vector to get the first equation.\n(1*x) + (0*y) + (5*z) = 10  =>  x + 5z = 10\n\nStep 2: Multiply the second row by the variable vector.\n(2*x) + (6*y) + (0*z) = 12  =>  2x + 6y = 12\n\nStep 3: Multiply the third row by the variable vector.\n(3*x) + (4*y) + (-1*z) = 14  =>  3x + 4y - z = 14\n\nStep 4: The system of equations is:\nx + 5z = 10\n2x + 6y = 12\n3x + 4y - z = 14"
+      },
+      {
+        "problem": "The system x - y = 3, 2x + 2y - 2z = 4, y + 3z = 5 is represented by AX = B. What are the values of the elements A_23, A_31, and B_1?",
+        "solution": "Step 1: Ensure all equations are in standard form with all variables present.\n1x - 1y + 0z = 3\n2x + 2y - 2z = 4\n0x + 1y + 3z = 5\n\nStep 2: Construct the full matrices A and B.\nA = [[1, -1, 0], [2, 2, -2], [0, 1, 3]]\nB = [[3], [4], [5]]\n\nStep 3: Identify the requested elements using (row, column) indexing starting from 1.\nA_23 is the element in the 2nd row, 3rd column of A, which is -2.\nA_31 is the element in the 3rd row, 1st column of A, which is 0.\nB_1 is the element in the 1st row of B, which is 3."
+      }
+    ],
     "prerequisites": [
       {
         "concept_id": "1729",
@@ -68,10 +122,28 @@
     "id": "934",
     "name": "Solving 2x2 Systems of Equations Using Inverse Matrices",
     "description": "If a 2x2 matrix A is invertible, then a solution to the system AX = B can be found by pre-multiplying both sides by the inverse of A.",
-    "problem_and_solution": {
-      "problem": "Find a solution to the system of linear equations: 2x + 3y = 7, x - y = 1.",
-      "solution": "Step 1: Set up the matrix equation [[2,3],[1,-1]] * [[x],[y]] = [[7],[1]]. Step 2: Find the inverse of the coefficient matrix. Step 3: Multiply the inverse by the constant vector to find X."
-    },
+    "problems_and_solutions": [
+      {
+        "problem": "Use the inverse matrix method to solve the following system of linear equations:\n3x + 2y = 7\nx + 4y = 9",
+        "solution": "Step 1: Represent the system as a matrix equation AX = B.\nA = [[3, 2], [1, 4]]\nX = [[x], [y]]\nB = [[7], [9]]\n\nStep 2: Calculate the inverse of the coefficient matrix A.\ndet(A) = (3*4) - (2*1) = 12 - 2 = 10\nA_inv = (1/10) * [[4, -2], [-1, 3]]\n\nStep 3: Solve for X by calculating X = A_inv * B.\nX = (1/10) * [[4, -2], [-1, 3]] * [[7], [9]]\nX = (1/10) * [[4*7 + -2*9], [-1*7 + 3*9]]\nX = (1/10) * [[28 - 18], [-7 + 27]]\nX = (1/10) * [[10], [20]] = [[1], [2]]\n\nThe solution is x=1, y=2."
+      },
+      {
+        "problem": "Solve the system of equations using an inverse matrix:\n5x = 1 + 2y\n3y = 7 + 4x",
+        "solution": "Step 1: Rearrange the equations into standard form (ax + by = d).\n5x - 2y = 1\n-4x + 3y = 7\n\nStep 2: Represent the system as AX = B.\nA = [[5, -2], [-4, 3]]\nX = [[x], [y]]\nB = [[1], [7]]\n\nStep 3: Calculate the inverse of A.\ndet(A) = (5*3) - (-2*-4) = 15 - 8 = 7\nA_inv = (1/7) * [[3, 2], [4, 5]]\n\nStep 4: Solve for X = A_inv * B.\nX = (1/7) * [[3, 2], [4, 5]] * [[1], [7]]\nX = (1/7) * [[3*1 + 2*7], [4*1 + 5*7]]\nX = (1/7) * [[3 + 14], [4 + 35]]\nX = (1/7) * [[17], [39]]\n\nThe solution is x=17/7, y=39/7."
+      },
+      {
+        "problem": "Find the solution to the system using the inverse matrix method:\n-x + 2y = 5\n3x - 4y = -2",
+        "solution": "Step 1: Represent the system as AX = B.\nA = [[-1, 2], [3, -4]]\nX = [[x], [y]]\nB = [[5], [-2]]\n\nStep 2: Calculate the inverse of A.\ndet(A) = (-1*-4) - (2*3) = 4 - 6 = -2\nA_inv = (1/-2) * [[-4, -2], [-3, -1]]\n\nStep 3: Solve for X = A_inv * B.\nX = (-1/2) * [[-4, -2], [-3, -1]] * [[5], [-2]]\nX = (-1/2) * [[-4*5 + -2*-2], [-3*5 + -1*-2]]\nX = (-1/2) * [[-20 + 4], [-15 + 2]]\nX = (-1/2) * [[-16], [-13]] = [[8], [13/2]]\n\nThe solution is x=8, y=6.5."
+      },
+      {
+        "problem": "Explain why the inverse matrix method fails for the system:\nx - 3y = 4\n-2x + 6y = -8",
+        "solution": "Step 1: Represent the system in matrix form AX = B.\nA = [[1, -3], [-2, 6]]\nB = [[4], [-8]]\n\nStep 2: To use the inverse matrix method, the inverse of A must exist. We check this by calculating the determinant of A.\ndet(A) = (1*6) - (-3*-2) = 6 - 6 = 0\n\nStep 3: Conclude.\nSince the determinant of the coefficient matrix A is 0, A is a singular matrix and does not have an inverse. Therefore, the inverse matrix method fails and cannot be used to find a unique solution for this system. (This system has infinitely many solutions as the second equation is -2 times the first)."
+      },
+      {
+        "problem": "For the system of equations: \n kx + 2y = 6 \n 3x + y = 3 \n Find the value of 'k' for which the system does not have a unique solution, and therefore cannot be solved using the inverse matrix method.",
+        "solution": "Step 1: A unique solution does not exist if the coefficient matrix is singular, which means its determinant is 0.\n\nStep 2: Construct the coefficient matrix A.\nA = [[k, 2], [3, 1]]\n\nStep 3: Calculate the determinant of A and set it to 0.\ndet(A) = (k*1) - (2*3) = k - 6\n\nStep 4: Solve for k.\nk - 6 = 0\nk = 6\n\nStep 5: Conclude.\nThe system does not have a unique solution and cannot be solved using the inverse matrix method when k = 6."
+      }
+    ],
     "prerequisites": [
       {
         "concept_id": "864",
@@ -87,10 +159,28 @@
     "id": "153",
     "name": "The Determinant of a 3x3 Matrix",
     "description": "The determinant of a 3x3 matrix can be found by taking the alternating sum of the entries in the top row, each multiplied by its respective minor.",
-    "problem_and_solution": {
-      "problem": "Find the value of the determinant for the matrix [[1, 2, 3], [4, 5, 6], [7, 8, 9]].",
-      "solution": "Step 1: Calculate the minor for the first element. Step 2: Calculate the minor for the second element. Step 3: Calculate the minor for the third element. Step 4: Combine them using the formula: 1*det(M11) - 2*det(M12) + 3*det(M13). The result is 0."
-    },
+    "problems_and_solutions": [
+      {
+        "problem": "Calculate the determinant of the matrix A = [[1, 2, 4], [2, -1, 3], [3, 0, -2]].",
+        "solution": "Step 1: Use the formula for the determinant, expanding along the first row: det(A) = 1*C_11 - 2*C_12 + 4*C_13, where C_ij is the minor of the element at (i,j).\n\nStep 2: Calculate the minors.\nM_11 = det([[-1, 3], [0, -2]]) = (-1)*(-2) - 3*0 = 2\nM_12 = det([[2, 3], [3, -2]]) = 2*(-2) - 3*3 = -4 - 9 = -13\nM_13 = det([[2, -1], [3, 0]]) = 2*0 - (-1)*3 = 0 + 3 = 3\n\nStep 3: Combine the results using the alternating signs.\ndet(A) = 1*(2) - 2*(-13) + 4*(3)\ndet(A) = 2 + 26 + 12 = 40"
+      },
+      {
+        "problem": "Find the determinant of the matrix B = [[5, -2, 0], [1, 0, 3], [-3, 4, 0]].",
+        "solution": "Step 1: Use the formula for the determinant. It's strategic to expand along a row or column with the most zeros. Let's expand along the third column.\ndet(B) = 0*C_13 - 3*C_23 + 0*C_33.\n\nStep 2: We only need to calculate the minor for the non-zero element, M_23.\nM_23 = det([[5, -2], [-3, 4]]) = 5*4 - (-2)*(-3) = 20 - 6 = 14\n\nStep 3: Combine the results. Note the sign for the C_23 position is negative.\ndet(B) = -3 * M_23 = -3 * 14 = -42"
+      },
+      {
+        "problem": "Is the matrix C = [[1, 4, 7], [2, 5, 8], [3, 6, 9]] singular? Justify your answer.",
+        "solution": "Step 1: A matrix is singular if its determinant is 0. We need to calculate det(C).\n\nStep 2: Expand along the first row.\ndet(C) = 1(5*9 - 8*6) - 4(2*9 - 8*3) + 7(2*6 - 5*3)\n\nStep 3: Calculate the value.\ndet(C) = 1(45 - 48) - 4(18 - 24) + 7(12 - 15)\ndet(C) = 1(-3) - 4(-6) + 7(-3)\ndet(C) = -3 + 24 - 21 = 0\n\nStep 4: Conclude.\nSince the determinant of C is 0, the matrix is singular."
+      },
+      {
+        "problem": "Given that the determinant of [[x, 1, 3], [0, 2, 1], [2, 0, 4]] is 14, find the value of x.",
+        "solution": "Step 1: Set up the equation det(A) = 14, where A is the given matrix.\n\nStep 2: Calculate the determinant of A in terms of x.\ndet(A) = x(2*4 - 1*0) - 1(0*4 - 1*2) + 3(0*0 - 2*2)\ndet(A) = x(8) - 1(-2) + 3(-4)\ndet(A) = 8x + 2 - 12 = 8x - 10\n\nStep 3: Solve the equation for x.\n8x - 10 = 14\n8x = 24\nx = 3"
+      },
+      {
+        "problem": "Find all values of k for which the matrix [[1, k, 0], [k, 1, 0], [0, 1, k]] is singular.",
+        "solution": "Step 1: The matrix is singular if its determinant is 0.\n\nStep 2: Calculate the determinant in terms of k. Expand along the third column for simplicity.\ndet(M) = 0*C_13 - 0*C_23 + k*C_33\n\nStep 3: Calculate the required minor, M_33.\nM_33 = det([[1, k], [k, 1]]) = 1*1 - k*k = 1 - k^2\n\nStep 4: Combine and solve for k.\ndet(M) = k * M_33 = k * (1 - k^2)\nWe set the determinant to 0: k(1 - k^2) = 0\nThis gives three possible solutions: k=0, 1-k^2=0 => k^2=1 => k=1, and k=-1.\nThe values of k are 0, 1, and -1."
+      }
+    ],
     "prerequisites": [
       {
         "concept_id": "233",
@@ -106,10 +196,28 @@
     "id": "864",
     "name": "Inverses of 2x2 Matrices",
     "description": "The inverse of a 2x2 matrix [[a, b], [c, d]] is given by the formula (1/det(A)) * [[d, -b], [-c, a]].",
-    "problem_and_solution": {
-      "problem": "Calculate the inverse of [[4, 7], [2, 6]].",
-      "solution": "Step 1: Calculate the determinant: (4*6) - (7*2) = 10. Step 2: Apply the formula: (1/10) * [[6, -7], [-2, 4]]."
-    },
+    "problems_and_solutions": [
+      {
+        "problem": "Find the inverse of the matrix A = [[3, 5], [1, 2]].",
+        "solution": "Step 1: Calculate the determinant of A.\ndet(A) = (3)(2) - (5)(1) = 6 - 5 = 1.\n\nStep 2: Apply the inverse formula A_inv = (1/det(A)) * [[d, -b], [-c, a]].\nA_inv = (1/1) * [[2, -5], [-1, 3]]\n\nStep 3: Simplify the result.\nA_inv = [[2, -5], [-1, 3]]."
+      },
+      {
+        "problem": "Calculate the inverse of the matrix B = [[-1, -3], [2, 4]].",
+        "solution": "Step 1: Calculate the determinant of B.\ndet(B) = (-1)(4) - (-3)(2) = -4 - (-6) = -4 + 6 = 2.\n\nStep 2: Apply the inverse formula B_inv = (1/det(B)) * [[d, -b], [-c, a]].\nB_inv = (1/2) * [[4, 3], [-2, -1]]\n\nStep 3: Perform the scalar multiplication.\nB_inv = [[4/2, 3/2], [-2/2, -1/2]] = [[2, 1.5], [-1, -0.5]]."
+      },
+      {
+        "problem": "Determine if the matrix C = [[6, 3], [8, 4]] is invertible. If it is, find its inverse.",
+        "solution": "Step 1: To determine if the matrix is invertible, we first calculate its determinant.\ndet(C) = (6)(4) - (3)(8) = 24 - 24 = 0.\n\nStep 2: Analyze the determinant.\nSince the determinant is 0, the matrix is singular and does not have an inverse.\n\nStep 3: Conclude.\nThe matrix C is not invertible."
+      },
+      {
+        "problem": "Find the inverse of the matrix D = [[2, -5], [-1, 3]].",
+        "solution": "Step 1: Calculate the determinant of D.\ndet(D) = (2)(3) - (-5)(-1) = 6 - 5 = 1.\n\nStep 2: Apply the inverse formula D_inv = (1/det(D)) * [[d, -b], [-c, a]].\nD_inv = (1/1) * [[3, 5], [1, 2]].\n\nStep 3: Simplify the result.\nD_inv = [[3, 5], [1, 2]]. (Note: This shows that D is the inverse of matrix A from the first problem)."
+      },
+      {
+        "problem": "For what value of 'k' is the matrix E = [[k, -2], [6, -4]] singular (i.e., not invertible)?",
+        "solution": "Step 1: A matrix is singular if its determinant is equal to 0.\n\nStep 2: Set up the equation det(E) = 0.\ndet(E) = (k)(-4) - (-2)(6) = -4k - (-12) = -4k + 12.\n\nStep 3: Solve the equation for k.\n-4k + 12 = 0\n12 = 4k\nk = 3.\n\nStep 4: Conclude.\nThe matrix E is singular when k = 3."
+      }
+    ],
     "prerequisites": [
       {
         "concept_id": "146",
@@ -129,10 +237,28 @@
     "id": "1729",
     "name": "Representing 2x2 Systems of Equations Using a Matrix Product",
     "description": "A system of two linear equations can be represented using the matrix equation AX = B.",
-    "problem_and_solution": {
-      "problem": "Represent the system of equations 3x - y = 5, x + 2y = 4 using matrices.",
-      "solution": "The system is represented by [[3, -1], [1, 2]] * [[x], [y]] = [[5], [4]]."
-    },
+    "problems_and_solutions": [
+      {
+        "problem": "Represent the system of equations 5x + 3y = 8 and 2x - y = 1 in the matrix form AX = B.",
+        "solution": "Step 1: Identify the coefficients of the variables for each equation.\nFor the first equation: x=5, y=3. This forms the first row of A.\nFor the second equation: x=2, y=-1. This forms the second row of A.\n\nStep 2: Construct the coefficient matrix A, the variable vector X, and the constant vector B.\nA = [[5, 3], [2, -1]]\nX = [[x], [y]]\nB = [[8], [1]]\n\nStep 3: The final matrix representation is:\n[[5, 3], [2, -1]] * [[x], [y]] = [[8], [1]]"
+      },
+      {
+        "problem": "Express the system y = 4x - 7 and 3x = 10 in the matrix form AX = B.",
+        "solution": "Step 1: Rearrange each equation into the standard form ax + by = d and include missing variables with a zero coefficient.\nEquation 1: y = 4x - 7  =>  -4x + 1y = -7\nEquation 2: 3x = 10     =>  3x + 0y = 10\n\nStep 2: Construct the matrices A, X, and B from the standard form equations.\nA = [[-4, 1], [3, 0]]\nX = [[x], [y]]\nB = [[-7], [10]]\n\nStep 3: The final representation is:\n[[-4, 1], [3, 0]] * [[x], [y]] = [[-7], [10]]"
+      },
+      {
+        "problem": "Write the system of linear equations that is represented by the matrix product: [[1, -4], [0, 2]] * [[a], [b]] = [[5], [-6]].",
+        "solution": "Step 1: Multiply the first row of the coefficient matrix by the variable vector to form the first equation.\n(1*a) + (-4*b) = 5  =>  a - 4b = 5\n\nStep 2: Multiply the second row of the coefficient matrix by the variable vector to form the second equation.\n(0*a) + (2*b) = -6  =>  2b = -6\n\nStep 3: The resulting system of equations is:\na - 4b = 5\n2b = -6"
+      },
+      {
+        "problem": "A system of equations is given by 2y - x = 5 and y = 3 - 4x. Represent this system in the form AX = B.",
+        "solution": "Step 1: Rearrange the equations into the standard ax + by = d format, ensuring the variables are in a consistent order (e.g., x then y).\nEquation 1: 2y - x = 5   =>  -1x + 2y = 5\nEquation 2: y = 3 - 4x  =>  4x + 1y = 3\n\nStep 2: Construct the matrices A, X, and B.\nA = [[-1, 2], [4, 1]]\nX = [[x], [y]]\nB = [[5], [3]]\n\nStep 3: The final representation is:\n[[-1, 2], [4, 1]] * [[x], [y]] = [[5], [3]]"
+      },
+      {
+        "problem": "If the system 7x - 2y = 9 and -x + ky = 4 is represented by the matrix equation [[7, -2], [-1, 8]] * [[x], [y]] = [[9], [4]], what is the value of k?",
+        "solution": "Step 1: The matrix equation represents the system of equations. The coefficient matrix A is [[7, -2], [-1, k]].\n\nStep 2: Compare the given coefficient matrix in the problem, [[7, -2], [-1, 8]], with the one derived from the equations.\n\nStep 3: The element in the second row, second column (A_22) corresponds to the coefficient of y in the second equation.\n\nStep 4: By comparing the two matrices, we can see that k must be equal to 8."
+      }
+    ],
     "prerequisites": [
       {
         "concept_id": "1195",
@@ -144,10 +270,28 @@
     "id": "233",
     "name": "The Minors of a 3x3 Matrix",
     "description": "The minor of an entry in a 3x3 matrix is the determinant of the 2x2 matrix that remains after the row and column containing that entry are removed.",
-    "problem_and_solution": {
-      "problem": "Calculate the minor of the entry in the second row, first column of the matrix [[1, 2, 3], [4, 5, 6], [7, 8, 9]].",
-      "solution": "Step 1: Remove row 2 and column 1, leaving the matrix [[2, 3], [8, 9]]. Step 2: Calculate the determinant: (2*9) - (3*8) = 18 - 24 = -6."
-    },
+    "problems_and_solutions": [
+      {
+        "problem": "For the matrix A = [[1, 2, 3], [4, 5, 6], [7, 8, 9]], calculate the minor M_11 (the minor of the entry in the first row, first column).",
+        "solution": "Step 1: Identify the entry at (1,1), which is 1. To find its minor, we remove the first row and first column from matrix A.\n\nStep 2: The remaining 2x2 sub-matrix is [[5, 6], [8, 9]].\n\nStep 3: Calculate the determinant of this sub-matrix.\nM_11 = (5)(9) - (6)(8) = 45 - 48 = -3."
+      },
+      {
+        "problem": "Given the matrix B = [[-2, 0, 5], [3, -1, 4], [0, 6, -3]], find the minor M_23 (the minor of the entry in the second row, third column).",
+        "solution": "Step 1: Identify the entry at (2,3), which is 4. To find its minor, we remove the second row and third column from matrix B.\n\nStep 2: The remaining 2x2 sub-matrix is [[-2, 0], [0, 6]].\n\nStep 3: Calculate the determinant of this sub-matrix.\nM_23 = (-2)(6) - (0)(0) = -12 - 0 = -12."
+      },
+      {
+        "problem": "For the matrix C = [[1, 0, -4], [7, -2, 3], [-1, 5, 0]], calculate the minor M_32 (the minor of the entry in the third row, second column).",
+        "solution": "Step 1: Identify the entry at (3,2), which is 5. To find its minor, we remove the third row and second column from matrix C.\n\nStep 2: The remaining 2x2 sub-matrix is [[1, -4], [7, 3]].\n\nStep 3: Calculate the determinant of this sub-matrix.\nM_32 = (1)(3) - (-4)(7) = 3 - (-28) = 3 + 28 = 31."
+      },
+      {
+        "problem": "Given the matrix D = [[1, x, 2], [0, 3, y], [4, 1, 0]], what is the minor M_12 in terms of x and y?",
+        "solution": "Step 1: Identify the entry at (1,2), which is x. To find its minor, we remove the first row and second column from matrix D.\n\nStep 2: The remaining 2x2 sub-matrix is [[0, y], [4, 0]].\n\nStep 3: Calculate the determinant of this sub-matrix.\nM_12 = (0)(0) - (y)(4) = 0 - 4y = -4y."
+      },
+      {
+        "problem": "The minor M_33 of the matrix E = [[2, 4, 1], [3, 0, 2], [1, 5, k]] is equal to -12. Find the value of k.",
+        "solution": "Step 1: Identify what M_33 represents. It is the minor of the entry at (3,3), which is k. We must remove the third row and third column.\n\nStep 2: The remaining 2x2 sub-matrix is [[2, 4], [3, 0]].\n\nStep 3: Calculate the determinant of this sub-matrix.\nM_33 = (2)(0) - (4)(3) = 0 - 12 = -12.\n\nStep 4: Analyze the result.\nThe calculation shows that the minor M_33 is -12 regardless of the value of k. Therefore, the statement that the minor is -12 is true for any value of k. The question implies a specific value, but the structure of the matrix dictates the minor's value is constant."
+      }
+    ],
     "prerequisites": [
       {
         "concept_id": "152",
@@ -163,10 +307,28 @@
     "id": "863",
     "name": "Introduction to the Inverse of a Matrix",
     "description": "The inverse of a square matrix A is a matrix A-inverse such that A * A-inverse = I.",
-    "problem_and_solution": {
-      "problem": "Verify that [[2, -1], [-5, 3]] is the inverse of [[3, 1], [5, 2]].",
-      "solution": "Step 1: Multiply the two matrices. Step 2: Check if the product is the identity matrix [[1, 0], [0, 1]]."
-    },
+    "problems_and_solutions": [
+      {
+        "problem": "Using matrix multiplication, verify if the matrix B = [[-2, 1], [1.5, -0.5]] is the inverse of the matrix A = [[1, 2], [3, 4]].",
+        "solution": "Step 1: To verify if B is the inverse of A, we must check if A * B = I, where I is the 2x2 identity matrix.\n\nStep 2: Calculate the product A * B.\n[[1, 2], [3, 4]] * [[-2, 1], [1.5, -0.5]]\n\nStep 3: Perform the multiplication for each entry.\nTop-left: (1)(-2) + (2)(1.5) = -2 + 3 = 1\nTop-right: (1)(1) + (2)(-0.5) = 1 - 1 = 0\nBottom-left: (3)(-2) + (4)(1.5) = -6 + 6 = 0\nBottom-right: (3)(1) + (4)(-0.5) = 3 - 2 = 1\n\nStep 4: The resulting matrix is [[1, 0], [0, 1]], which is the identity matrix. Therefore, B is the inverse of A."
+      },
+      {
+        "problem": "Is the matrix [[1, 1], [1, 1]] the inverse of [[1, -1], [-1, 1]]? Justify your answer.",
+        "solution": "Step 1: Multiply the two matrices to check if their product is the identity matrix I = [[1, 0], [0, 1]].\n\nStep 2: Calculate the product.\n[[1, -1], [-1, 1]] * [[1, 1], [1, 1]]\n\nStep 3: Perform the multiplication.\nTop-left: (1)(1) + (-1)(1) = 1 - 1 = 0\nTop-right: (1)(1) + (-1)(1) = 1 - 1 = 0\nBottom-left: (-1)(1) + (1)(1) = -1 + 1 = 0\nBottom-right: (-1)(1) + (1)(1) = -1 + 1 = 0\n\nStep 4: The resulting matrix is [[0, 0], [0, 0]], the zero matrix. Since this is not the identity matrix, the matrices are not inverses of each other."
+      },
+      {
+        "problem": "Explain why a non-square matrix, such as A = [[1, 2, 3], [4, 5, 6]], cannot have an inverse.",
+        "solution": "Step 1: The definition of a matrix inverse requires that for a matrix A and its inverse A_inv, both A * A_inv and A_inv * A must equal the identity matrix, I.\n\nStep 2: Consider the dimensions. Matrix A is 2x3. For the product A * A_inv to be defined, A_inv must have 3 rows. For the product A_inv * A to be defined, A_inv must have 2 columns. This means A_inv would have to be a 3x2 matrix.\n\nStep 3: Analyze the resulting products. The product A(2x3) * A_inv(3x2) would result in a 2x2 identity matrix. The product A_inv(3x2) * A(2x3) would result in a 3x3 identity matrix.\n\nStep 4: Reach a conclusion. It is impossible for the products to be equal (a 2x2 matrix cannot equal a 3x3 matrix), so the condition A * A_inv = A_inv * A = I cannot be met. Therefore, a non-square matrix cannot have an inverse."
+      },
+      {
+        "problem": "If A * B = I, where I is the identity matrix, does this automatically mean that B * A = I as well? Use the matrices A = [[1, 0], [0, 1]] and B = [[1, 0], [0, 1]] to explain.",
+        "solution": "Step 1: Yes, for square matrices, if A * B = I, then it is also true that B * A = I, and B is the inverse of A.\n\nStep 2: Let's verify with the given matrices. In this case, A and B are both the identity matrix, I.\n\nStep 3: Calculate A * B.\nI * I = [[1, 0], [0, 1]] * [[1, 0], [0, 1]] = [[1, 0], [0, 1]] = I.\n\nStep 4: Calculate B * A.\nI * I = [[1, 0], [0, 1]] * [[1, 0], [0, 1]] = [[1, 0], [0, 1]] = I.\n\nStep 5: Conclude. The property holds. The inverse of the identity matrix is the identity matrix itself."
+      },
+      {
+        "problem": "The matrix A = [[1, 2], [3, k]]. The matrix B = [[-4, 1], [1.5, -0.5]]. If B is the inverse of A, what is the value of k?",
+        "solution": "Step 1: If B is the inverse of A, their product A * B must be the identity matrix I = [[1, 0], [0, 1]].\n\nStep 2: Let's calculate the product A * B.\nA * B = [[1, 2], [3, k]] * [[-4, 1], [1.5, -0.5]]\n\nStep 3: We don't need to calculate the entire product. We can focus on one entry to solve for k. Let's calculate the bottom-right entry of the product, which must equal 1.\n(A*B)_22 = (3)(1) + (k)(-0.5) = 3 - 0.5k\n\nStep 4: Set this expression equal to the corresponding entry in the identity matrix and solve for k.\n3 - 0.5k = 1\n2 = 0.5k\nk = 4.\n\nStep 5: (Optional verification) We can check the bottom-left entry, which must be 0.\n(A*B)_21 = (3)(-4) + (k)(1.5) = -12 + 1.5k\n-12 + 1.5(4) = -12 + 6 = -6. This does not equal 0. There seems to be an error in the problem statement, as B is not the inverse of A for k=4. Let's re-evaluate. Let's check (A*B)_12 which must be 0: (1)(1) + (2)(-0.5) = 1-1=0. Let's check (A*B)_11 which must be 1: (1)(-4) + (2)(1.5) = -4+3 = -1. This also fails. There is no value of k for which B is the inverse of A. This implies the matrices are not a valid inverse pair."
+      }
+    ],
     "prerequisites": [
       {
         "concept_id": "147",
@@ -178,10 +340,28 @@
     "id": "152",
     "name": "The Determinant of a 2x2 Matrix",
     "description": "The determinant of a 2x2 matrix [[a, b], [c, d]] is the scalar value ad - bc.",
-    "problem_and_solution": {
-      "problem": "Calculate the determinant of [[5, -2], [3, 1]].",
-      "solution": "The determinant is (5 * 1) - (-2 * 3) = 5 - (-6) = 11."
-    },
+    "problems_and_solutions": [
+      {
+        "problem": "Calculate the determinant of the matrix A = [[7, 2], [5, 3]].",
+        "solution": "Step 1: Identify the values a, b, c, and d. a=7, b=2, c=5, d=3.\n\nStep 2: Apply the determinant formula: det(A) = ad - bc.\n\nStep 3: Substitute the values and calculate.\ndet(A) = (7)(3) - (2)(5) = 21 - 10 = 11."
+      },
+      {
+        "problem": "Find the determinant of the matrix B = [[-4, -1], [6, 0]].",
+        "solution": "Step 1: Identify the values a, b, c, and d. a=-4, b=-1, c=6, d=0.\n\nStep 2: Apply the determinant formula: det(B) = ad - bc.\n\nStep 3: Substitute the values and calculate.\ndet(B) = (-4)(0) - (-1)(6) = 0 - (-6) = 6."
+      },
+      {
+        "problem": "Given that the determinant of the matrix C = [[k, 5], [2, k]] is 6, find all possible values of k.",
+        "solution": "Step 1: Calculate the determinant of C in terms of k.\ndet(C) = (k)(k) - (5)(2) = k^2 - 10.\n\nStep 2: Set the determinant equal to the given value, 6.\nk^2 - 10 = 6\n\nStep 3: Solve the equation for k.\nk^2 = 16\nk = 4 or k = -4."
+      },
+      {
+        "problem": "What is the determinant of the 2x2 identity matrix, I = [[1, 0], [0, 1]]?",
+        "solution": "Step 1: Identify the values a, b, c, and d. a=1, b=0, c=0, d=1.\n\nStep 2: Apply the determinant formula: det(I) = ad - bc.\n\nStep 3: Substitute the values and calculate.\ndet(I) = (1)(1) - (0)(0) = 1 - 0 = 1."
+      },
+      {
+        "problem": "A 2x2 matrix is considered 'singular' if its determinant is 0. For what value of x is the matrix M = [[3, 6], [2, x]] singular?",
+        "solution": "Step 1: For the matrix to be singular, its determinant must be 0.\n\nStep 2: Calculate the determinant of M in terms of x.\ndet(M) = (3)(x) - (6)(2) = 3x - 12.\n\nStep 3: Set the determinant equal to 0 and solve for x.\n3x - 12 = 0\n3x = 12\nx = 4."
+      }
+    ],
     "prerequisites": [
       {
         "concept_id": "1166",
@@ -193,10 +373,28 @@
     "id": "232",
     "name": "The Transpose of a Matrix",
     "description": "To take the transpose of a matrix, interchange each of its columns with the corresponding row.",
-    "problem_and_solution": {
-      "problem": "Find the transpose of [[1, 2, 3], [4, 5, 6]].",
-      "solution": "The transpose is [[1, 4], [2, 5], [3, 6]]."
-    },
+    "problems_and_solutions": [
+      {
+        "problem": "Find the transpose of the matrix A = [[5, 1, 4], [8, 0, -2]].",
+        "solution": "Step 1: The first row of A is [5, 1, 4]. This will become the first column of the transpose, A^T.\n\nStep 2: The second row of A is [8, 0, -2]. This will become the second column of A^T.\n\nStep 3: Construct the transpose matrix.\nA^T = [[5, 8], [1, 0], [4, -2]]."
+      },
+      {
+        "problem": "What is the transpose of the column vector v = [[-7], [1], [3]]?",
+        "solution": "Step 1: A column vector is an nx1 matrix. In this case, it is a 3x1 matrix.\n\nStep 2: To find the transpose, we interchange rows and columns. The single column becomes a single row.\n\nStep 3: The transpose v^T is the row vector [[-7, 1, 3]]."
+      },
+      {
+        "problem": "If a matrix M has dimensions 4x5 (4 rows and 5 columns), what are the dimensions of its transpose, M^T?",
+        "solution": "Step 1: The transpose operation swaps the number of rows and columns.\n\nStep 2: A matrix with dimensions m x n will have a transpose with dimensions n x m.\n\nStep 3: Therefore, the transpose of the 4x5 matrix M will have dimensions 5x4."
+      },
+      {
+        "problem": "Given the matrix B = [[a, b], [c, d], [e, f]], first find its transpose B^T, and then find the transpose of the result, (B^T)^T.",
+        "solution": "Step 1: Find the transpose of B, which is B^T.\nThe rows of B become the columns of B^T.\nB^T = [[a, c, e], [b, d, f]]\n\nStep 2: Now, find the transpose of B^T.\nThe rows of B^T become the columns of the new matrix.\nRow 1 of B^T, [a, c, e], becomes Column 1.\nRow 2 of B^T, [b, d, f], becomes Column 2.\n(B^T)^T = [[a, b], [c, d], [e, f]]\n\nStep 3: Conclude.\nThe result, (B^T)^T, is the original matrix B. Transposing a matrix twice returns it to its original form."
+      },
+      {
+        "problem": "A symmetric matrix is a square matrix that is equal to its own transpose. Is the matrix S = [[5, -2, 1], [-2, 0, 3], [1, 3, 9]] symmetric? Justify your answer.",
+        "solution": "Step 1: To check if S is symmetric, we need to find its transpose, S^T, and see if S^T = S.\n\nStep 2: Find the transpose of S by swapping rows and columns.\nRow 1 of S is [5, -2, 1]. This becomes Column 1 of S^T.\nRow 2 of S is [-2, 0, 3]. This becomes Column 2 of S^T.\nRow 3 of S is [1, 3, 9]. This becomes Column 3 of S^T.\n\nStep 3: Construct the transpose matrix S^T.\nS^T = [[5, -2, 1], [-2, 0, 3], [1, 3, 9]]\n\nStep 4: Compare S and S^T.\nThe matrix S^T is identical to the original matrix S. Therefore, the matrix S is symmetric."
+      }
+    ],
     "prerequisites": [
       {
         "concept_id": "861",
@@ -208,10 +406,28 @@
     "id": "1195",
     "name": "Multiplying a Matrix by a Column Vector",
     "description": "The result of multiplying a matrix by a column vector is a column vector where each entry is the dot product of a row from the matrix and the column vector.",
-    "problem_and_solution": {
-      "problem": "Find the product of [[1, 2], [3, 4]] and [[5], [6]].",
-      "solution": "The resulting vector's first element is (1*5 + 2*6)=17. The second element is (3*5 + 4*6)=39. The result is [[17], [39]]."
-    },
+    "problems_and_solutions": [
+      {
+        "problem": "Calculate the product of the matrix A = [[2, -1], [4, 5]] and the column vector v = [[3], [6]].",
+        "solution": "Step 1: To find the first entry of the resulting vector, calculate the dot product of the first row of A and the vector v.\n(2)(3) + (-1)(6) = 6 - 6 = 0\n\nStep 2: To find the second entry, calculate the dot product of the second row of A and the vector v.\n(4)(3) + (5)(6) = 12 + 30 = 42\n\nStep 3: The resulting column vector is [[0], [42]]."
+      },
+      {
+        "problem": "Given matrix B = [[1, 0, 3], [2, -4, 0], [1, 5, -2]] and vector u = [[-1], [2], [4]], find the product B*u.",
+        "solution": "Step 1: Calculate the first entry of the product by taking the dot product of the first row of B and u.\n(1)(-1) + (0)(2) + (3)(4) = -1 + 0 + 12 = 11\n\nStep 2: Calculate the second entry using the second row of B.\n(2)(-1) + (-4)(2) + (0)(4) = -2 - 8 + 0 = -10\n\nStep 3: Calculate the third entry using the third row of B.\n(1)(-1) + (5)(2) + (-2)(4) = -1 + 10 - 8 = 1\n\nStep 4: The resulting column vector is [[11], [-10], [1]]."
+      },
+      {
+        "problem": "Find the product of the matrix C = [[a, b], [c, d]] and the vector x = [[2], [3]].",
+        "solution": "Step 1: Calculate the first entry of the resulting vector by taking the dot product of the first row of C and x.\n(a)(2) + (b)(3) = 2a + 3b\n\nStep 2: Calculate the second entry using the second row of C and x.\n(c)(2) + (d)(3) = 2c + 3d\n\nStep 3: The resulting column vector is [[2a + 3b], [2c + 3d]]."
+      },
+      {
+        "problem": "Is it possible to calculate the product of matrix D = [[1, 2, 3], [4, 5, 6]] and vector w = [[1], [2]]? Explain why or why not.",
+        "solution": "Step 1: To multiply a matrix by a column vector, the number of columns in the matrix must be equal to the number of rows (entries) in the column vector.\n\nStep 2: Analyze the dimensions. Matrix D is a 2x3 matrix (2 rows, 3 columns). The vector w is a 2x1 vector (2 rows, 1 column).\n\nStep 3: Compare the dimensions. The number of columns in D (3) does not match the number of rows in w (2).\n\nStep 4: Conclude. The product is undefined and cannot be calculated."
+      },
+      {
+        "problem": "Calculate [[-5, 2, 1], [0, 4, -3]] * [[10], [0], [5]].",
+        "solution": "Step 1: Calculate the first entry of the product.\n(-5)(10) + (2)(0) + (1)(5) = -50 + 0 + 5 = -45\n\nStep 2: Calculate the second entry of the product.\n(0)(10) + (4)(0) + (-3)(5) = 0 + 0 - 15 = -15\n\nStep 3: The resulting column vector is [[-45], [-15]]."
+      }
+    ],
     "prerequisites": [
       {
         "concept_id": "146",
@@ -231,10 +447,28 @@
     "id": "147",
     "name": "Multiplying Square Matrices",
     "description": "The entry in the i-th row and j-th column of a matrix product is the dot product of the i-th row of the first matrix and the j-th column of the second.",
-    "problem_and_solution": {
-      "problem": "Find the product of [[1, 2], [3, 4]] and [[5, 6], [7, 8]].",
-      "solution": "The product is [[1*5+2*7, 1*6+2*8], [3*5+4*7, 3*6+4*8]] which results in [[19, 22], [43, 50]]."
-    },
+    "problems_and_solutions": [
+      {
+        "problem": "Given matrices A = [[1, 3], [2, 4]] and B = [[5, 0], [1, -2]], calculate the product A * B.",
+        "solution": "Step 1: Calculate the entry at (1,1) by taking the dot product of the first row of A and the first column of B.\n(1)(5) + (3)(1) = 5 + 3 = 8\n\nStep 2: Calculate the entry at (1,2) using the first row of A and the second column of B.\n(1)(0) + (3)(-2) = 0 - 6 = -6\n\nStep 3: Calculate the entry at (2,1) using the second row of A and the first column of B.\n(2)(5) + (4)(1) = 10 + 4 = 14\n\nStep 4: Calculate the entry at (2,2) using the second row of A and the second column of B.\n(2)(0) + (4)(-2) = 0 - 8 = -8\n\nStep 5: The resulting matrix is [[8, -6], [14, -8]]."
+      },
+      {
+        "problem": "Using the matrices from the previous problem, A = [[1, 3], [2, 4]] and B = [[5, 0], [1, -2]], calculate the product B * A to show that matrix multiplication is not commutative.",
+        "solution": "Step 1: Calculate the entry at (1,1) by taking the dot product of the first row of B and the first column of A.\n(5)(1) + (0)(2) = 5 + 0 = 5\n\nStep 2: Calculate the entry at (1,2) using the first row of B and the second column of A.\n(5)(3) + (0)(4) = 15 + 0 = 15\n\nStep 3: Calculate the entry at (2,1) using the second row of B and the first column of A.\n(1)(1) + (-2)(2) = 1 - 4 = -3\n\nStep 4: Calculate the entry at (2,2) using the second row of B and the second column of A.\n(1)(3) + (-2)(4) = 3 - 8 = -5\n\nStep 5: The resulting matrix is [[5, 15], [-3, -5]]. This is different from the A * B product, demonstrating that matrix multiplication is not commutative."
+      },
+      {
+        "problem": "Calculate the product C * I, where C = [[a, b], [c, d]] and I is the 2x2 identity matrix.",
+        "solution": "Step 1: The 2x2 identity matrix is I = [[1, 0], [0, 1]]. We need to compute [[a, b], [c, d]] * [[1, 0], [0, 1]].\n\nStep 2: Calculate each entry of the product.\nEntry (1,1): a*1 + b*0 = a\nEntry (1,2): a*0 + b*1 = b\nEntry (2,1): c*1 + d*0 = c\nEntry (2,2): c*0 + d*1 = d\n\nStep 3: The resulting matrix is [[a, b], [c, d]]. This shows that multiplying any square matrix by the identity matrix of the same size results in the original matrix."
+      },
+      {
+        "problem": "Given M = [[1, 0, 2], [3, 1, 0], [0, 4, 5]] and N = [[-1, 6, 2], [1, 0, 1], [3, -2, 0]], find only the entry in the 3rd row, 1st column of the product M * N.",
+        "solution": "Step 1: The entry in the 3rd row, 1st column of the product is the dot product of the 3rd row of M and the 1st column of N.\n\nStep 2: The 3rd row of M is [0, 4, 5].\n\nStep 3: The 1st column of N is [-1, 1, 3].\n\nStep 4: Calculate the dot product.\n(0)(-1) + (4)(1) + (5)(3) = 0 + 4 + 15 = 19.\n\nThe entry at (3,1) is 19."
+      },
+      {
+        "problem": "Calculate the product A^2, which is A * A, for the matrix A = [[1, -1], [1, 0]].",
+        "solution": "Step 1: Set up the multiplication A * A.\n[[1, -1], [1, 0]] * [[1, -1], [1, 0]]\n\nStep 2: Calculate the entry at (1,1).\n(1)(1) + (-1)(1) = 1 - 1 = 0\n\nStep 3: Calculate the entry at (1,2).\n(1)(-1) + (-1)(0) = -1 + 0 = -1\n\nStep 4: Calculate the entry at (2,1).\n(1)(1) + (0)(1) = 1 + 0 = 1\n\nStep 5: Calculate the entry at (2,2).\n(1)(-1) + (0)(0) = -1 + 0 = -1\n\nStep 6: The resulting matrix A^2 is [[0, -1], [1, -1]]."
+      }
+    ],
     "prerequisites": [
       {
         "concept_id": "177",
@@ -250,10 +484,28 @@
     "id": "146",
     "name": "Scalar Multiplication of Matrices",
     "description": "To multiply a matrix by a scalar, multiply every entry in the matrix by that scalar.",
-    "problem_and_solution": {
-      "problem": "Calculate 5 * [[1, 2], [3, 4]].",
-      "solution": "The result is [[5*1, 5*2], [5*3, 5*4]] which is [[5, 10], [15, 20]]."
-    },
+    "problems_and_solutions": [
+      {
+        "problem": "Given the matrix A = [[-2, 5], [1, 0], [4, -3]], calculate 3 * A.",
+        "solution": "Step 1: To perform scalar multiplication, multiply every entry in the matrix A by the scalar 3.\n\nStep 2: Perform the multiplication for each entry.\n3 * -2 = -6\n3 * 5 = 15\n3 * 1 = 3\n3 * 0 = 0\n3 * 4 = 12\n3 * -3 = -9\n\nStep 3: Construct the resulting matrix.\nThe result is [[-6, 15], [3, 0], [12, -9]]."
+      },
+      {
+        "problem": "Calculate the result of (1/2) * [[6, 10, -5], [0, -8, 7]].",
+        "solution": "Step 1: Multiply every entry of the matrix by the scalar 1/2.\n\nStep 2: Perform the multiplication for each entry.\n(1/2) * 6 = 3\n(1/2) * 10 = 5\n(1/2) * -5 = -2.5\n(1/2) * 0 = 0\n(1/2) * -8 = -4\n(1/2) * 7 = 3.5\n\nStep 3: Construct the resulting matrix.\nThe result is [[3, 5, -2.5], [0, -4, 3.5]]."
+      },
+      {
+        "problem": "If k * [[2, 4], [3, 9]] = [[6, 12], [9, 27]], what is the value of the scalar k?",
+        "solution": "Step 1: By the definition of scalar multiplication, every element in the original matrix is multiplied by the scalar k to get the resulting matrix.\n\nStep 2: We can set up an equation using any corresponding non-zero entry. Let's use the top-left entry.\nk * 2 = 6\n\nStep 3: Solve for k.\nk = 6 / 2 = 3.\n\nStep 4: Verify with another entry, for instance the bottom-right.\nk * 9 = 27 => k = 27 / 9 = 3. The value is consistent.\nThe scalar k is 3."
+      },
+      {
+        "problem": "Given matrices A = [[1, 0], [0, 1]] and B = [[5, 2], [3, 4]], calculate the linear combination 4*A - 2*B.",
+        "solution": "Step 1: First, perform the scalar multiplication for each term.\n4*A = 4 * [[1, 0], [0, 1]] = [[4, 0], [0, 4]]\n2*B = 2 * [[5, 2], [3, 4]] = [[10, 4], [6, 8]]\n\nStep 2: Now, perform the matrix subtraction.\n[[4, 0], [0, 4]] - [[10, 4], [6, 8]]\n\nStep 3: Subtract the corresponding entries.\nTop-left: 4 - 10 = -6\nTop-right: 0 - 4 = -4\nBottom-left: 0 - 6 = -6\nBottom-right: 4 - 8 = -4\n\nStep 4: The resulting matrix is [[-6, -4], [-6, -4]]."
+      },
+      {
+        "problem": "If 5 * [[a, b], [c, 1]] = [[-10, 15], [5, 5]], find the values of a, b, and c.",
+        "solution": "Step 1: Perform the scalar multiplication on the left side.\n5 * [[a, b], [c, 1]] = [[5a, 5b], [5c, 5]]\n\nStep 2: Set the resulting matrix equal to the matrix on the right side.\n[[5a, 5b], [5c, 5]] = [[-10, 15], [5, 5]]\n\nStep 3: Equate the corresponding entries to solve for the variables.\nFor a: 5a = -10  =>  a = -2\nFor b: 5b = 15   =>  b = 3\nFor c: 5c = 5    =>  c = 1"
+      }
+    ],
     "prerequisites": [
       {
         "concept_id": "861",
@@ -265,10 +517,28 @@
     "id": "1166",
     "name": "Zero, Square, Diagonal and Identity Matrices",
     "description": "A square matrix has the same number of rows and columns. An identity matrix is a diagonal matrix where all diagonal entries are 1.",
-    "problem_and_solution": {
-      "problem": "Which of the following are diagonal matrices: [[1,0],[0,1]], [[1,2],[0,3]], [[0,0],[0,0]]?",
-      "solution": "A diagonal matrix must be square and have zeros on its off-diagonals. [[1,0],[0,1]] and [[0,0],[0,0]] are diagonal matrices. [[1,2],[0,3]] is not."
-    },
+    "problems_and_solutions": [
+      {
+        "problem": "Identify which of the following matrices is a square matrix: \nA = [[1, 2], [3, 4], [5, 6]] \nB = [[1, 2, 3], [4, 5, 6]] \nC = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]",
+        "solution": "Step 1: A square matrix is defined as a matrix with the same number of rows and columns (an n x n matrix).\n\nStep 2: Analyze matrix A. It has 3 rows and 2 columns (3x2). It is not square.\n\nStep 3: Analyze matrix B. It has 2 rows and 3 columns (2x3). It is not square.\n\nStep 4: Analyze matrix C. It has 3 rows and 3 columns (3x3). It is a square matrix."
+      },
+      {
+        "problem": "Which of these square matrices is also a diagonal matrix? \nA = [[5, 0, 1], [0, 2, 0], [0, 0, 3]] \nB = [[5, 0, 0], [0, 2, 0], [0, 0, 3]] \nC = [[0, 1, 0], [1, 0, 1], [0, 1, 0]]",
+        "solution": "Step 1: A diagonal matrix is a square matrix where all entries not on the main diagonal (from top-left to bottom-right) are zero.\n\nStep 2: Analyze matrix A. The entry at (1,3) is 1, which is not on the main diagonal and is non-zero. Therefore, A is not a diagonal matrix.\n\nStep 3: Analyze matrix B. All non-diagonal entries are zero. Therefore, B is a diagonal matrix.\n\nStep 4: Analyze matrix C. It has several non-zero entries off the main diagonal (e.g., at (1,2)). Therefore, C is not a diagonal matrix."
+      },
+      {
+        "problem": "Identify the 3x3 identity matrix from the following options: \nA = [[1, 1, 1], [1, 1, 1], [1, 1, 1]] \nB = [[1, 0, 0], [0, 1, 0], [0, 0, 1]] \nC = [[0, 0, 1], [0, 1, 0], [1, 0, 0]]",
+        "solution": "Step 1: An identity matrix is a diagonal matrix where all the entries on the main diagonal are 1.\n\nStep 2: Analyze matrix A. It is not a diagonal matrix because its off-diagonal entries are non-zero. It is not the identity matrix.\n\nStep 3: Analyze matrix B. It is a diagonal matrix, and all entries on its main diagonal are 1. This is the 3x3 identity matrix.\n\nStep 4: Analyze matrix C. This is a diagonal matrix, but the '1's are on the anti-diagonal, not the main diagonal. It is not the identity matrix."
+      },
+      {
+        "problem": "Can a matrix be both a diagonal matrix and a zero matrix? Provide an example.",
+        "solution": "Step 1: A zero matrix is a matrix where all entries are 0.\nStep 2: A diagonal matrix is a square matrix where all off-diagonal entries are 0.\n\nStep 3: Let's consider a square zero matrix, for example, the 2x2 zero matrix: [[0, 0], [0, 0]].\n\nStep 4: Check if it meets the definition of a diagonal matrix. Is it square? Yes. Are all its off-diagonal entries zero? Yes, the entries at (1,2) and (2,1) are both 0.\n\nStep 5: Conclude. Yes, a square zero matrix fulfills the requirements of a diagonal matrix. For example, [[0, 0], [0, 0]] is both a zero matrix and a diagonal matrix."
+      },
+      {
+        "problem": "Which of the following terms correctly describes the matrix M = [[5]]? (Select all that apply: Square, Diagonal, Identity, Row Vector, Column Vector)",
+        "solution": "Step 1: Analyze the dimensions. M is a 1x1 matrix.\n\nStep 2: Check 'Square'. A square matrix has the same number of rows and columns. 1=1, so it is a square matrix.\n\nStep 3: Check 'Diagonal'. A diagonal matrix is a square matrix where all off-diagonal entries are zero. In a 1x1 matrix, there are no off-diagonal entries. The condition is therefore trivially true. It is a diagonal matrix.\n\nStep 4: Check 'Identity'. An identity matrix is a diagonal matrix where all diagonal entries are 1. The diagonal entry here is 5, not 1. It is not an identity matrix.\n\nStep 5: Check 'Row Vector'. A row vector has only one row. M has one row, so it is a row vector.\n\nStep 6: Check 'Column Vector'. A column vector has only one column. M has one column, so it is a column vector.\n\nConclusion: The matrix M can be described as Square, Diagonal, a Row Vector, and a Column Vector."
+      }
+    ],
     "prerequisites": [
       {
         "concept_id": "1167",
@@ -280,10 +550,28 @@
     "id": "177",
     "name": "Calculating the Dot Product Using Components",
     "description": "The dot product of two vectors is the sum of the products of their corresponding components.",
-    "problem_and_solution": {
-      "problem": "Find the dot product of <1, 2, 3> and <4, 5, 6>.",
-      "solution": "The dot product is (1*4) + (2*5) + (3*6) = 4 + 10 + 18 = 32."
-    },
+    "problems_and_solutions": [
+      {
+        "problem": "Calculate the dot product of the vectors u = <2, 5> and v = <3, -1>.",
+        "solution": "Step 1: The dot product is the sum of the products of corresponding components.\n\nStep 2: Multiply the first components and the second components.\nFirst components: 2 * 3 = 6\nSecond components: 5 * -1 = -5\n\nStep 3: Sum the results.\nDot product = 6 + (-5) = 1."
+      },
+      {
+        "problem": "Given the vectors a = <3, 0, -4> and b = <1, 6, 2>, find the dot product a · b.",
+        "solution": "Step 1: The dot product is the sum of the products of corresponding components.\n\nStep 2: Multiply the corresponding components.\nx-components: 3 * 1 = 3\ny-components: 0 * 6 = 0\nz-components: -4 * 2 = -8\n\nStep 3: Sum the products.\nDot product = 3 + 0 + (-8) = -5."
+      },
+      {
+        "problem": "Two vectors are defined as p = <k, -2> and q = <k, 8>. If their dot product p · q is equal to 9, what are the possible values of k?",
+        "solution": "Step 1: First, calculate the dot product in terms of k.\np · q = (k * k) + (-2 * 8) = k^2 - 16.\n\nStep 2: Set the dot product equal to the given value, 9.\nk^2 - 16 = 9\n\nStep 3: Solve the equation for k.\nk^2 = 25\nk = 5 or k = -5."
+      },
+      {
+        "problem": "Vectors m = <4, -6> and n = <3, 2> are given. Calculate their dot product to determine if they are perpendicular.",
+        "solution": "Step 1: Two non-zero vectors are perpendicular (orthogonal) if and only if their dot product is 0.\n\nStep 2: Calculate the dot product of m and n.\nm · n = (4 * 3) + (-6 * 2) = 12 - 12 = 0.\n\nStep 3: Analyze the result.\nSince the dot product is 0, the vectors are perpendicular."
+      },
+      {
+        "problem": "Calculate the dot product of the 4-dimensional vectors x = <1, 1, 2, 2> and y = <3, 4, 1, 5>.",
+        "solution": "Step 1: The dot product rule extends to any number of dimensions. We sum the products of corresponding components.\n\nStep 2: Calculate the product for each component.\n1st: 1 * 3 = 3\n2nd: 1 * 4 = 4\n3rd: 2 * 1 = 2\n4th: 2 * 5 = 10\n\nStep 3: Sum the results.\nDot product = 3 + 4 + 2 + 10 = 19."
+      }
+    ],
     "prerequisites": [
       {
         "concept_id": "1166",
@@ -295,10 +583,28 @@
     "id": "1167",
     "name": "Index Notation for Matrices",
     "description": "The entry in the i-th row and j-th column of a matrix A is denoted by A_ij.",
-    "problem_and_solution": {
-      "problem": "Find the entry A_23 in the matrix [[1,2,3],[4,5,6]].",
-      "solution": "The entry in the 2nd row and 3rd column is 6."
-    },
+    "problems_and_solutions": [
+      {
+        "problem": "Given the matrix A = [[5, -1, 0], [8, 3, 7], [4, 6, 2]], what is the value of the entry A_23?",
+        "solution": "Step 1: The notation A_ij refers to the entry in the i-th row and j-th column.\n\nStep 2: A_23 refers to the entry in the 2nd row and the 3rd column.\n\nStep 3: Looking at the matrix, we go to the second row [8, 3, 7] and find the third element, which is 7.\nTherefore, A_23 = 7."
+      },
+      {
+        "problem": "For the matrix B = [[10, 20], [30, 40], [50, 60]], which entry has the value 50?",
+        "solution": "Step 1: We need to find the row and column index for the value 50.\n\nStep 2: The value 50 is located in the 3rd row of the matrix.\n\nStep 3: It is in the 1st column of that row.\n\nStep 4: Therefore, the entry is B_31."
+      },
+      {
+        "problem": "Consider the matrix C = [[1, 2], [3, 4]]. What are the values of C_12 and C_21?",
+        "solution": "Step 1: Find the value of C_12, which is the entry in the 1st row, 2nd column. This value is 2.\n\nStep 2: Find the value of C_21, which is the entry in the 2nd row, 1st column. This value is 3.\n\nStep 3: C_12 = 2 and C_21 = 3. This illustrates that A_ij is not necessarily equal to A_ji unless the matrix is symmetric."
+      },
+      {
+        "problem": "For the matrix D = [[5, 9, 1, 6]], does the entry D_21 exist? Explain.",
+        "solution": "Step 1: The notation D_21 refers to the entry in the 2nd row, 1st column.\n\nStep 2: Examine the dimensions of matrix D. It has 1 row and 4 columns (it is a 1x4 row vector).\n\nStep 3: Since the matrix only has one row, a 2nd row does not exist.\n\nStep 4: Therefore, the entry D_21 does not exist."
+      },
+      {
+        "problem": "A 3x3 matrix is defined by the rule A_ij = 2i + j. Construct the matrix A.",
+        "solution": "Step 1: We need to calculate the value for each entry from i=1 to 3 and j=1 to 3.\n\nStep 2: Calculate the first row (i=1).\nA_11 = 2(1) + 1 = 3\nA_12 = 2(1) + 2 = 4\nA_13 = 2(1) + 3 = 5\n\nStep 3: Calculate the second row (i=2).\nA_21 = 2(2) + 1 = 5\nA_22 = 2(2) + 2 = 6\nA_23 = 2(2) + 3 = 7\n\nStep 4: Calculate the third row (i=3).\nA_31 = 2(3) + 1 = 7\nA_32 = 2(3) + 2 = 8\nA_33 = 2(3) + 3 = 9\n\nStep 5: Assemble the matrix A.\nA = [[3, 4, 5], [5, 6, 7], [7, 8, 9]]."
+      }
+    ],
     "prerequisites": [
       {
         "concept_id": "861",
@@ -310,10 +616,28 @@
     "id": "861",
     "name": "Introduction to Matrices",
     "description": "A matrix is a rectangular array of numbers. The dimensions are its number of rows and columns.",
-    "problem_and_solution": {
-      "problem": "What are the dimensions of the matrix [[1, 2], [3, 4], [5, 6]]?",
-      "solution": "The matrix has 3 rows and 2 columns, so its dimensions are 3x2."
-    },
+    "problems_and_solutions": [
+      {
+        "problem": "What are the dimensions of the matrix A = [[1, 5, -2, 8], [3, 0, 6, 9]]?",
+        "solution": "Step 1: Count the number of rows. There are 2 horizontal rows.\n\nStep 2: Count the number of columns. There are 4 vertical columns.\n\nStep 3: State the dimensions in the format 'rows x columns'.\nThe dimensions are 2x4."
+      },
+      {
+        "problem": "A matrix has 5 rows and 2 columns. Which of the following describes its dimensions?\n a) 5x2\n b) 2x5\n c) 10\n d) 7",
+        "solution": "Step 1: The convention for matrix dimensions is to state the number of rows first, followed by the number of columns.\n\nStep 2: The matrix has 5 rows and 2 columns.\n\nStep 3: Therefore, its dimensions are correctly described as 5x2."
+      },
+      {
+        "problem": "Identify the matrix below that has dimensions 3x3.\nA = [[1, 2], [3, 4], [5, 6]]\nB = [[1, 2, 3], [4, 5, 6]]\nC = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]",
+        "solution": "Step 1: We are looking for a matrix with 3 rows and 3 columns.\n\nStep 2: Analyze matrix A. It has 3 rows and 2 columns (3x2).\n\nStep 3: Analyze matrix B. It has 2 rows and 3 columns (2x3).\n\nStep 4: Analyze matrix C. It has 3 rows and 3 columns (3x3).\n\nStep 5: Conclude that matrix C is the one with 3x3 dimensions."
+      },
+      {
+        "problem": "What are the dimensions of the row vector M = [[10, 20, 30, 40, 50]]?",
+        "solution": "Step 1: Count the number of rows. The matrix M has 1 row.\n\nStep 2: Count the number of columns. The matrix M has 5 columns.\n\nStep 3: The dimensions are 1x5."
+      },
+      {
+        "problem": "What are the dimensions of the column vector N = [[-1], [0], [1], [2]]?",
+        "solution": "Step 1: Count the number of rows. The matrix N has 4 rows.\n\nStep 2: Count the number of columns. The matrix N has 1 column.\n\nStep 3: The dimensions are 4x1."
+      }
+    ],
     "prerequisites": []
   }
 ]

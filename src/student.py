@@ -93,7 +93,7 @@ class ErrorDiagnosisDataset(Dataset):
     )
 
     return {
-      "input_ids": encoding["input_ids"],
-      "attention_mask": encoding["attention_mask"],
+      "input_ids": encoding["input_ids"].squeeze(),
+      "attention_mask": encoding["attention_mask"].squeeze(),
       "labels": torch.tensor(label, dtype=torch.long),
     }

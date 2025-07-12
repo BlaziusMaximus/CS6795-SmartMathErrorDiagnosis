@@ -1,164 +1,155 @@
-"""Integration tests for the TeacherModel."""
+"""Integration tests for the TeacherModel's portfolio analysis."""
 
-import os
 import pytest
-import google.genai as genai
-import json
+from pathlib import Path
+import re
 from src.teacher import TeacherModel
 from src.graph import KnowledgeGraph
 
 
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-if not GEMINI_API_KEY:
-  raise ValueError("GEMINI_API_KEY environment variable not set.")
+def normalize_string(s: str) -> str:
+  """Removes all whitespace and newline characters from a string."""
+  return re.sub(r"\s+", "", s)
+
+
+# The project root directory, assuming tests are run from the root.
+PROJECT_ROOT = Path(__file__).parent.parent
+
+
+@pytest.fixture(scope="module")
+def knowledge_graph() -> KnowledgeGraph:
+  """Loads the knowledge graph and makes it available to tests."""
+  json_path = PROJECT_ROOT / "knowledge_graph.json"
+  return KnowledgeGraph.load_from_json(json_path)
 
 
 @pytest.mark.online
-def test_teacher_generates_plausible_and_validatable_error():
-  """Tests that the teacher can generate a plausible and validatable error."""
-  # Setup
+def test_portfolio_analysis_plausible_and_implausible(
+  knowledge_graph: KnowledgeGraph,
+):
+  """
+  Tests that the teacher can analyze a portfolio containing both a plausible
+  and an implausible prerequisite error for a single problem.
+  """
+  # Arrange
   teacher = TeacherModel()
-  graph = KnowledgeGraph.load_from_json("knowledge_graph.json")
-  failure_concept = graph.get_node("152")
-  assert failure_concept is not None
+  problem_node = knowledge_graph.get_node("934")  # Solving 2x2 Systems
+  assert problem_node and problem_node.problems_and_solutions
+  problem_to_test = problem_node.problems_and_solutions[0]
 
-  problem_example = (
-    "Solve the system of linear equations: 2x + 3y = 7, x - y = 1."
-  )
-  correct_solution = (
-    "Step 1: Represent the system as a matrix equation AX=B: A = [[2, 3], [1, -1]], X = [[x], [y]], B = [[7], [1]].\n"
-    "Step 2: Calculate the determinant of A: det(A) = (2 * -1) - (3 * 1) = -2 - 3 = -5.\n"
-    "Step 3: Calculate the inverse of A: A-inverse = (1/det(A)) * [[-1, -3], [-1, 2]] = (1/-5) * [[-1, -3], [-1, 2]] = [[1/5, 3/5], [1/5, -2/5]].\n"
-    "Step 4: Solve for X: X = A-inverse * B = [[1/5, 3/5], [1/5, -2/5]] * [[7], [1]] = [[(1/5)*7 + (3/5)*1], [(1/5)*7 + (-2/5)*1]] = [[7/5 + 3/5], [7/5 - 2/5]] = [[10/5], [5/5]] = [[2], [1]].\n"
-    "Step 5: Extract x and y: x = 2, y = 1."
-  )
+  # A plausible prerequisite for this problem
+  plausible_prereq = knowledge_graph.get_node("864")  # Inverses of 2x2
+  # An implausible prerequisite
+  implausible_prereq = knowledge_graph.get_node("232")  # Transpose
+  assert plausible_prereq and implausible_prereq
 
-  # Generate a synthetic error
-  teacher_response = teacher.generate_synthetic_errors(
-    problem_example=problem_example,
-    correct_solution=correct_solution,
-    failure_concept=failure_concept,
+  # Act
+  portfolio_response = teacher.analyze_problem_portfolio(
+    problems_and_solutions=[problem_to_test],
+    failure_concepts=[plausible_prereq, implausible_prereq],
   )
 
-  assert teacher_response is not None
-  assert teacher_response.is_valid_error is True
-  assert teacher_response.generated_solutions
-  incorrect_solution = "\n".join(
-    teacher_response.generated_solutions[0].incorrect_solution
+  # Assert
+  assert portfolio_response is not None
+  assert len(portfolio_response.portfolio_analysis) == 1
+  problem_analysis = portfolio_response.portfolio_analysis[0]
+  assert normalize_string(problem_analysis.problem_str) == normalize_string(
+    problem_to_test.problem
+  )
+  assert len(problem_analysis.prerequisite_analyses) == 2
+
+  # Find the specific analyses from the response
+  plausible_analysis = next(
+    (
+      p
+      for p in problem_analysis.prerequisite_analyses
+      if p.concept_id == plausible_prereq.id
+    ),
+    None,
+  )
+  implausible_analysis = next(
+    (
+      p
+      for p in problem_analysis.prerequisite_analyses
+      if p.concept_id == implausible_prereq.id
+    ),
+    None,
   )
 
-  # Validate the generated error with a second API call
-  validator_client = genai.Client(api_key=GEMINI_API_KEY)
-  validation_prompt = f"""
-    Analyze the provided incorrect solution for the problem '{problem_example}'.
+  # Check the plausible case
+  assert plausible_analysis is not None
+  assert plausible_analysis.response.is_valid_error is True
+  assert len(plausible_analysis.response.generated_solutions) > 0
 
-    Incorrect solution:
-    {incorrect_solution}
-
-    Respond with a JSON object with the following schema: {{\"error_was_made\": <true_or_false>, \"identified_error_concept\": \"<name_of_concept>\"}}.
-    """
-
-  response = validator_client.models.generate_content(
-    model="gemini-2.5-flash",
-    contents=validation_prompt,
-    config={"response_mime_type": "application/json"},
-  )
-
-  assert response is not None
-  assert response.text is not None
-  validation_json = json.loads(response.text)
-
-  assert validation_json["error_was_made"] is True
-  assert "Determinant" in validation_json["identified_error_concept"]
+  # Check the implausible case
+  assert implausible_analysis is not None
+  assert implausible_analysis.response.is_valid_error is False
+  assert len(implausible_analysis.response.generated_solutions) == 0
 
 
 @pytest.mark.online
-def test_teacher_rejects_implausible_error():
-  """Tests that the teacher correctly rejects an implausible error."""
-  # Setup
+def test_portfolio_analysis_multiple_problems(knowledge_graph: KnowledgeGraph):
+  """
+  Tests that the teacher can analyze a portfolio with multiple distinct
+  problems against a single prerequisite.
+  """
+  # Arrange
   teacher = TeacherModel()
-  graph = KnowledgeGraph.load_from_json("knowledge_graph.json")
-  # Use an implausible failure concept, e.g., "The Transpose of a Matrix" (ID: 232)
-  implausible_failure_concept = graph.get_node("232")
-  assert implausible_failure_concept is not None
 
-  problem_example = "Calculate the determinant of [[5, -2], [3, 1]]."
-  correct_solution = (
-    "Step 1: Identify the elements of the 2x2 matrix [[a, b], [c, d]]. For [[5, -2], [3, 1]], a=5, b=-2, c=3, d=1.\n"
-    "Step 2: Apply the determinant formula: det(A) = ad - bc.\n"
-    "Step 3: Substitute the values: det(A) = (5 * 1) - (-2 * 3).\n"
-    "Step 4: Perform multiplication: (5 * 1) = 5 and (-2 * 3) = -6.\n"
-    "Step 5: Perform subtraction: 5 - (-6) = 5 + 6 = 11.\n"
-    "Step 6: The determinant is 11."
+  # Problem 1: Solving a 2x2 system
+  problem_node_1 = knowledge_graph.get_node("934")
+  assert problem_node_1 and problem_node_1.problems_and_solutions
+  problem_1 = problem_node_1.problems_and_solutions[0]
+
+  # Problem 2: Finding a 3x3 determinant
+  problem_node_2 = knowledge_graph.get_node("153")
+  assert problem_node_2 and problem_node_2.problems_and_solutions
+  problem_2 = problem_node_2.problems_and_solutions[0]
+
+  # Prerequisite: Determinant of a 2x2 matrix (plausible for both)
+  prereq = knowledge_graph.get_node("152")
+  assert prereq
+
+  # Act
+  portfolio_response = teacher.analyze_problem_portfolio(
+    problems_and_solutions=[problem_1, problem_2],
+    failure_concepts=[prereq],
   )
 
-  # Generate a synthetic error with an implausible concept
-  teacher_response = teacher.generate_synthetic_errors(
-    problem_example=problem_example,
-    correct_solution=correct_solution,
-    failure_concept=implausible_failure_concept,
+  # Assert
+  assert portfolio_response is not None
+  assert len(portfolio_response.portfolio_analysis) == 2
+
+  # Find the analysis for each problem
+  analysis_1 = next(
+    (
+      p
+      for p in portfolio_response.portfolio_analysis
+      if normalize_string(p.problem_str) == normalize_string(problem_1.problem)
+    ),
+    None,
+  )
+  analysis_2 = next(
+    (
+      p
+      for p in portfolio_response.portfolio_analysis
+      if normalize_string(p.problem_str) == normalize_string(problem_2.problem)
+    ),
+    None,
   )
 
-  assert teacher_response is not None
-  assert teacher_response.is_valid_error is False
-  assert not teacher_response.generated_solutions
-  assert (
-    "transpose" in teacher_response.reasoning.lower()
-    or "not relevant" in teacher_response.reasoning.lower()
-  )
+  # Check analysis for Problem 1
+  assert analysis_1 is not None
+  assert len(analysis_1.prerequisite_analyses) == 1
+  prereq_analysis_1 = analysis_1.prerequisite_analyses[0]
+  assert prereq_analysis_1.concept_id == prereq.id
+  assert prereq_analysis_1.response.is_valid_error is True
+  assert len(prereq_analysis_1.response.generated_solutions) > 0
 
-
-@pytest.mark.online
-def test_teacher_handles_deeper_prerequisite_error():
-  """Tests that the teacher can handle a deeper prerequisite error."""
-  # Setup
-  teacher = TeacherModel()
-  graph = KnowledgeGraph.load_from_json("knowledge_graph.json")
-  # Deeper failure concept: "Introduction to Matrices" (ID: 861)
-  deeper_failure_concept = graph.get_node("861")
-  assert deeper_failure_concept is not None
-
-  problem_example = "Consider the system of linear equations: 2x+y-z=1, x+2y+z=8, x-y+2z=7. Given the inverse of the coefficient matrix, find the value of y."
-  correct_solution = (
-    "Step 1: Represent the system as AX=B. A = [[2, 1, -1], [1, 2, 1], [1, -1, 2]], X = [[x], [y], [z]], B = [[1], [8], [7]].\n"
-    "Step 2: Given A-inverse, calculate X = A-inverse * B. For example, if A-inverse = [[a,b,c],[d,e,f],[g,h,i]], then X = [[a*1+b*8+c*7],[d*1+e*8+f*7],[g*1+h*8+i*7]].\n"
-    "Step 3: Extract the value of y from the resulting X vector."
-  )
-
-  # Generate a synthetic error
-  teacher_response = teacher.generate_synthetic_errors(
-    problem_example=problem_example,
-    correct_solution=correct_solution,
-    failure_concept=deeper_failure_concept,
-  )
-
-  assert teacher_response is not None
-  assert teacher_response.is_valid_error is True
-  assert teacher_response.generated_solutions
-  incorrect_solution = "\n".join(
-    teacher_response.generated_solutions[0].incorrect_solution
-  )
-
-  # Validate the generated error with a second API call
-  validator_client = genai.Client(api_key=GEMINI_API_KEY)
-  validation_prompt = f"""
-    Analyze the provided incorrect solution for the problem '{problem_example}'.
-
-    Incorrect solution:
-    {incorrect_solution}
-
-    Respond with a JSON object with the following schema: {{\"error_was_made\": <true_or_false>, \"identified_error_concept\": \"<name_of_concept>\"}}.
-    """
-
-  response = validator_client.models.generate_content(
-    model="gemini-2.5-flash",
-    contents=validation_prompt,
-    config={"response_mime_type": "application/json"},
-  )
-
-  assert response is not None
-  assert response.text is not None
-  validation_json = json.loads(response.text)
-
-  assert validation_json["error_was_made"] is True
-  assert "matrix" in validation_json["identified_error_concept"].lower()
+  # Check analysis for Problem 2
+  assert analysis_2 is not None
+  assert len(analysis_2.prerequisite_analyses) == 1
+  prereq_analysis_2 = analysis_2.prerequisite_analyses[0]
+  assert prereq_analysis_2.concept_id == prereq.id
+  assert prereq_analysis_2.response.is_valid_error is True
+  assert len(prereq_analysis_2.response.generated_solutions) > 0

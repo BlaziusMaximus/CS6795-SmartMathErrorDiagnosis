@@ -3,7 +3,7 @@ import json
 from google import genai
 from pydantic import BaseModel, Field, ValidationError
 from typing import List
-from .graph import ConceptNode
+from .graph import ConceptNode, ProblemSolutionPair
 
 
 class GeneratedErrorDetail(BaseModel):
@@ -21,6 +21,26 @@ class TeacherResponse(BaseModel):
   generated_solutions: List[GeneratedErrorDetail] = Field(default_factory=list)
 
 
+class PrerequisiteAnalysis(BaseModel):
+  """A container for a single prerequisite's analysis."""
+
+  concept_id: str
+  response: TeacherResponse
+
+
+class SingleProblemAnalysis(BaseModel):
+  """Represents the analysis for one problem against all its prerequisites."""
+
+  problem_str: str
+  prerequisite_analyses: List[PrerequisiteAnalysis]
+
+
+class PortfolioResponse(BaseModel):
+  """The top-level response model for a portfolio of problems."""
+
+  portfolio_analysis: List[SingleProblemAnalysis]
+
+
 class TeacherModel:
   """A model representing the 'Teacher' component for generating synthetic errors."""
 
@@ -31,59 +51,59 @@ class TeacherModel:
 
     self.client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
-  def generate_synthetic_errors(
+  def analyze_problem_portfolio(
     self,
-    problem_example: str,
-    correct_solution: str,
-    failure_concept: ConceptNode,
-  ) -> TeacherResponse | None:
+    problems_and_solutions: List[ProblemSolutionPair],
+    failure_concepts: List[ConceptNode],
+  ) -> PortfolioResponse | None:
     """
-    Generates a synthetic, step-by-step incorrect solution to a math problem.
-
-    This method prompts the Gemini model to act as a student who understands
-    the target concept but makes a specific error related to a prerequisite
-    (the failure concept).
+    Analyzes a portfolio of problems against a batch of prerequisite concepts.
 
     Args:
-        problem_example: An example problem related to the target concept.
-        correct_solution: The correct, step-by-step solution to the problem.
-        failure_concept: The prerequisite concept the student is failing at.
+        problems_and_solutions: A list of problem-solution pairs to analyze.
+        failure_concepts: A list of prerequisite concepts to check for errors.
 
     Returns:
-        A TeacherResponse object containing the validation and generated solutions,
-        or None if the API response is invalid.
+        A PortfolioResponse object containing the full analysis, or None if
+        the API response is invalid.
     """
-
     system_instruction = (
-      "You are an expert in math pedagogy. Your task is to analyze a math problem, its correct "
-      "solution, and a potential prerequisite error. First, you must determine if making the "
-      "specified prerequisite error is a plausible reason for failing the main problem. A plausible "
-      "error is one that directly impacts the steps or concepts required to solve the given problem. "
-      "If it is plausible, you will select the steps at which the error could occur, "
-      "then, for each selected step, act as a flawed student and generate a solution that "
-      "makes the specific prerequisite error. The output must consist of a single object "
-      "containing your validation and the list of erroneous solutions."
+      "You are an expert in math pedagogy. Your task is to perform a "
+      "comprehensive analysis of a portfolio of math problems against a batch "
+      "of potential prerequisite errors. For EACH problem, you must analyze it "
+      "against EACH prerequisite. For every combination, determine if making "
+      "the prerequisite error is a plausible reason for failing that specific "
+      "problem. If it is, generate one or more incorrect solutions. The output "
+      "must be a single, nested JSON object."
     )
 
+    problems_str = ""
+    for i, ps in enumerate(problems_and_solutions):
+      problems_str += (
+        f'\n- Problem {i + 1}: "{ps.problem}"\n  - Solution: "{ps.solution}"'
+      )
+
+    concepts_str = ""
+    for concept in failure_concepts:
+      concepts_str += f'\n- Concept ID: "{concept.id}"\n  - Name: "{concept.name}"\n  - Description: "{concept.description}"'
+
     prompt = f"""
-        Analyze the following scenario:
+        Analyze the following portfolio of problems against the batch of potential prerequisite errors.
 
-        **Problem:**
-        {problem_example}
+        **Problem Portfolio:**
+        {problems_str}
 
-        **Correct Step-by-Step Solution:**
-        {correct_solution}
-
-        **Potential Prerequisite Cause for Error:**
-        name: {failure_concept.name}
-        description: {failure_concept.description}
+        **Batch of Potential Prerequisite Causes for Error:**
+        {concepts_str}
 
         **Your Tasks:**
-        1.  **Validation:** Is `{failure_concept.name}` a concept that is actively used in the correct solution? Is it plausible that a student could get the main problem wrong because of a mistake in this specific prerequisite? Set `is_valid_error` to true or false and provide your `reasoning`.
-        2.  **Generation:** If and only if the error is plausible (`is_valid_error: true`), identify 1 to 3 steps where the error could occur, then generate distinct, incorrect step-by-step solutions. Each solution should demonstrate the specific error related to `{failure_concept.name}`.
+        For EACH problem in the portfolio:
+          For EACH prerequisite concept in the batch:
+            1.  **Validation:** Is the prerequisite concept actively used in the correct solution for this specific problem? Is it plausible that a student could get this problem wrong because of a mistake in this specific prerequisite? Set `is_valid_error` to true or false and provide your `reasoning`.
+            2.  **Generation:** If and only if the error is plausible (`is_valid_error: true`), generate one or more distinct, incorrect step-by-step solutions for this problem that demonstrate the specific prerequisite error.
 
         **Output Format:**
-        Respond with a single JSON object matching the `TeacherResponse` schema.
+        Respond with a single JSON object matching the `PortfolioResponse` schema.
         """
 
     response = self.client.models.generate_content(
@@ -92,17 +112,15 @@ class TeacherModel:
       config={
         "system_instruction": system_instruction,
         "response_mime_type": "application/json",
-        "response_schema": TeacherResponse.model_json_schema(),
+        "response_schema": PortfolioResponse.model_json_schema(),
       },
     )
     assert response is not None, "API response is None"
     assert response.text is not None, "API response text is None"
 
     try:
-      # The API client with a response_schema defined in the request will
-      # automatically parse the JSON.
       parsed_response = json.loads(response.text)
-      teacher_response = TeacherResponse.model_validate(parsed_response)
-      return teacher_response
-    except (ValidationError, json.JSONDecodeError):
+      return PortfolioResponse.model_validate(parsed_response)
+    except (ValidationError, json.JSONDecodeError) as e:
+      print(f"Failed to parse or validate teacher response: {e}")
       return None

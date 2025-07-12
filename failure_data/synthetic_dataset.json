@@ -1,0 +1,940 @@
+[
+  {
+    "target_concept_id": "1023",
+    "failure_concept_id": "154",
+    "incorrect_solution": [
+      "Step 1: Represent the system as AX=B.",
+      "A=[[1,2,-1],[2,5,0],[-1,-1,3]], B=[[2],[7],[4]].",
+      "Step 2: Calculate the inverse of A.",
+      "The student incorrectly calculates the determinant of A. For instance, they might calculate det(A) as 10 (instead of the correct 0) due to a sign error or arithmetic mistake during expansion.",
+      "det(A) = 1(15) - 2(6) - 1(-2-5) = 15 - 12 - 1(-7) = 3 + 7 = 10.",
+      "Matrix of Cofactors: [[15,-6,3],[-5,2,-1],[5,-2,1]].",
+      "Adjoint(A) = Transpose(Cofactor Matrix) = [[15,-5,5],[-6,2,-2],[3,-1,1]].",
+      "A_inv = (1/10) * [[15,-5,5],[-6,2,-2],[3,-1,1]].",
+      "Step 3: Compute X = A_inv * B.",
+      "X = (1/10) * [[15,-5,5],[-6,2,-2],[3,-1,1]] * [[2],[7],[4]].",
+      "X = (1/10) * [[(15*2) + (-5*7) + (5*4)], [(-6*2) + (2*7) + (-2*4)], [(3*2) + (-1*7) + (1*4)]].",
+      "X = (1/10) * [[30 - 35 + 20], [-12 + 14 - 8], [6 - 7 + 4]].",
+      "X = (1/10) * [[15], [-6], [3]].",
+      "Thus, x=1.5, y=-0.6, z=0.3."
+    ],
+    "incorrect_step_number": 2
+  },
+  {
+    "target_concept_id": "1023",
+    "failure_concept_id": "154",
+    "incorrect_solution": [
+      "Step 1: Represent the system as AX=B.",
+      "A=[[1,2,-1],[2,5,0],[-1,-1,3]], B=[[2],[7],[4]].",
+      "Step 2: Calculate the inverse of A.",
+      "The student makes two common errors: they incorrectly calculate the determinant (e.g., as 1 instead of 0) and forget to transpose the cofactor matrix to get the adjoint.",
+      "det(A) = 1 (incorrectly calculated or assumed for calculation).",
+      "Matrix of Cofactors: [[15,-6,3],[-5,2,-1],[5,-2,1]].",
+      "A_inv = (1/1) * [[15,-6,3],[-5,2,-1],[5,-2,1]] (Incorrectly used cofactor matrix directly as adjoint).",
+      "Step 3: Compute X = A_inv * B.",
+      "X = [[15,-6,3],[-5,2,-1],[5,-2,1]] * [[2],[7],[4]].",
+      "X = [[(15*2) + (-6*7) + (3*4)], [(-5*2) + (2*7) + (-1*4)], [(5*2) + (-2*7) + (1*4)]].",
+      "X = [[30 - 42 + 12], [-10 + 14 - 4], [10 - 14 + 4]].",
+      "X = [[0], [0], [0]].",
+      "Thus, x=0, y=0, z=0."
+    ],
+    "incorrect_step_number": 2
+  },
+  {
+    "target_concept_id": "1023",
+    "failure_concept_id": "155",
+    "incorrect_solution": [
+      "Step 1: Represent the system as AX=B.",
+      "The student incorrectly forms the coefficient matrix A by misinterpreting coefficients in the second equation (2x+5y=7), perhaps by placing '5' in the 'z' column instead of the 'y' column, or swapping variables.",
+      "A=[[1,2,-1],[2,0,5],[-1,-1,3]], B=[[2],[7],[4]].",
+      "Step 2: Calculate the inverse of A. (For this incorrectly formed A, the determinant is -15, so an inverse exists.)",
+      "The student proceeds to calculate the inverse of this incorrect matrix A.",
+      "Step 3: Compute X = A_inv * B.",
+      "The student multiplies the inverse of the incorrect A by B, which will result in an incorrect solution for x, y, and z."
+    ],
+    "incorrect_step_number": 1
+  },
+  {
+    "target_concept_id": "1023",
+    "failure_concept_id": "155",
+    "incorrect_solution": [
+      "Step 1: Represent the system as AX=B.",
+      "The student incorrectly forms the constant matrix B by reversing the order of the constants.",
+      "A=[[1,2,-1],[2,5,0],[-1,-1,3]], B=[[4],[7],[2]].",
+      "Step 2: Calculate the inverse of A.",
+      "The original matrix A is singular (det(A)=0). To proceed, the student must make an error in calculating the determinant (e.g., gets 1) to find an inverse.",
+      "Assuming A_inv = [[14,-5,-3],[-5,2,1],[3,-1,1]] (a hypothetical inverse if det(A) was 1, derived from a similar problem and for demonstration purposes).",
+      "Step 3: Compute X = A_inv * B.",
+      "X = [[14,-5,-3],[-5,2,1],[3,-1,1]] * [[4],[7],[2]].",
+      "X = [[(14*4) + (-5*7) + (-3*2)], [(-5*4) + (2*7) + (1*2)], [(3*4) + (-1*7) + (1*2)]].",
+      "X = [[56 - 35 - 6], [-20 + 14 + 2], [12 - 7 + 2]].",
+      "X = [[15], [-4], [7]].",
+      "Thus, x=15, y=-4, z=7."
+    ],
+    "incorrect_step_number": 1
+  },
+  {
+    "target_concept_id": "1023",
+    "failure_concept_id": "934",
+    "incorrect_solution": [
+      "Step 1: Represent the system.",
+      "The student incorrectly attempts to solve the 3x3 system by reducing it to a 2x2 system. For instance, they might ignore the third equation and the variable z, solving only the first two equations for x and y, implicitly assuming z=0.",
+      "Original equations: x+2y-z=2, 2x+5y=7, -x-y+3z=4.",
+      "Student's simplified system (assuming z=0): x+2y=2, 2x+5y=7.",
+      "This forms a 2x2 system: A_2x2 = [[1,2],[2,5]], B_2x2 = [[2],[7]].",
+      "Step 2: Calculate the inverse of A_2x2.",
+      "det(A_2x2) = (1*5) - (2*2) = 5 - 4 = 1.",
+      "A_2x2_inv = (1/1) * [[5,-2],[-2,1]] = [[5,-2],[-2,1]].",
+      "Step 3: Compute X_2x2 = A_2x2_inv * B_2x2.",
+      "[[x],[y]] = [[5,-2],[-2,1]] * [[2],[7]].",
+      "[[x],[y]] = [[(5*2) + (-2*7)], [(-2*2) + (1*7)]].",
+      "[[x],[y]] = [[10 - 14], [-4 + 7]].",
+      "[[x],[y]] = [[-4], [3]].",
+      "Thus, the student concludes x=-4, y=3, and implicitly z=0, which is incorrect for the original 3x3 system."
+    ],
+    "incorrect_step_number": 1
+  },
+  {
+    "target_concept_id": "1023",
+    "failure_concept_id": "153",
+    "incorrect_solution": [
+      "Step 1: Represent the system as AX=B. A=[[1,2,-1],[2,5,0],[-1,-1,3]], B=[[2],[7],[4]].",
+      "Step 2: Calculate the determinant of A. det(A) = 1*(5*3 - 0*(-1)) + 2*(2*3 - 0*(-1)) + (-1)*(2*(-1) - 5*(-1)) = 1*(15) + 2*(6) + (-1)*(3) = 15 + 12 - 3 = 24. (Error: Incorrectly used a '+' sign for the second term instead of the alternating '-' sign in the cofactor expansion).",
+      "Step 3: Calculate the inverse of A using this incorrect determinant. A_inv = (1/24) * adj(A).",
+      "Step 4: Compute X = A_inv * B to find the values of x, y, and z. The result will be incorrect due to the erroneous determinant."
+    ],
+    "incorrect_step_number": 2
+  },
+  {
+    "target_concept_id": "1023",
+    "failure_concept_id": "232",
+    "incorrect_solution": [
+      "Step 1: Represent the system as AX=B. A=[[1,2,-1],[2,5,0],[-1,-1,3]], B=[[2],[7],[4]].",
+      "Step 2: Calculate the inverse of A. Assume det(A) was correctly (or incorrectly, but non-zero) calculated (e.g., det(A)=24 from a previous error). Calculate the cofactor matrix C = [[15,-6,3],[-5,2,-1],[5,-2,1]]. The adjugate matrix is the transpose of the cofactor matrix. (Error: The student uses the cofactor matrix itself as the adjugate matrix, forgetting to transpose it).",
+      "Incorrect adj(A) = C = [[15,-6,3],[-5,2,-1],[5,-2,1]].",
+      "Step 3: Compute A_inv = (1/det(A)) * Incorrect adj(A), then X = A_inv * B. The values of x, y, and z will be incorrect due to the transpose error."
+    ],
+    "incorrect_step_number": 2
+  },
+  {
+    "target_concept_id": "1023",
+    "failure_concept_id": "1729",
+    "incorrect_solution": [
+      "Step 1: Represent the system as AX=B. The student incorrectly includes the constant '7' from the second equation into the coefficient matrix 'A' instead of accounting for the zero coefficient of 'z'.",
+      "A=[[1,2,-1],[2,5,7],[-1,-1,3]], B=[[2],[7],[4]]."
+    ],
+    "incorrect_step_number": 1
+  },
+  {
+    "target_concept_id": "1023",
+    "failure_concept_id": "1729",
+    "incorrect_solution": [
+      "Step 1: Represent the system as AX=B. The student incorrectly forms the constant matrix 'B' as a row vector instead of a column vector.",
+      "A=[[1,2,-1],[2,5,0],[-1,-1,3]], B=[[2,7,4]]."
+    ],
+    "incorrect_step_number": 1
+  },
+  {
+    "target_concept_id": "1023",
+    "failure_concept_id": "1195",
+    "incorrect_solution": [
+      "Step 3: Compute X = A_inv * B. Assuming A_inv is correctly calculated, the student incorrectly attempts to multiply A_inv by B by performing an element-wise multiplication or by trying to combine elements in an undefined way for matrix-vector multiplication.",
+      "If A_inv = [[a,b,c],[d,e,f],[g,h,i]] and B=[[b1],[b2],[b3]], the student might attempt to calculate X as [[a*b1],[e*b2],[i*b3]], or by some other incorrect element-wise approach that does not follow standard matrix multiplication rules."
+    ],
+    "incorrect_step_number": 3
+  },
+  {
+    "target_concept_id": "1023",
+    "failure_concept_id": "1195",
+    "incorrect_solution": [
+      "Step 3: Compute X = A_inv * B. Assuming A_inv is correctly calculated, the student incorrectly applies the dot product rule for matrix multiplication. For example, they might add the elements of each row of A_inv and then multiply by the corresponding element of B.",
+      "If A_inv = [[5, -7/3, -5/3], [-2, 1, 2/3], [1, -1/3, -1/3]] and B=[[2],[7],[4]], the student might incorrectly calculate the first component of X as (5 + (-7/3) + (-5/3)) * 2, instead of (5)*2 + (-7/3)*7 + (-5/3)*4."
+    ],
+    "incorrect_step_number": 3
+  },
+  {
+    "target_concept_id": "1023",
+    "failure_concept_id": "864",
+    "incorrect_solution": [
+      "Step 1: Represent the system as AX=B. A=[[1,2,-1],[2,5,0],[-1,-1,3]], B=[[2],[7],[4]].",
+      "Step 2: Calculate the inverse of A. The student incorrectly calculates the determinants of the 2x2 submatrices (minors) for the cofactors by consistently using 'ad+bc' instead of 'ad-bc'.",
+      "Original matrix A: [[1,2,-1],[2,5,0],[-1,-1,3]].",
+      "Cofactor C_11: +det([[5,0],[-1,3]]) = 5*3 + 0*(-1) = 15.",
+      "Cofactor C_12: -det([[2,0],[-1,3]]) = -(2*3 + 0*(-1)) = -6.",
+      "Cofactor C_13: +det([[2,5],[-1,-1]]) = 2*(-1) + 5*(-1) = -2 - 5 = -7. (Error, should be 3)",
+      "Cofactor C_21: -det([[2,-1],[-1,3]]) = -(2*3 + (-1)*(-1)) = -(6+1) = -7. (Error, should be -5)",
+      "Cofactor C_22: +det([[1,-1],[-1,3]]) = 1*3 + (-1)*(-1) = 3+1 = 4. (Error, should be 2)",
+      "Cofactor C_23: -det([[1,2],[-1,-1]]) = -(1*(-1) + 2*(-1)) = -(-1-2) = 3. (Error, should be -1)",
+      "Cofactor C_31: +det([[2,-1],[5,0]]) = 2*0 + (-1)*5 = -5. (Error, should be 5)",
+      "Cofactor C_32: -det([[1,-1],[2,0]]) = -(1*0 + (-1)*2) = 2. (Error, should be -2)",
+      "Cofactor C_33: +det([[1,2],[2,5]]) = 1*5 + 2*2 = 9. (Error, should be 1)",
+      "Resulting (incorrect) Cofactor Matrix C: [[15, -6, -7], [-7, 4, 3], [-5, 2, 9]].",
+      "Determinant of A: 1*(15) + 2*(-6) + (-1)*(-7) = 15 - 12 + 7 = 10. (Incorrect, should be 24).",
+      "Adjugate of A (Adj(A)) = C_transpose = [[15, -7, -5], [-6, 4, 2], [-7, 3, 9]].",
+      "A_inv = (1/det(A)) * Adj(A) = (1/10) * [[15, -7, -5], [-6, 4, 2], [-7, 3, 9]].",
+      "This incorrect A_inv would lead to incorrect values for x, y, and z in Step 3."
+    ],
+    "incorrect_step_number": 2
+  },
+  {
+    "target_concept_id": "1023",
+    "failure_concept_id": "864",
+    "incorrect_solution": [
+      "Step 1: Represent the system as AX=B. A=[[1,2,-1],[2,5,0],[-1,-1,3]], B=[[2],[7],[4]].",
+      "Step 2: Calculate the inverse of A. The student incorrectly attempts to generalize the 2x2 matrix inverse pattern (swap main diagonal elements, negate off-diagonal elements) directly to the 3x3 matrix, without understanding the distinct process for higher-order matrices (e.g., cofactors, adjoint, or row operations).",
+      "Original matrix A: [[1,2,-1],[2,5,0],[-1,-1,3]].",
+      "Student's attempt to apply 2x2 logic: For A = [[a11,a12,a13],[a21,a22,a23],[a31,a32,a33]], they attempt to produce a matrix by swapping a11 with a33, and negating all other off-diagonal elements (a12, a13, a21, a23, a31, a32), while keeping a22 in place.",
+      "Applying this to A: [[3, -2, 1], [-2, 5, 0], [1, 1, 1]]. (The element 0 remains 0 when negated).",
+      "This resulting matrix is completely incorrect for the inverse of A, demonstrating a fundamental misunderstanding of 3x3 matrix inversion.",
+      "This incorrect A_inv would lead to incorrect values for x, y, and z in Step 3."
+    ],
+    "incorrect_step_number": 2
+  },
+  {
+    "target_concept_id": "154",
+    "failure_concept_id": "153",
+    "incorrect_solution": [
+      "Step 1: Calculate the determinant of the matrix [[2, 1, 0], [1, -1, -2], [0, 2, 1]].",
+      "Using the formula for a 3x3 determinant: det(A) = a(ei - fh) - b(di - fg) + c(dh - eg).",
+      "det(A) = 2*((-1)*1 - (-2)*2) - 1*(1*1 - (-2)*0) + 0*(1*2 - (-1)*0)",
+      "det(A) = 2*(-1 + 4) - 1*(1 - 0) + 0",
+      "det(A) = 2*(3) - 1*(1) = 6 - 1 = 5.",
+      "The determinant is 5. (Incorrect determinant due to calculation error in 2x2 minor or final arithmetic, where the correct determinant is -1)"
+    ],
+    "incorrect_step_number": 1
+  },
+  {
+    "target_concept_id": "154",
+    "failure_concept_id": "153",
+    "incorrect_solution": [
+      "Step 1: Calculate the determinant of the matrix [[2, 1, 0], [1, -1, -2], [0, 2, 1]].",
+      "Using an incorrect alternating sign pattern for the expansion (e.g., all plus signs).",
+      "det(A) = 2*((-1)*1 - (-2)*2) + 1*(1*1 - (-2)*0) + 0*(1*2 - (-1)*0)",
+      "det(A) = 2*(-1 + 4) + 1*(1 - 0) + 0",
+      "det(A) = 2*(3) + 1*(1) = 6 + 1 = 7.",
+      "The determinant is 7. (Incorrect determinant due to sign error in expansion, where the correct determinant is -1)"
+    ],
+    "incorrect_step_number": 1
+  },
+  {
+    "target_concept_id": "154",
+    "failure_concept_id": "232",
+    "incorrect_solution": [
+      "Step 1: Calculate the determinant, which is -1.",
+      "Step 2: Find the matrix of minors.",
+      "M = [[3, 1, 2], [1, 2, 4], [2, 4, 3]]",
+      "Step 3: Create the matrix of cofactors.",
+      "C = [[3, -1, 2], [-1, 2, -4], [-2, 4, -3]]",
+      "Step 4: Transpose the matrix of cofactors. (Student makes the error of not transposing it at all, just using the cofactor matrix as the adjugate).",
+      "Adj(A) = C = [[3, -1, 2], [-1, 2, -4], [-2, 4, -3]]",
+      "Step 5: Multiply by 1/(-1).",
+      "A^-1 = -1 * [[3, -1, 2], [-1, 2, -4], [-2, 4, -3]] = [[-3, 1, -2], [1, -2, 4], [2, -4, 3]]"
+    ],
+    "incorrect_step_number": 4
+  },
+  {
+    "target_concept_id": "154",
+    "failure_concept_id": "232",
+    "incorrect_solution": [
+      "Step 1: Calculate the determinant, which is -1.",
+      "Step 2: Find the matrix of minors.",
+      "M = [[3, 1, 2], [1, 2, 4], [2, 4, 3]]",
+      "Step 3: Create the matrix of cofactors.",
+      "C = [[3, -1, 2], [-1, 2, -4], [-2, 4, -3]]",
+      "Step 4: Transpose the matrix of cofactors. (Student mistakenly transposes along the anti-diagonal instead of the main diagonal).",
+      "Adj(A) = [[-3, -4, 2], [4, 2, -1], [2, -1, 3]]",
+      "Step 5: Multiply by 1/(-1).",
+      "A^-1 = -1 * [[-3, -4, 2], [4, 2, -1], [2, -1, 3]] = [[3, 4, -2], [-4, -2, 1], [-2, 1, -3]]"
+    ],
+    "incorrect_step_number": 4
+  },
+  {
+    "target_concept_id": "154",
+    "failure_concept_id": "233",
+    "incorrect_solution": [
+      "Step 1: Calculate the determinant, which is -1.",
+      "Step 2: Find the matrix of minors. (Error in M_11 calculation due to sign error in 2x2 determinant)",
+      "M_11 = det([[-1, -2], [2, 1]]) = (-1)(1) - (-2)(2) = -1 - 4 = -5.",
+      "M_12 = det([[1, -2], [0, 1]]) = 1.",
+      "M_13 = det([[1, -1], [0, 2]]) = 2.",
+      "M_21 = det([[1, 0], [2, 1]]) = 1.",
+      "M_22 = det([[2, 0], [0, 1]]) = 2.",
+      "M_23 = det([[2, 1], [0, 2]]) = 4.",
+      "M_31 = det([[1, 0], [-1, -2]]) = -2.",
+      "M_32 = det([[2, 0], [1, -2]]) = -4.",
+      "M_33 = det([[2, 1], [1, -1]]) = -3.",
+      "Matrix of Minors (incorrect): [[-5, 1, 2], [1, 2, 4], [-2, -4, -3]].",
+      "Step 3: Create the matrix of cofactors (based on incorrect minors).",
+      "Step 4: Transpose the matrix of cofactors.",
+      "Step 5: Multiply by 1/(-1)."
+    ],
+    "incorrect_step_number": 2
+  },
+  {
+    "target_concept_id": "154",
+    "failure_concept_id": "233",
+    "incorrect_solution": [
+      "Step 1: Calculate the determinant, which is -1.",
+      "Step 2: Find the matrix of minors. (Error in M_23 calculation, possibly due to swapping elements)",
+      "M_11 = det([[-1, -2], [2, 1]]) = 3.",
+      "M_12 = det([[1, -2], [0, 1]]) = 1.",
+      "M_13 = det([[1, -1], [0, 2]]) = 2.",
+      "M_21 = det([[1, 0], [2, 1]]) = 1.",
+      "M_22 = det([[2, 0], [0, 1]]) = 2.",
+      "M_23 = det([[2, 1], [0, 2]]) = (1)(0) - (2)(2) = -4. (Incorrect, should be 4)",
+      "M_31 = det([[1, 0], [-1, -2]]) = -2.",
+      "M_32 = det([[2, 0], [1, -2]]) = -4.",
+      "M_33 = det([[2, 1], [1, -1]]) = -3.",
+      "Matrix of Minors (incorrect): [[3, 1, 2], [1, 2, -4], [-2, -4, -3]].",
+      "Step 3: Create the matrix of cofactors (based on incorrect minors).",
+      "Step 4: Transpose the matrix of cofactors.",
+      "Step 5: Multiply by 1/(-1)."
+    ],
+    "incorrect_step_number": 2
+  },
+  {
+    "target_concept_id": "154",
+    "failure_concept_id": "861",
+    "incorrect_solution": [
+      "Step 1: Calculate the determinant. The determinant of the matrix [[2, 1, 0], [1, -1, -2], [0, 2, 1]] is (2)((-1)(1) - (-2)(2)) - (1)((1)(1) - (-2)(0)) + (0)((1)(2) - (-1)(0)) = 2(-1 + 4) - 1(1 - 0) + 0 = 2(3) - 1(1) = 6 - 1 = 5. (Student incorrectly calculated the determinant or proceeded with incorrect minors, let's assume they might have made an error in the overall determinant or proceed with a different one based on their incorrect minor calculations. For this demonstration, the error is specifically in the minor calculation itself, so let's assume determinant is calculated correctly initially, or it would be derived from incorrect minors anyway.)",
+      "Step 2: Find the matrix of minors. The student misinterprets the formation of the 2x2 sub-matrices, conceptually reversing the rows for each minor calculation.",
+      "M_11: Delete row 1, col 1. Remaining elements are -1, -2, 2, 1. Student incorrectly forms sub-matrix as [[2, 1], [-1, -2]]. Minor M_11 = det([[2, 1], [-1, -2]]) = (2)(-2) - (1)(-1) = -4 + 1 = -3.",
+      "M_12: Delete row 1, col 2. Remaining elements are 1, -2, 0, 1. Student incorrectly forms sub-matrix as [[0, 1], [1, -2]]. Minor M_12 = det([[0, 1], [1, -2]]) = (0)(-2) - (1)(1) = -1.",
+      "M_13: Delete row 1, col 3. Remaining elements are 1, -1, 0, 2. Student incorrectly forms sub-matrix as [[0, 2], [1, -1]]. Minor M_13 = det([[0, 2], [1, -1]]) = (0)(-1) - (2)(1) = -2.",
+      "M_21: Delete row 2, col 1. Remaining elements are 1, 0, 2, 1. Student incorrectly forms sub-matrix as [[2, 1], [1, 0]]. Minor M_21 = det([[2, 1], [1, 0]]) = (2)(0) - (1)(1) = -1.",
+      "M_22: Delete row 2, col 2. Remaining elements are 2, 0, 0, 1. Student incorrectly forms sub-matrix as [[0, 1], [2, 0]]. Minor M_22 = det([[0, 1], [2, 0]]) = (0)(0) - (1)(2) = -2.",
+      "M_23: Delete row 2, col 3. Remaining elements are 2, 1, 0, 2. Student incorrectly forms sub-matrix as [[0, 2], [2, 1]]. Minor M_23 = det([[0, 2], [2, 1]]) = (0)(1) - (2)(2) = -4.",
+      "M_31: Delete row 3, col 1. Remaining elements are 1, 0, -1, -2. Student incorrectly forms sub-matrix as [[-1, -2], [1, 0]]. Minor M_31 = det([[-1, -2], [1, 0]]) = (-1)(0) - (-2)(1) = 2.",
+      "M_32: Delete row 3, col 2. Remaining elements are 2, 0, 1, -2. Student incorrectly forms sub-matrix as [[1, -2], [2, 0]]. Minor M_32 = det([[1, -2], [2, 0]]) = (1)(0) - (-2)(2) = 4.",
+      "M_33: Delete row 3, col 3. Remaining elements are 2, 1, 1, -1. Student incorrectly forms sub-matrix as [[1, -1], [2, 1]]. Minor M_33 = det([[1, -1], [2, 1]]) = (1)(1) - (-1)(2) = 1 + 2 = 3.",
+      "Incorrect Matrix of Minors: [[-3, -1, -2], [-1, -2, -4], [2, 4, 3]].",
+      "Step 3: Create the matrix of cofactors (based on incorrect minors).",
+      "C_11 = (-1)^2 * (-3) = -3",
+      "C_12 = (-1)^3 * (-1) = 1",
+      "C_13 = (-1)^4 * (-2) = -2",
+      "C_21 = (-1)^3 * (-1) = 1",
+      "C_22 = (-1)^4 * (-2) = -2",
+      "C_23 = (-1)^5 * (-4) = 4",
+      "C_31 = (-1)^4 * (2) = 2",
+      "C_32 = (-1)^5 * (4) = -4",
+      "C_33 = (-1)^6 * (3) = 3",
+      "Incorrect Cofactor Matrix: [[-3, 1, -2], [1, -2, 4], [2, -4, 3]].",
+      "Step 4: Transpose the matrix of cofactors.",
+      "Incorrect Adjoint Matrix: [[-3, 1, 2], [1, -2, -4], [-2, 4, 3]].",
+      "Step 5: Multiply by 1/determinant. Assuming the initial determinant calculation of -1 was correct, but the later steps are based on the incorrect minors.",
+      "Incorrect Inverse Matrix: (-1) * [[-3, 1, 2], [1, -2, -4], [-2, 4, 3]] = [[3, -1, -2], [-1, 2, 4], [2, -4, -3]]."
+    ],
+    "incorrect_step_number": 2
+  },
+  {
+    "target_concept_id": "155",
+    "failure_concept_id": "1729",
+    "incorrect_solution": [
+      "Step 1: Align the variables in each equation: 1x+2y+0z=5, 0x+3y-1z=2, 1x+0y+1z=1.",
+      "Step 2: Form the coefficient matrix A and constant vector B.",
+      "A = [[1, 2, 0], [0, 3, -1], [1, 0, 1]]",
+      "B = [[5], [2], [1]]",
+      "Step 3: Identify the required elements. Student incorrectly identifies A[1,1] as the coefficient of 'y' in the first equation, rather than 'x'.",
+      "A[1,1] is 2. B[2] is 2."
+    ],
+    "incorrect_step_number": 3
+  },
+  {
+    "target_concept_id": "155",
+    "failure_concept_id": "1729",
+    "incorrect_solution": [
+      "Step 1: Align the variables in each equation: 1x+2y+0z=5, 0x+3y-1z=2, 1x+0y+1z=1.",
+      "Step 2: Form the coefficient matrix A and constant vector B.",
+      "A = [[1, 2, 0], [0, 3, -1], [1, 0, 1]]",
+      "B = [[5], [2], [1]]",
+      "Step 3: Identify the required elements. Student incorrectly identifies B[2] as the constant from the third equation, rather than the second.",
+      "A[1,1] is 1. B[2] is 1."
+    ],
+    "incorrect_step_number": 3
+  },
+  {
+    "target_concept_id": "155",
+    "failure_concept_id": "1195",
+    "incorrect_solution": [
+      "Step 1: The student attempts to align variables but incorrectly assumes a different, inconsistent order for the variables (e.g., y, x, z) for the columns of matrix A and also reorders the equations based on a misunderstanding of their placement in the matrix representation.",
+      "For example, the student might reorder the original equations and the assumed variable order as:",
+      "Equation 1 (original 2nd): 3y - z = 2  ->  3y + 0x - 1z = 2",
+      "Equation 2 (original 3rd): x + z = 1  ->  0y + 1x + 1z = 1",
+      "Equation 3 (original 1st): x + 2y = 5  ->  2y + 1x + 0z = 5",
+      "Step 2: Form the coefficient matrix A and constant vector B based on this incorrect reordering and variable mapping. The student forms A with 'y' coefficients in the first column, 'x' coefficients in the second, and 'z' coefficients in the third, corresponding to the reordered equations:",
+      "A = [[3, 0, -1], [0, 1, 1], [2, 1, 0]]",
+      "B = [[2], [1], [5]]",
+      "Step 3: Identify the required elements.",
+      "A[1,1] is the element in the first row, first column of the incorrectly formed A, which is 3.",
+      "B[2] is the second element in the incorrectly formed B, which is 1."
+    ],
+    "incorrect_step_number": 2
+  },
+  {
+    "target_concept_id": "934",
+    "failure_concept_id": "864",
+    "incorrect_solution": [
+      "Step 1: Set up the matrix equation [[2,3],[1,-1]] * [[x],[y]] = [[7],[1]].",
+      "Step 2: Find the inverse of the coefficient matrix. The determinant of [[2,3],[1,-1]] is incorrectly calculated as (2)(-1) + (3)(1) = 1. Thus, the inverse is incorrectly found as (1/1) * [[-1,-3],[-1,2]] = [[-1,-3],[-1,2]].",
+      "Step 3: Multiply the incorrect inverse by the constant vector to find X. [[-1,-3],[-1,2]] * [[7],[1]] = [[-7-3],[-7+2]] = [[-10],[-5]]. So, x = -10, y = -5."
+    ],
+    "incorrect_step_number": 2
+  },
+  {
+    "target_concept_id": "934",
+    "failure_concept_id": "864",
+    "incorrect_solution": [
+      "Step 1: Set up the matrix equation [[2,3],[1,-1]] * [[x],[y]] = [[7],[1]].",
+      "Step 2: Find the inverse of the coefficient matrix. The determinant of [[2,3],[1,-1]] is correctly calculated as -5. However, the adjugate matrix has sign errors, incorrectly calculated as [[-1,3],[1,2]]. Thus, the inverse is incorrectly found as (1/-5) * [[-1,3],[1,2]] = [[1/5,-3/5],[-1/5,-2/5]].",
+      "Step 3: Multiply the incorrect inverse by the constant vector to find X. [[1/5,-3/5],[-1/5,-2/5]] * [[7],[1]] = [[7/5-3/5],[-7/5-2/5]] = [[4/5],[-9/5]]. So, x = 4/5, y = -9/5."
+    ],
+    "incorrect_step_number": 2
+  },
+  {
+    "target_concept_id": "934",
+    "failure_concept_id": "1729",
+    "incorrect_solution": [
+      "Step 1: Set up the matrix equation by incorrectly swapping the order of equations in the coefficient matrix. [[1,-1],[2,3]] * [[x],[y]] = [[7],[1]].",
+      "Step 2: Find the inverse of the coefficient matrix. The coefficient matrix is A = [[1,-1],[2,3]]. det(A) = 1*3 - (-1)*2 = 5. A\u207b\u00b9 = (1/5) * [[3,1],[-2,1]].",
+      "Step 3: Multiply the inverse by the constant vector to find X. (1/5) * [[3,1],[-2,1]] * [[7],[1]] = (1/5) * [[21+1],[-14+1]] = (1/5) * [[22],[-13]] = [[22/5],[-13/5]]. So, x = 22/5, y = -13/5."
+    ],
+    "incorrect_step_number": 1
+  },
+  {
+    "target_concept_id": "934",
+    "failure_concept_id": "1729",
+    "incorrect_solution": [
+      "Step 1: Set up the matrix equation by incorrectly writing the coefficients for the second equation (swapping x and y coefficients). [[2,3],[-1,1]] * [[x],[y]] = [[7],[1]].",
+      "Step 2: Find the inverse of the coefficient matrix. The coefficient matrix is A = [[2,3],[-1,1]]. det(A) = 2*1 - 3*(-1) = 5. A\u207b\u00b9 = (1/5) * [[1,-3],[1,2]].",
+      "Step 3: Multiply the inverse by the constant vector to find X. (1/5) * [[1,-3],[1,2]] * [[7],[1]] = (1/5) * [[7-3],[7+2]] = (1/5) * [[4],[9]] = [[4/5],[9/5]]. So, x = 4/5, y = 9/5."
+    ],
+    "incorrect_step_number": 1
+  },
+  {
+    "target_concept_id": "934",
+    "failure_concept_id": "146",
+    "incorrect_solution": [
+      "Step 1: Set up the matrix equation [[2,3],[1,-1]] * [[x],[y]] = [[7],[1]].",
+      "Step 2: Find the inverse of the coefficient matrix. The determinant of [[2,3],[1,-1]] is (2)(-1) - (3)(1) = -5. The adjoint matrix is [[-1,-3],[-1,2]]. When multiplying by the scalar 1/(-5), I will incorrectly apply it only to the first row. So, A-inverse = [[(1/-5)*(-1), (1/-5)*(-3)], [-1, 2]] = [[1/5, 3/5], [-1, 2]].",
+      "Step 3: Multiply the incorrect inverse by the constant vector. [[x],[y]] = [[1/5, 3/5], [-1, 2]] * [[7],[1]]. This gives x = (1/5)*7 + (3/5)*1 = 7/5 + 3/5 = 10/5 = 2. And y = (-1)*7 + (2)*1 = -7 + 2 = -5. The solution is x=2, y=-5."
+    ],
+    "incorrect_step_number": 2
+  },
+  {
+    "target_concept_id": "934",
+    "failure_concept_id": "152",
+    "incorrect_solution": [
+      "Step 1: Set up the matrix equation [[2,3],[1,-1]] * [[x],[y]] = [[7],[1]].",
+      "Step 2: Find the inverse of the coefficient matrix. The determinant of [[2,3],[1,-1]] is calculated incorrectly as (2)(-1) + (3)(1) = -2 + 3 = 1. The adjoint matrix is [[-1,-3],[-1,2]]. So, A-inverse = (1/1) * [[-1,-3],[-1,2]] = [[-1,-3],[-1,2]].",
+      "Step 3: Multiply the incorrect inverse by the constant vector. [[x],[y]] = [[-1,-3],[-1,2]] * [[7],[1]]. This gives x = (-1)*7 + (-3)*1 = -7 - 3 = -10. And y = (-1)*7 + (2)*1 = -7 + 2 = -5. The solution is x=-10, y=-5."
+    ],
+    "incorrect_step_number": 2
+  },
+  {
+    "target_concept_id": "934",
+    "failure_concept_id": "863",
+    "incorrect_solution": [
+      "Step 1: Set up the matrix equation [[2,3],[1,-1]] * [[x],[y]] = [[7],[1]].",
+      "Step 2: Find the inverse of the coefficient matrix. The determinant of [[2,3],[1,-1]] is (2)(-1) - (3)(1) = -5. When forming the adjoint matrix, I correctly swap the diagonal elements but incorrectly forget to negate the off-diagonal elements. So the adjoint matrix is [[-1, 3], [1, 2]]. Then, A-inverse = (1/-5) * [[-1, 3], [1, 2]] = [[1/5, -3/5], [-1/5, -2/5]].",
+      "Step 3: Multiply the incorrect inverse by the constant vector. [[x],[y]] = [[1/5, -3/5], [-1/5, -2/5]] * [[7],[1]]. This gives x = (1/5)*7 + (-3/5)*1 = 7/5 - 3/5 = 4/5. And y = (-1/5)*7 + (-2/5)*1 = -7/5 - 2/5 = -9/5. The solution is x=4/5, y=-9/5."
+    ],
+    "incorrect_step_number": 2
+  },
+  {
+    "target_concept_id": "934",
+    "failure_concept_id": "1195",
+    "incorrect_solution": [
+      "Step 1: Set up the matrix equation [[2,3],[1,-1]] * [[x],[y]] = [[7],[1]].",
+      "Step 2: Find the inverse of the coefficient matrix. The inverse of [[2,3],[1,-1]] is [[1/5, 3/5],[1/5, -2/5]].",
+      "Step 3: Multiply the inverse by the constant vector to find X. The student incorrectly calculates the multiplication by only considering the product of the first element of each row with the first element of the column vector for the first result entry, and the product of the second element of each row with the second element of the column vector for the second result entry (essentially picking diagonal elements for the entries).",
+      "X = [[1/5, 3/5],[1/5, -2/5]] * [[7],[1]]",
+      "x = (1/5) * 7 = 7/5",
+      "y = (-2/5) * 1 = -2/5",
+      "Therefore, X = [[7/5],[-2/5]], meaning x=7/5 and y=-2/5."
+    ],
+    "incorrect_step_number": 3
+  },
+  {
+    "target_concept_id": "934",
+    "failure_concept_id": "1195",
+    "incorrect_solution": [
+      "Step 1: Set up the matrix equation [[2,3],[1,-1]] * [[x],[y]] = [[7],[1]].",
+      "Step 2: Find the inverse of the coefficient matrix. The inverse of [[2,3],[1,-1]] is [[1/5, 3/5],[1/5, -2/5]].",
+      "Step 3: Multiply the inverse by the constant vector to find X. The student incorrectly treats the elements of the constant vector as scalar multipliers for the corresponding rows of the inverse matrix, then adds the elements vertically.",
+      "X = [[1/5, 3/5],[1/5, -2/5]] * [[7],[1]]",
+      "Multiply first row by 7: [ (1/5)*7, (3/5)*7 ] = [7/5, 21/5]",
+      "Multiply second row by 1: [ (1/5)*1, (-2/5)*1 ] = [1/5, -2/5]",
+      "Combine by adding corresponding elements: ",
+      "x = 7/5 + 1/5 = 8/5",
+      "y = 21/5 + (-2/5) = 19/5",
+      "Therefore, X = [[8/5],[19/5]], meaning x=8/5 and y=19/5."
+    ],
+    "incorrect_step_number": 3
+  },
+  {
+    "target_concept_id": "153",
+    "failure_concept_id": "233",
+    "incorrect_solution": [
+      "Step 1: Calculate the minor for the first element. The minor M11 for '1' is the determinant of the submatrix [[5, 6], [8, 9]]. The student incorrectly calculates the 2x2 determinant as the sum of products of diagonals, instead of the difference: (5*9) + (6*8) = 45 + 48 = 93.",
+      "Step 2: Calculate the minor for the second element. The minor M12 for '2' is the determinant of the submatrix [[4, 6], [7, 9]]. Incorrectly calculates the determinant: (4*9) + (6*7) = 36 + 42 = 78.",
+      "Step 3: Calculate the minor for the third element. The minor M13 for '3' is the determinant of the submatrix [[4, 5], [7, 8]]. Incorrectly calculates the determinant: (4*8) + (5*7) = 32 + 35 = 67.",
+      "Step 4: Combine them using the formula: 1*det(M11) - 2*det(M12) + 3*det(M13) = 1*(93) - 2*(78) + 3*(67) = 93 - 156 + 201 = 138."
+    ],
+    "incorrect_step_number": 1
+  },
+  {
+    "target_concept_id": "153",
+    "failure_concept_id": "152",
+    "incorrect_solution": [
+      "Step 1: Calculate the minor for the first element. M11 = [[5, 6], [8, 9]]. Incorrectly calculate det(M11) as 5*9 + 6*8 = 45 + 48 = 93 (adding instead of subtracting).",
+      "Step 2: Calculate the minor for the second element. M12 = [[4, 6], [7, 9]]. Correctly calculate det(M12) as 4*9 - 6*7 = 36 - 42 = -6.",
+      "Step 3: Calculate the minor for the third element. M13 = [[4, 5], [7, 8]]. Correctly calculate det(M13) as 4*8 - 5*7 = 32 - 35 = -3.",
+      "Step 4: Combine them using the formula: 1*det(M11) - 2*det(M12) + 3*det(M13) = 1*(93) - 2*(-6) + 3*(-3) = 93 + 12 - 9 = 105 - 9 = 96. The result is 96."
+    ],
+    "incorrect_step_number": 1
+  },
+  {
+    "target_concept_id": "153",
+    "failure_concept_id": "152",
+    "incorrect_solution": [
+      "Step 1: Calculate the minor for the first element. M11 = [[5, 6], [8, 9]]. Correctly calculate det(M11) as 5*9 - 6*8 = 45 - 48 = -3.",
+      "Step 2: Calculate the minor for the second element. M12 = [[4, 6], [7, 9]]. Incorrectly calculate det(M12) as 4*7 - 6*9 = 28 - 54 = -26 (confusing cross-multiplication terms).",
+      "Step 3: Calculate the minor for the third element. M13 = [[4, 5], [7, 8]]. Correctly calculate det(M13) as 4*8 - 5*7 = 32 - 35 = -3.",
+      "Step 4: Combine them using the formula: 1*det(M11) - 2*det(M12) + 3*det(M13) = 1*(-3) - 2*(-26) + 3*(-3) = -3 + 52 - 9 = 49 - 9 = 40. The result is 40."
+    ],
+    "incorrect_step_number": 2
+  },
+  {
+    "target_concept_id": "153",
+    "failure_concept_id": "1167",
+    "incorrect_solution": [
+      "Step 1: Calculate the minor for the first element. det(M11) = -3.",
+      "Step 2: Calculate the minor for the second element. det(M12) = -6.",
+      "Step 3: Calculate the minor for the third element. det(M13) = -3.",
+      "Step 4: Combine them using the formula. The student mistakenly uses the element A_21 (value 4) instead of A_12 (value 2) as the coefficient for det(M12). The formula becomes: 1*det(M11) - 4*det(M12) + 3*det(M13) = 1*(-3) - 4*(-6) + 3*(-3) = -3 + 24 - 9 = 12. The result is 12."
+    ],
+    "incorrect_step_number": 4
+  },
+  {
+    "target_concept_id": "864",
+    "failure_concept_id": "146",
+    "incorrect_solution": [
+      "Step 1: Calculate the determinant: (4*6) - (7*2) = 10.",
+      "Step 2: Apply the formula: (1/10) * [[6, -7], [-2, 4]] = [[6/10, -7], [-2, 4]]."
+    ],
+    "incorrect_step_number": 2
+  },
+  {
+    "target_concept_id": "864",
+    "failure_concept_id": "146",
+    "incorrect_solution": [
+      "Step 1: Calculate the determinant: (4*6) - (7*2) = 10.",
+      "Step 2: Apply the formula: (1/10) * [[6, -7], [-2, 4]] = [[6/10, -7/10], [-2, 4]]."
+    ],
+    "incorrect_step_number": 2
+  },
+  {
+    "target_concept_id": "864",
+    "failure_concept_id": "146",
+    "incorrect_solution": [
+      "Step 1: Calculate the determinant: (4*6) - (7*2) = 10.",
+      "Step 2: Apply the formula: (1/10) * [[6, -7], [-2, 4]] = [[6 + 1/10, -7 + 1/10], [-2 + 1/10, 4 + 1/10]]."
+    ],
+    "incorrect_step_number": 2
+  },
+  {
+    "target_concept_id": "864",
+    "failure_concept_id": "152",
+    "incorrect_solution": [
+      "Step 1: Calculate the determinant: (4*6) + (7*2) = 24 + 14 = 38.",
+      "Step 2: Apply the formula: (1/38) * [[6, -7], [-2, 4]]."
+    ],
+    "incorrect_step_number": 1
+  },
+  {
+    "target_concept_id": "864",
+    "failure_concept_id": "152",
+    "incorrect_solution": [
+      "Step 1: Calculate the determinant: (7*2) - (4*6) = 14 - 24 = -10.",
+      "Step 2: Apply the formula: (1/-10) * [[6, -7], [-2, 4]]."
+    ],
+    "incorrect_step_number": 1
+  },
+  {
+    "target_concept_id": "864",
+    "failure_concept_id": "152",
+    "incorrect_solution": [
+      "Step 1: Calculate the determinant: (4*6) - (7*2) = 24 - 14 = 9.",
+      "Step 2: Apply the formula: (1/9) * [[6, -7], [-2, 4]]."
+    ],
+    "incorrect_step_number": 1
+  },
+  {
+    "target_concept_id": "864",
+    "failure_concept_id": "863",
+    "incorrect_solution": [
+      "Step 1: Mistakenly calculate the inverse by taking the reciprocal of each element. Inverse = [[1/4, 1/7], [1/2, 1/6]]."
+    ],
+    "incorrect_step_number": 1
+  },
+  {
+    "target_concept_id": "864",
+    "failure_concept_id": "863",
+    "incorrect_solution": [
+      "Step 1: Mistakenly calculate the inverse by taking the transpose of the matrix. Inverse = [[4, 2], [7, 6]]."
+    ],
+    "incorrect_step_number": 1
+  },
+  {
+    "target_concept_id": "864",
+    "failure_concept_id": "861",
+    "incorrect_solution": [
+      "Step 1: The student misinterprets the given matrix [[4, 7], [2, 6]] as its transpose when identifying the elements for the inverse formula. They assume a=4, b=2, c=7, d=6. Calculate the determinant using these mistaken values: (4*6) - (2*7) = 24 - 14 = 10.",
+      "Step 2: Apply the inverse formula using the incorrectly identified elements. The adjoint matrix becomes [[d, -b], [-c, a]] = [[6, -2], [-7, 4]]. So the inverse is (1/10) * [[6, -2], [-7, 4]]."
+    ],
+    "incorrect_step_number": 1
+  },
+  {
+    "target_concept_id": "1729",
+    "failure_concept_id": "1195",
+    "incorrect_solution": [
+      "The system of equations is 3x - y = 5 and x + 2y = 4.",
+      "To represent this using matrices, we need a coefficient matrix, a variable matrix, and a constant matrix.",
+      "The coefficient matrix consists of the coefficients of x and y.",
+      "Mistake: The student incorrectly transposes the coefficient matrix due to a misunderstanding of how the rows of the coefficient matrix multiply by the variable vector to form the equations.",
+      "Incorrect Representation: [[3, 1], [-1, 2]] * [[x], [y]] = [[5], [4]]",
+      "(If you multiply out [[3, 1], [-1, 2]] * [[x], [y]], you get [[3x + y], [-x + 2y]], which is not the original system.)"
+    ],
+    "incorrect_step_number": 1
+  },
+  {
+    "target_concept_id": "1729",
+    "failure_concept_id": "1195",
+    "incorrect_solution": [
+      "The system of equations is 3x - y = 5 and x + 2y = 4.",
+      "To represent this using matrices, we need a coefficient matrix, a variable matrix, and a constant matrix.",
+      "The coefficient matrix consists of the coefficients of x and y.",
+      "Mistake: The student correctly forms the first row of the coefficient matrix but misunderstands the order of coefficients for the second equation when considering the dot product with the variable vector.",
+      "Incorrect Representation: [[3, -1], [2, 1]] * [[x], [y]] = [[5], [4]]",
+      "(If you multiply out [[3, -1], [2, 1]] * [[x], [y]], you get [[3x - y], [2x + y]]. The second equation '2x + y = 4' does not match the original 'x + 2y = 4'.)"
+    ],
+    "incorrect_step_number": 1
+  },
+  {
+    "target_concept_id": "1729",
+    "failure_concept_id": "177",
+    "incorrect_solution": [
+      "The given system of equations is 3x - y = 5 and x + 2y = 4.",
+      "To represent this system in the matrix form Ax = B, we need to construct the coefficient matrix A, the variable matrix x, and the constant matrix B.",
+      "The student incorrectly assumes that the coefficients of 'x' should form the first column of the coefficient matrix and the coefficients of 'y' should form the second column.",
+      "From the first equation, 3x - y = 5, the coefficient of x is 3 and the coefficient of y is -1.",
+      "From the second equation, x + 2y = 4, the coefficient of x is 1 and the coefficient of y is 2.",
+      "Following the incorrect assumption, the coefficient matrix A is formed by taking x-coefficients as the first column and y-coefficients as the second column, resulting in A = [[3, 1], [-1, 2]].",
+      "The variable matrix is x = [[x], [y]].",
+      "The constant matrix is B = [[5], [4]].",
+      "Therefore, the incorrect matrix representation of the system is: [[3, 1], [-1, 2]] * [[x], [y]] = [[5], [4]]."
+    ],
+    "incorrect_step_number": 1
+  },
+  {
+    "target_concept_id": "233",
+    "failure_concept_id": "152",
+    "incorrect_solution": [
+      "Step 1: Remove row 2 and column 1, leaving the matrix [[2, 3], [8, 9]].",
+      "Step 2: Calculate the determinant using an incorrect formula (ad + bc): (2*9) + (3*8) = 18 + 24 = 42."
+    ],
+    "incorrect_step_number": 2
+  },
+  {
+    "target_concept_id": "233",
+    "failure_concept_id": "152",
+    "incorrect_solution": [
+      "Step 1: Remove row 2 and column 1, leaving the matrix [[2, 3], [8, 9]].",
+      "Step 2: Calculate the determinant using a swapped formula (bc - ad): (3*8) - (2*9) = 24 - 18 = 6."
+    ],
+    "incorrect_step_number": 2
+  },
+  {
+    "target_concept_id": "233",
+    "failure_concept_id": "1167",
+    "incorrect_solution": [
+      "Step 1: Misinterpreting 'second row, first column' as the entry in the second row, second column (A_22), the student removes row 2 and column 2, leaving the matrix [[1, 3], [7, 9]].",
+      "Step 2: Calculate the determinant: (1*9) - (3*7) = 9 - 21 = -12."
+    ],
+    "incorrect_step_number": 1
+  },
+  {
+    "target_concept_id": "233",
+    "failure_concept_id": "1167",
+    "incorrect_solution": [
+      "Step 1: Misinterpreting 'second row, first column' as the entry in the first row, first column (A_11), the student removes row 1 and column 1, leaving the matrix [[5, 6], [8, 9]].",
+      "Step 2: Calculate the determinant: (5*9) - (6*8) = 45 - 48 = -3."
+    ],
+    "incorrect_step_number": 1
+  },
+  {
+    "target_concept_id": "233",
+    "failure_concept_id": "1166",
+    "incorrect_solution": [
+      "Step 1: Remove row 2 and column 1, leaving the matrix [[2, 3], [8, 9]].",
+      "Step 2: This is a square matrix, and identity matrices have a determinant of 1. Therefore, the minor must be 1."
+    ],
+    "incorrect_step_number": 2
+  },
+  {
+    "target_concept_id": "233",
+    "failure_concept_id": "1166",
+    "incorrect_solution": [
+      "Step 1: Remove row 2 and column 1, leaving the matrix [[2, 3], [8, 9]].",
+      "Step 2: This matrix is not a diagonal matrix because its off-diagonal elements (3 and 8) are not zero. Therefore, its determinant is 0, so the minor is 0."
+    ],
+    "incorrect_step_number": 2
+  },
+  {
+    "target_concept_id": "233",
+    "failure_concept_id": "861",
+    "incorrect_solution": [
+      "Step 1: To find the minor of the entry in the second row, first column, the student incorrectly removes the third row instead of the second row and the first column, leaving the matrix [[2, 3], [5, 6]].",
+      "Step 2: Calculate the determinant: (2*6) - (3*5) = 12 - 15 = -3."
+    ],
+    "incorrect_step_number": 1
+  },
+  {
+    "target_concept_id": "233",
+    "failure_concept_id": "861",
+    "incorrect_solution": [
+      "Step 1: To find the minor of the entry in the second row, first column, the student incorrectly removes the second row and the second column instead of the first column, leaving the matrix [[1, 3], [7, 9]].",
+      "Step 2: Calculate the determinant: (1*9) - (3*7) = 9 - 21 = -12."
+    ],
+    "incorrect_step_number": 1
+  },
+  {
+    "target_concept_id": "863",
+    "failure_concept_id": "147",
+    "incorrect_solution": [
+      "Step 1: Multiply the two matrices.",
+      "To multiply [[3, 1], [5, 2]] by [[2, -1], [-5, 3]], the student incorrectly performs element-wise multiplication (Hadamard product):",
+      "[[3*2, 1*(-1)], [5*(-5), 2*3]]",
+      "= [[6, -1], [-25, 6]]",
+      "Step 2: Check if the product is the identity matrix [[1, 0], [0, 1]].",
+      "The calculated product [[6, -1], [-25, 6]] is not the identity matrix.",
+      "Conclusion: The matrices are not inverses of each other."
+    ],
+    "incorrect_step_number": 1
+  },
+  {
+    "target_concept_id": "863",
+    "failure_concept_id": "147",
+    "incorrect_solution": [
+      "Step 1: Multiply the two matrices.",
+      "To multiply [[3, 1], [5, 2]] by [[2, -1], [-5, 3]], the student calculates each entry:",
+      "Entry (1,1): (3)(2) + (1)(-5) = 6 - 5 = 1",
+      "Entry (1,2): (3)(-1) + (1)(3) = -3 + 3 = 0",
+      "Entry (2,1): (5)(2) + (2)(-5) = 10 - 10 = 0",
+      "Entry (2,2): (5)(-1) + (2)(3) = -5 + 6. The student makes an arithmetic error and calculates this as -5 - 6 = -11.",
+      "Thus, the product is [[1, 0], [0, -11]].",
+      "Step 2: Check if the product is the identity matrix [[1, 0], [0, 1]].",
+      "The calculated product [[1, 0], [0, -11]] is not the identity matrix.",
+      "Conclusion: The matrices are not inverses of each other."
+    ],
+    "incorrect_step_number": 1
+  },
+  {
+    "target_concept_id": "863",
+    "failure_concept_id": "177",
+    "incorrect_solution": [
+      "Step 1: Multiply the two matrices.",
+      "We need to compute [[2, -1], [-5, 3]] * [[3, 1], [5, 2]].",
+      "For the element in the first row, first column, we calculate the dot product of [2, -1] and [3, 5]. A common error is misinterpreting the sign during addition/subtraction. For example, instead of (2 * 3) + (-1 * 5) = 6 - 5 = 1, a student might incorrectly calculate 6 + 5 = 11 (interpreting -(-5) as +5).",
+      "So, the calculation becomes:",
+      "[[ (2*3 - (-1)*5), (2*1 + (-1)*2) ],",
+      " [ (-5*3 + 3*5), (-5*1 + 3*2) ]]",
+      "= [[ (6 + 5), (2 - 2) ],",
+      " [ (-15 + 15), (-5 + 6) ]]",
+      "= [[11, 0], [0, 1]].",
+      "Step 2: Check if the product is the identity matrix [[1, 0], [0, 1]].",
+      "The product [[11, 0], [0, 1]] is not the identity matrix [[1, 0], [0, 1]].",
+      "Therefore, [[2, -1], [-5, 3]] is not the inverse of [[3, 1], [5, 2]]."
+    ],
+    "incorrect_step_number": 1
+  },
+  {
+    "target_concept_id": "863",
+    "failure_concept_id": "1166",
+    "incorrect_solution": [
+      "Step 1: Multiply the two matrices.",
+      "[[2, -1], [-5, 3]] * [[3, 1], [5, 2]]",
+      "= [[(2*3 + (-1)*5), (2*1 + (-1)*2)], [(-5*3 + 3*5), (-5*1 + 3*2)]]",
+      "= [[(6 - 5), (2 - 2)], [(-15 + 15), (-5 + 6)]]",
+      "= [[1, 0], [0, 1]].",
+      "Step 2: Check if the product is the identity matrix [[1, 0], [0, 1]].",
+      "The student incorrectly believes the identity matrix is the zero matrix, [[0, 0], [0, 0]].",
+      "Since the calculated product [[1, 0], [0, 1]] is not equal to [[0, 0], [0, 0]], the student concludes that [[2, -1], [-5, 3]] is not the inverse of [[3, 1], [5, 2]]."
+    ],
+    "incorrect_step_number": 2
+  },
+  {
+    "target_concept_id": "863",
+    "failure_concept_id": "1166",
+    "incorrect_solution": [
+      "Step 1: Multiply the two matrices.",
+      "[[2, -1], [-5, 3]] * [[3, 1], [5, 2]]",
+      "= [[(2*3 + (-1)*5), (2*1 + (-1)*2)], [(-5*3 + 3*5), (-5*1 + 3*2)]]",
+      "= [[(6 - 5), (2 - 2)], [(-15 + 15), (-5 + 6)]]",
+      "= [[1, 0], [0, 1]].",
+      "Step 2: Check if the product is the identity matrix [[1, 0], [0, 1]].",
+      "The student incorrectly believes the identity matrix is a matrix where all entries are ones, [[1, 1], [1, 1]].",
+      "Since the calculated product [[1, 0], [0, 1]] is not equal to [[1, 1], [1, 1]], the student concludes that [[2, -1], [-5, 3]] is not the inverse of [[3, 1], [5, 2]]."
+    ],
+    "incorrect_step_number": 2
+  },
+  {
+    "target_concept_id": "232",
+    "failure_concept_id": "861",
+    "incorrect_solution": [
+      "The problem asks for the transpose of [[1, 2, 3], [4, 5, 6]]. A student might misunderstand standard matrix notation and interpret [1, 2, 3] as the first column and [4, 5, 6] as the second column.",
+      "Based on this misunderstanding, the matrix is internally perceived as a 3x2 matrix: [[1, 4], [2, 5], [3, 6]]. (Note: This is the correct transpose of the original matrix, but the student mistakenly believes this is the original matrix they need to transpose).",
+      "To find the transpose of this *perceived* matrix, we swap its rows and columns. The rows are [1, 4], [2, 5], [3, 6].",
+      "Swapping rows and columns yields the transpose: [[1, 2, 3], [4, 5, 6]]."
+    ],
+    "incorrect_step_number": 1
+  },
+  {
+    "target_concept_id": "232",
+    "failure_concept_id": "861",
+    "incorrect_solution": [
+      "A student might misunderstand the structure of the given matrix [[1, 2, 3], [4, 5, 6]] and incorrectly perceive it as a single row vector (a 1x6 matrix) by flattening its elements: [1, 2, 3, 4, 5, 6].",
+      "To find the transpose of this 1x6 row vector, each element becomes a row in a column vector.",
+      "The transpose is therefore [[1], [2], [3], [4], [5], [6]]."
+    ],
+    "incorrect_step_number": 1
+  },
+  {
+    "target_concept_id": "1195",
+    "failure_concept_id": "146",
+    "incorrect_solution": [
+      "The student might confuse matrix multiplication with scalar multiplication applied to rows.",
+      "They might multiply the first row of [[1, 2], [3, 4]] by 5 and the second row by 6.",
+      "First row result: [1*5, 2*5] = [5, 10]. The first element of the product is then assumed to be the sum of these, 5+10 = 15.",
+      "Second row result: [3*6, 4*6] = [18, 24]. The second element of the product is assumed to be the sum of these, 18+24 = 42.",
+      "The result is [[15], [42]]."
+    ],
+    "incorrect_step_number": 2
+  },
+  {
+    "target_concept_id": "1195",
+    "failure_concept_id": "177",
+    "incorrect_solution": [
+      "The student incorrectly calculates the dot product for the first element by only considering the first term of the sum.",
+      "The resulting vector's first element is calculated from (1*5 + 2*6). The student incorrectly takes only the first product: (1*5) = 5.",
+      "The second element is calculated from (3*5 + 4*6). The student incorrectly takes only the first product: (3*5) = 15.",
+      "The result is [[5], [15]]."
+    ],
+    "incorrect_step_number": 2
+  },
+  {
+    "target_concept_id": "1195",
+    "failure_concept_id": "177",
+    "incorrect_solution": [
+      "The student makes arithmetic errors when summing the products in the dot product calculation.",
+      "The resulting vector's first element is (1*5 + 2*6) = (5 + 12). Student incorrectly calculates 5 + 12 = 16.",
+      "The second element is (3*5 + 4*6) = (15 + 24). Student incorrectly calculates 15 + 24 = 30.",
+      "The result is [[16], [30]]."
+    ],
+    "incorrect_step_number": 2
+  },
+  {
+    "target_concept_id": "1195",
+    "failure_concept_id": "861",
+    "incorrect_solution": [
+      "First, identify the dimensions of the given matrices.",
+      "Matrix 1: A = [[1, 2], [3, 4]]. This is a 2x2 matrix (2 rows, 2 columns).",
+      "Matrix 2: B = [[5], [6]]. This is mistakenly identified as a 1x2 matrix (1 row, 2 columns) because the student incorrectly counts rows as columns and columns as rows for a vertical arrangement.",
+      "For matrix multiplication A * B to be possible, the number of columns in A must equal the number of rows in B.",
+      "Here, A is 2x2 and B is 1x2. The number of columns in A (2) does not match the number of rows in B (1).",
+      "Therefore, the product of [[1, 2], [3, 4]] and [[5], [6]] is not possible."
+    ],
+    "incorrect_step_number": 1
+  },
+  {
+    "target_concept_id": "1195",
+    "failure_concept_id": "1166",
+    "incorrect_solution": [
+      "The first matrix [[1, 2], [3, 4]] is a square matrix. Since it has a '1' in the top-left position, I will treat it as an identity matrix.",
+      "When you multiply any matrix by an identity matrix, the result is the original matrix itself.",
+      "Therefore, the product of [[1, 2], [3, 4]] and [[5], [6]] is [[5], [6]]."
+    ],
+    "incorrect_step_number": 1
+  },
+  {
+    "target_concept_id": "1195",
+    "failure_concept_id": "1166",
+    "incorrect_solution": [
+      "The first matrix [[1, 2], [3, 4]] is a square matrix. I remember that if a matrix has only a few non-zero entries or is a special type of matrix, it might behave like a zero matrix when multiplied.",
+      "Assuming this matrix acts like a zero matrix, any product with it will result in a zero matrix.",
+      "Therefore, the product is a 2x1 zero matrix, which is [[0], [0]]."
+    ],
+    "incorrect_step_number": 1
+  },
+  {
+    "target_concept_id": "147",
+    "failure_concept_id": "177",
+    "incorrect_solution": [
+      "To find the product of two matrices, we multiply their corresponding elements.",
+      "So, for the first matrix [[1, 2], [3, 4]] and the second matrix [[5, 6], [7, 8]], the product is found by multiplying each element in the same position:",
+      "[[1*5, 2*6], [3*7, 4*8]]",
+      "This results in [[5, 12], [21, 32]]."
+    ],
+    "incorrect_step_number": 1
+  },
+  {
+    "target_concept_id": "147",
+    "failure_concept_id": "177",
+    "incorrect_solution": [
+      "To find each element of the product matrix, we multiply all components from the corresponding row and column.",
+      "For the element in the first row, first column, we take the row [1, 2] and column [5, 7]. The product is (1*5)*(2*7).",
+      "For the element in the first row, second column, we take the row [1, 2] and column [6, 8]. The product is (1*6)*(2*8).",
+      "For the element in the second row, first column, we take the row [3, 4] and column [5, 7]. The product is (3*5)*(4*7).",
+      "For the element in the second row, second column, we take the row [3, 4] and column [6, 8]. The product is (3*6)*(4*8).",
+      "So the product matrix is [[(1*5)*(2*7), (1*6)*(2*8)], [(3*5)*(4*7), (3*6)*(4*8)]]",
+      "Calculating these values: [[5*14, 6*16], [15*28, 18*32]]",
+      "This results in [[70, 96], [420, 576]]."
+    ],
+    "incorrect_step_number": 1
+  },
+  {
+    "target_concept_id": "146",
+    "failure_concept_id": "861",
+    "incorrect_solution": [
+      "The problem is to calculate 5 * [[1, 2], [3, 4]].",
+      "A student might incorrectly assume that the scalar 5 only multiplies the first element of the matrix.",
+      "So, they calculate 5 * 1 = 5.",
+      "The resulting matrix would then be [[5, 2], [3, 4]]."
+    ],
+    "incorrect_step_number": 4
+  },
+  {
+    "target_concept_id": "146",
+    "failure_concept_id": "861",
+    "incorrect_solution": [
+      "The problem is to calculate 5 * [[1, 2], [3, 4]].",
+      "A student might mistakenly interpret the matrix as a single numerical value, by summing all its elements.",
+      "Sum of elements = 1 + 2 + 3 + 4 = 10.",
+      "Then, they multiply this sum by the scalar: 5 * 10 = 50.",
+      "The final answer would be 50, which is a scalar, not a matrix."
+    ],
+    "incorrect_step_number": 5
+  },
+  {
+    "target_concept_id": "1167",
+    "failure_concept_id": "861",
+    "incorrect_solution": [
+      "The notation A_23 refers to the element in the 2nd column and 3rd row of the matrix.",
+      "Let's look at the matrix: [[1,2,3],[4,5,6]].",
+      "The 2nd column contains the numbers 2 and 5.",
+      "However, this matrix only has 2 rows. There is no 3rd row.",
+      "Therefore, the entry A_23 does not exist in this matrix."
+    ],
+    "incorrect_step_number": 1
+  }
+]

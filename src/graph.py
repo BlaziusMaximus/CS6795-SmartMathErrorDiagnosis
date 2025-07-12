@@ -27,12 +27,12 @@ class ConceptNode(BaseModel):
   id: str
   name: str
   description: str
-  problem_and_solution: ProblemSolutionPair
+  problems_and_solutions: List[ProblemSolutionPair]
   prerequisites: List[PrerequisiteEdge] = Field(default_factory=list)
 
 
 class KnowledgeGraph(BaseModel):
-  """Represents the entire knowledge graph."""
+  """Represents the entire knowledge graph, composed of multiple concept nodes."""
 
   nodes: Dict[str, ConceptNode]
 
