@@ -2,12 +2,11 @@
   {
     "id": "1023",
     "name": "Solving Systems of Equations Using Inverse Matrices",
-    "description": "We can write a system of three linear equations in three variables in the form AX = B, where A is the coefficient matrix, X is the column vector of variables, and B is the column vector of constants. If the matrix A is invertible, we can find a solution by pre-multiplying both sides by A-inverse to get X = A-inverse * B.",
-    "problem_examples": [
-      "Consider the system of linear equations: 2x+y-z=1, x+2y+z=8, x-y+2z=7. Given the inverse of the coefficient matrix, find the value of y.",
-      "Solve the system: x+2y=7, 3x-y=0, z=3 by finding the inverse of the coefficient matrix.",
-      "Consider a matrix equation AXB = C, where A and B are non-singular matrices. Solve the equation for X."
-    ],
+    "description": "We can write a system of three linear equations in three variables in the form AX = B. If the matrix A is invertible, we can find a solution by pre-multiplying both sides by A-inverse to get X = A-inverse * B.",
+    "problem_and_solution": {
+      "problem": "Solve the system: x+2y-z=2, 2x+5y=7, -x-y+3z=4 using the inverse of the coefficient matrix.",
+      "solution": "Step 1: Represent the system as AX=B. A=[[1,2,-1],[2,5,0],[-1,-1,3]], B=[[2],[7],[4]]. Step 2: Calculate the inverse of A. Step 3: Compute X = A_inv * B to find the values of x, y, and z."
+    },
     "prerequisites": [
       {
         "concept_id": "154",
@@ -26,12 +25,11 @@
   {
     "id": "154",
     "name": "Calculating the Inverse of a 3x3 Matrix Using the Cofactor Method",
-    "description": "To calculate the inverse of a 3x3 matrix, one can use a five-step algorithm: 1. Find the determinant. 2. Form the matrix of minors. 3. Create the matrix of cofactors using the rule of alternating signs. 4. Transpose the matrix of cofactors. 5. Divide the resulting matrix by the determinant.",
-    "problem_examples": [
-      "Find the inverse of the matrix [[2, 1, 0], [1, -1, -2], [0, 2, 1]].",
-      "Determine the entry in the second row, third column of the inverse of the matrix [[1, 2, 3], [0, 1, 4], [5, 6, 0]].",
-      "The entry in the first row, first column of the inverse of the matrix [[x, 1, 0], [2, x, 1], [0, 1, 1]] equals 1/2. Find the value of x."
-    ],
+    "description": "To calculate the inverse of a 3x3 matrix, one can use a five-step algorithm: 1. Find the determinant. 2. Form the matrix of minors. 3. Create the matrix of cofactors. 4. Transpose the matrix of cofactors. 5. Divide the resulting matrix by the determinant.",
+    "problem_and_solution": {
+      "problem": "Find the inverse of the matrix [[2, 1, 0], [1, -1, -2], [0, 2, 1]].",
+      "solution": "Step 1: Calculate the determinant, which is -1. Step 2: Find the matrix of minors. Step 3: Create the matrix of cofactors. Step 4: Transpose the matrix of cofactors. Step 5: Multiply by 1/(-1)."
+    },
     "prerequisites": [
       {
         "concept_id": "153",
@@ -50,11 +48,11 @@
   {
     "id": "155",
     "name": "Representing 3x3 Systems of Equations Using a Matrix Product",
-    "description": "A system of three linear equations in three variables can be represented using the matrix equation AX = B. A is the 3x3 coefficient matrix, X is the 3x1 column vector of variables, and B is the 3x1 column vector of constants.",
-    "problem_examples": [
-      "The system of equations x+2y=5, 3y-z=2, x+z=1 can be represented as AX=B. What are the values of A[1,1] and B[2]?",
-      "The system of equations y=3x+2, z=y-1, x=z can be represented as AX=B. What are the values of A[0,1] and A[2,2]?"
-    ],
+    "description": "A system of three linear equations in three variables can be represented using the matrix equation AX = B.",
+    "problem_and_solution": {
+      "problem": "The system of equations x+2y=5, 3y-z=2, x+z=1 can be represented as AX=B. What are the values of A[1,1] and B[2]?",
+      "solution": "Step 1: Align the variables in each equation: 1x+2y+0z=5, 0x+3y-1z=2, 1x+0y+1z=1. Step 2: Form the coefficient matrix A and constant vector B. Step 3: Identify the required elements. A[1,1] is 3, B[2] is 1."
+    },
     "prerequisites": [
       {
         "concept_id": "1729",
@@ -69,11 +67,11 @@
   {
     "id": "934",
     "name": "Solving 2x2 Systems of Equations Using Inverse Matrices",
-    "description": "If a 2x2 matrix A is invertible, then a solution to the system AX = B can be found by pre-multiplying both sides by the inverse of A to get X = A-inverse * B.",
-    "problem_examples": [
-      "Find a solution to the system of linear equations: 2x + 3y = 7, x - y = 1.",
-      "Solve the system of linear equations: y = 2x + 1, 4x = 2y - 2."
-    ],
+    "description": "If a 2x2 matrix A is invertible, then a solution to the system AX = B can be found by pre-multiplying both sides by the inverse of A.",
+    "problem_and_solution": {
+      "problem": "Find a solution to the system of linear equations: 2x + 3y = 7, x - y = 1.",
+      "solution": "Step 1: Set up the matrix equation [[2,3],[1,-1]] * [[x],[y]] = [[7],[1]]. Step 2: Find the inverse of the coefficient matrix. Step 3: Multiply the inverse by the constant vector to find X."
+    },
     "prerequisites": [
       {
         "concept_id": "864",
@@ -88,12 +86,11 @@
   {
     "id": "153",
     "name": "The Determinant of a 3x3 Matrix",
-    "description": "The determinant of a 3x3 matrix can be found by taking the alternating sum of the entries in the top row, each multiplied by its respective minor. det(A) = a(ei − fh) − b(di − fg) + c(dh − eg). A square matrix is singular if its determinant is zero.",
-    "problem_examples": [
-      "Find the value of the determinant for the matrix [[1, 2, 3], [4, 5, 6], [7, 8, 9]].",
-      "Which of the following matrices are singular: A=[[1,0,1],[0,1,0],[1,0,1]], B=[[1,2,3],[1,2,3],[1,2,3]]?",
-      "Given that the determinant of [[x, 1, 2], [1, x, 1], [2, 1, x]] is 0, find all possible values of x."
-    ],
+    "description": "The determinant of a 3x3 matrix can be found by taking the alternating sum of the entries in the top row, each multiplied by its respective minor.",
+    "problem_and_solution": {
+      "problem": "Find the value of the determinant for the matrix [[1, 2, 3], [4, 5, 6], [7, 8, 9]].",
+      "solution": "Step 1: Calculate the minor for the first element. Step 2: Calculate the minor for the second element. Step 3: Calculate the minor for the third element. Step 4: Combine them using the formula: 1*det(M11) - 2*det(M12) + 3*det(M13). The result is 0."
+    },
     "prerequisites": [
       {
         "concept_id": "233",
@@ -108,11 +105,11 @@
   {
     "id": "864",
     "name": "Inverses of 2x2 Matrices",
-    "description": "The inverse of a 2x2 matrix [[a, b], [c, d]] is given by the formula (1/det(A)) * [[d, -b], [-c, a]], where det(A) = ad - bc. A matrix is singular and has no inverse if its determinant is 0.",
-    "problem_examples": [
-      "Calculate the inverse of [[4, 7], [2, 6]].",
-      "If the matrix [[x, 4], [1, x-3]] is singular, calculate the value(s) of x."
-    ],
+    "description": "The inverse of a 2x2 matrix [[a, b], [c, d]] is given by the formula (1/det(A)) * [[d, -b], [-c, a]].",
+    "problem_and_solution": {
+      "problem": "Calculate the inverse of [[4, 7], [2, 6]].",
+      "solution": "Step 1: Calculate the determinant: (4*6) - (7*2) = 10. Step 2: Apply the formula: (1/10) * [[6, -7], [-2, 4]]."
+    },
     "prerequisites": [
       {
         "concept_id": "146",
@@ -131,11 +128,11 @@
   {
     "id": "1729",
     "name": "Representing 2x2 Systems of Equations Using a Matrix Product",
-    "description": "A system of two linear equations can be represented using the matrix equation AX = B, where A is the 2x2 coefficient matrix, X is the 2x1 column vector of variables, and B is the 2x1 column vector of constants.",
-    "problem_examples": [
-      "Represent the system of equations 3x - y = 5, x + 2y = 4 using matrices.",
-      "What is the system of equations represented by [[1, -2], [3, 1]] * [[x], [y]] = [[5], [6]]?"
-    ],
+    "description": "A system of two linear equations can be represented using the matrix equation AX = B.",
+    "problem_and_solution": {
+      "problem": "Represent the system of equations 3x - y = 5, x + 2y = 4 using matrices.",
+      "solution": "The system is represented by [[3, -1], [1, 2]] * [[x], [y]] = [[5], [4]]."
+    },
     "prerequisites": [
       {
         "concept_id": "1195",
@@ -147,10 +144,10 @@
     "id": "233",
     "name": "The Minors of a 3x3 Matrix",
     "description": "The minor of an entry in a 3x3 matrix is the determinant of the 2x2 matrix that remains after the row and column containing that entry are removed.",
-    "problem_examples": [
-      "Calculate the minor of the entry in the second row, first column of the matrix [[1, 2, 3], [4, 5, 6], [7, 8, 9]].",
-      "Given that the minor of the entry in the second row, third column of [[1, 2, 3], [4, 5, x], [7, 8, 9]] is 1, find the value of x."
-    ],
+    "problem_and_solution": {
+      "problem": "Calculate the minor of the entry in the second row, first column of the matrix [[1, 2, 3], [4, 5, 6], [7, 8, 9]].",
+      "solution": "Step 1: Remove row 2 and column 1, leaving the matrix [[2, 3], [8, 9]]. Step 2: Calculate the determinant: (2*9) - (3*8) = 18 - 24 = -6."
+    },
     "prerequisites": [
       {
         "concept_id": "152",
@@ -165,11 +162,11 @@
   {
     "id": "863",
     "name": "Introduction to the Inverse of a Matrix",
-    "description": "The inverse of a square matrix A is a matrix A-inverse such that A * A-inverse = I and A-inverse * A = I, where I is the identity matrix. Not all matrices have an inverse.",
-    "problem_examples": [
-      "Verify that [[2, -1], [-5, 3]] is the inverse of [[3, 1], [5, 2]].",
-      "Is the zero matrix singular?"
-    ],
+    "description": "The inverse of a square matrix A is a matrix A-inverse such that A * A-inverse = I.",
+    "problem_and_solution": {
+      "problem": "Verify that [[2, -1], [-5, 3]] is the inverse of [[3, 1], [5, 2]].",
+      "solution": "Step 1: Multiply the two matrices. Step 2: Check if the product is the identity matrix [[1, 0], [0, 1]]."
+    },
     "prerequisites": [
       {
         "concept_id": "147",
@@ -181,10 +178,10 @@
     "id": "152",
     "name": "The Determinant of a 2x2 Matrix",
     "description": "The determinant of a 2x2 matrix [[a, b], [c, d]] is the scalar value ad - bc.",
-    "problem_examples": [
-      "Calculate the determinant of [[5, -2], [3, 1]].",
-      "If the determinant of [[x, 5], [x, 10]] is 5, what is the value of x?"
-    ],
+    "problem_and_solution": {
+      "problem": "Calculate the determinant of [[5, -2], [3, 1]].",
+      "solution": "The determinant is (5 * 1) - (-2 * 3) = 5 - (-6) = 11."
+    },
     "prerequisites": [
       {
         "concept_id": "1166",
@@ -195,11 +192,11 @@
   {
     "id": "232",
     "name": "The Transpose of a Matrix",
-    "description": "To take the transpose of a matrix, interchange each of its columns with the corresponding row. The dimensions switch from m x n to n x m.",
-    "problem_examples": [
-      "Find the transpose of [[1, 2, 3], [4, 5, 6]].",
-      "What are the dimensions of the transpose of a 4x1 column vector?"
-    ],
+    "description": "To take the transpose of a matrix, interchange each of its columns with the corresponding row.",
+    "problem_and_solution": {
+      "problem": "Find the transpose of [[1, 2, 3], [4, 5, 6]].",
+      "solution": "The transpose is [[1, 4], [2, 5], [3, 6]]."
+    },
     "prerequisites": [
       {
         "concept_id": "861",
@@ -210,10 +207,11 @@
   {
     "id": "1195",
     "name": "Multiplying a Matrix by a Column Vector",
-    "description": "To multiply a matrix by a column vector, the number of columns in the matrix must equal the number of rows in the vector. The result is a column vector where each entry is the dot product of a row from the matrix and the column vector.",
-    "problem_examples": [
-      "Find the product of [[1, 2], [3, 4]] and [[5], [6]]."
-    ],
+    "description": "The result of multiplying a matrix by a column vector is a column vector where each entry is the dot product of a row from the matrix and the column vector.",
+    "problem_and_solution": {
+      "problem": "Find the product of [[1, 2], [3, 4]] and [[5], [6]].",
+      "solution": "The resulting vector's first element is (1*5 + 2*6)=17. The second element is (3*5 + 4*6)=39. The result is [[17], [39]]."
+    },
     "prerequisites": [
       {
         "concept_id": "146",
@@ -232,10 +230,11 @@
   {
     "id": "147",
     "name": "Multiplying Square Matrices",
-    "description": "To multiply two square matrices A and B, the entry in the i-th row and j-th column of the product is the dot product of the i-th row of A and the j-th column of B.",
-    "problem_examples": [
-      "Find the product of [[1, 2], [3, 4]] and [[5, 6], [7, 8]]."
-    ],
+    "description": "The entry in the i-th row and j-th column of a matrix product is the dot product of the i-th row of the first matrix and the j-th column of the second.",
+    "problem_and_solution": {
+      "problem": "Find the product of [[1, 2], [3, 4]] and [[5, 6], [7, 8]].",
+      "solution": "The product is [[1*5+2*7, 1*6+2*8], [3*5+4*7, 3*6+4*8]] which results in [[19, 22], [43, 50]]."
+    },
     "prerequisites": [
       {
         "concept_id": "177",
@@ -250,10 +249,11 @@
   {
     "id": "146",
     "name": "Scalar Multiplication of Matrices",
-    "description": "To multiply a matrix by a scalar (a number), multiply every entry in the matrix by that scalar.",
-    "problem_examples": [
-      "Calculate 5 * [[1, 2], [3, 4]]."
-    ],
+    "description": "To multiply a matrix by a scalar, multiply every entry in the matrix by that scalar.",
+    "problem_and_solution": {
+      "problem": "Calculate 5 * [[1, 2], [3, 4]].",
+      "solution": "The result is [[5*1, 5*2], [5*3, 5*4]] which is [[5, 10], [15, 20]]."
+    },
     "prerequisites": [
       {
         "concept_id": "861",
@@ -264,10 +264,11 @@
   {
     "id": "1166",
     "name": "Zero, Square, Diagonal and Identity Matrices",
-    "description": "A square matrix has the same number of rows and columns. A diagonal matrix is a square matrix where all non-diagonal entries are zero. An identity matrix is a diagonal matrix where all diagonal entries are 1.",
-    "problem_examples": [
-      "Which of the following are diagonal matrices: [[1,0],[0,1]], [[1,2],[0,3]], [[0,0],[0,0]]?"
-    ],
+    "description": "A square matrix has the same number of rows and columns. An identity matrix is a diagonal matrix where all diagonal entries are 1.",
+    "problem_and_solution": {
+      "problem": "Which of the following are diagonal matrices: [[1,0],[0,1]], [[1,2],[0,3]], [[0,0],[0,0]]?",
+      "solution": "A diagonal matrix must be square and have zeros on its off-diagonals. [[1,0],[0,1]] and [[0,0],[0,0]] are diagonal matrices. [[1,2],[0,3]] is not."
+    },
     "prerequisites": [
       {
         "concept_id": "1167",
@@ -278,10 +279,11 @@
   {
     "id": "177",
     "name": "Calculating the Dot Product Using Components",
-    "description": "The dot product of two vectors in component form is the sum of the products of their corresponding components.",
-    "problem_examples": [
-      "Find the dot product of <1, 2, 3> and <4, 5, 6>."
-    ],
+    "description": "The dot product of two vectors is the sum of the products of their corresponding components.",
+    "problem_and_solution": {
+      "problem": "Find the dot product of <1, 2, 3> and <4, 5, 6>.",
+      "solution": "The dot product is (1*4) + (2*5) + (3*6) = 4 + 10 + 18 = 32."
+    },
     "prerequisites": [
       {
         "concept_id": "1166",
@@ -293,9 +295,10 @@
     "id": "1167",
     "name": "Index Notation for Matrices",
     "description": "The entry in the i-th row and j-th column of a matrix A is denoted by A_ij.",
-    "problem_examples": [
-      "Find the entry A_23 in the matrix [[1,2,3],[4,5,6]]."
-    ],
+    "problem_and_solution": {
+      "problem": "Find the entry A_23 in the matrix [[1,2,3],[4,5,6]].",
+      "solution": "The entry in the 2nd row and 3rd column is 6."
+    },
     "prerequisites": [
       {
         "concept_id": "861",
@@ -306,10 +309,11 @@
   {
     "id": "861",
     "name": "Introduction to Matrices",
-    "description": "A matrix is a rectangular array of numbers, called entries or elements. The dimensions of a matrix are its number of rows and columns.",
-    "problem_examples": [
-      "What are the dimensions of the matrix [[1, 2], [3, 4], [5, 6]]?"
-    ],
+    "description": "A matrix is a rectangular array of numbers. The dimensions are its number of rows and columns.",
+    "problem_and_solution": {
+      "problem": "What are the dimensions of the matrix [[1, 2], [3, 4], [5, 6]]?",
+      "solution": "The matrix has 3 rows and 2 columns, so its dimensions are 3x2."
+    },
     "prerequisites": []
   }
 ]

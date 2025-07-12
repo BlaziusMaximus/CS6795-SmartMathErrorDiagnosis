@@ -23,19 +23,6 @@ class DataGenerator:
     """
     self.graph = knowledge_graph
     self.teacher = teacher_model
-    # This dictionary holds the manually created problems and correct solutions.
-    # The key is the concept ID.
-    self.problems_and_solutions = {
-      "multiply_2d_by_1d": {
-        "problem": "Calculate 17 * 5",
-        "solution": (
-          "Step 1: Multiply the ones digit: 7 * 5 = 35. Write down 5, carry over 3.\n"
-          "Step 2: Multiply the tens digit: 1 * 5 = 5.\n"
-          "Step 3: Add the carry-over: 5 + 3 = 8.\n"
-          "Step 4: Combine the results. Final Answer: 85."
-        ),
-      }
-    }
 
   def _initialize_traversal(
     self, start_node_id: str
@@ -50,19 +37,16 @@ class DataGenerator:
     visited: Set[str] = {start_node_id}
 
     print(
-      f"Starting dataset generation from node: '{start_node_id}' with max depth: {self.max_depth}"
+      "Starting dataset generation from node:"
+      f"'{start_node_id}' with max depth: {self.max_depth}"
     )
 
-    main_problem_context = self.problems_and_solutions.get(start_node_id)
-    if not main_problem_context:
-      print(
-        f"Error: No problem/solution found for start node '{start_node_id}'."
-      )
-      # Return empty collections with correct types for consistency
-      return [], deque(), set(), "", ""
+    start_node = self.graph.get_node(start_node_id)
+    assert start_node, f"Start node '{start_node_id}' not found in graph."
 
-    problem_example = main_problem_context["problem"]
-    correct_solution = main_problem_context["solution"]
+    problem_example = start_node.problem_and_solution.problem
+    correct_solution = start_node.problem_and_solution.solution
+
     return training_dataset, queue, visited, problem_example, correct_solution
 
   def _process_prerequisite(
@@ -95,31 +79,35 @@ class DataGenerator:
 
     print(f"  -> Checking prerequisite: '{prereq_node.name}'")
 
-    analysis_results = self.teacher.generate_synthetic_errors(
+    teacher_response = self.teacher.generate_synthetic_errors(
       problem_example=problem_example,
       correct_solution=correct_solution,
       failure_concept=prereq_node,
     )
 
-    for result in analysis_results:
-      print(f"\tResult: Step {result.step_number}")
-      print(
-        f"\tSolution:\n{'\t\t'.join([step + '\n' for step in result.incorrect_solution])}"
-      )
-      training_dataset.append(
-        {
-          "target_concept_id": start_node_id,
-          "failure_concept_id": prereq_node_id,
-          "incorrect_solution": result.incorrect_solution,
-          "incorrect_step_number": result.step_number,
-        }
-      )
+    if teacher_response and teacher_response.is_valid_error:
+      for result in teacher_response.generated_solutions:
+        print(f"\tResult: Step {result.step_number}")
+        print(
+          f"\tSolution:\n\t\t{'\n\t\t'.join([step for step in result.incorrect_solution])}"
+        )
+        training_dataset.append(
+          {
+            "target_concept_id": start_node_id,
+            "failure_concept_id": prereq_node_id,
+            "incorrect_solution": result.incorrect_solution,
+            "incorrect_step_number": result.step_number,
+          }
+        )
 
-      if prereq_node_id not in visited:
-        visited.add(prereq_node_id)
-        queue.append((prereq_node_id, current_depth + 1))
+        if prereq_node_id not in visited:
+          visited.add(prereq_node_id)
+          queue.append((prereq_node_id, current_depth + 1))
     else:
-      print("    - Implausible error. Pruning this path.")
+      print(
+        "    - Implausible error or invalid response. "
+        f"Pruning this path. Reasoning: {teacher_response.reasoning if teacher_response else 'No response'}"
+      )
 
   def generate_error_dataset(
     self, start_node_id: str, max_depth: int = 3
@@ -151,7 +139,8 @@ class DataGenerator:
 
       if current_depth >= self.max_depth:
         print(
-          f"Stopping at node '{current_node_id}' (depth {current_depth}) due to max depth."
+          f"Stopping at node '{current_node_id}' "
+          f"(depth {current_depth}) due to max depth."
         )
         continue
 

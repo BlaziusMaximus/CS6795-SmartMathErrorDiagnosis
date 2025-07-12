@@ -1,8 +1,9 @@
 import os
+import json
 from google import genai
-from pydantic import BaseModel, TypeAdapter
+from pydantic import BaseModel, Field, ValidationError
 from typing import List
-from graph import ConceptNode
+from .graph import ConceptNode
 
 
 class GeneratedErrorDetail(BaseModel):
@@ -10,6 +11,14 @@ class GeneratedErrorDetail(BaseModel):
 
   step_number: int
   incorrect_solution: List[str]
+
+
+class TeacherResponse(BaseModel):
+  """The full response from the teacher model, including validation."""
+
+  is_valid_error: bool
+  reasoning: str
+  generated_solutions: List[GeneratedErrorDetail] = Field(default_factory=list)
 
 
 class TeacherModel:
@@ -27,7 +36,7 @@ class TeacherModel:
     problem_example: str,
     correct_solution: str,
     failure_concept: ConceptNode,
-  ) -> list[GeneratedErrorDetail]:
+  ) -> TeacherResponse | None:
     """
     Generates a synthetic, step-by-step incorrect solution to a math problem.
 
@@ -38,20 +47,22 @@ class TeacherModel:
     Args:
         problem_example: An example problem related to the target concept.
         correct_solution: The correct, step-by-step solution to the problem.
-        failure_concept_name: The name of the prerequisite concept the student is failing at.
+        failure_concept: The prerequisite concept the student is failing at.
 
     Returns:
-        A Recipe object containing the validation and generated solutions.
+        A TeacherResponse object containing the validation and generated solutions,
+        or None if the API response is invalid.
     """
 
     system_instruction = (
       "You are an expert in math pedagogy. Your task is to analyze a math problem, its correct "
       "solution, and a potential prerequisite error. First, you must determine if making the "
-      "specified prerequisite error is a plausible reason for failing the main problem. "
-      "If it is, you will select the steps at which the error could occur, "
+      "specified prerequisite error is a plausible reason for failing the main problem. A plausible "
+      "error is one that directly impacts the steps or concepts required to solve the given problem. "
+      "If it is plausible, you will select the steps at which the error could occur, "
       "then, for each selected step, act as a flawed student and generate a solution that "
-      "makes the specific prerequisite error. The output must consist of a list of "
-      "erroneous solutions."
+      "makes the specific prerequisite error. The output must consist of a single object "
+      "containing your validation and the list of erroneous solutions."
     )
 
     prompt = f"""
@@ -68,12 +79,11 @@ class TeacherModel:
         description: {failure_concept.description}
 
         **Your Tasks:**
-        1.  **Validation:** Is `{failure_concept.name}` a concept that is actively used in the correct solution? Is it plausible that a student could get the main problem wrong because of a mistake in this specific prerequisite?
-        2.  **Generation:** If and only if the error is plausible, identify 1 to 3 steps where the error could occur, then generate distinct, incorrect step-by-step solutions. Each solution should demonstrate the specific error related to `{failure_concept.name}`.
+        1.  **Validation:** Is `{failure_concept.name}` a concept that is actively used in the correct solution? Is it plausible that a student could get the main problem wrong because of a mistake in this specific prerequisite? Set `is_valid_error` to true or false and provide your `reasoning`.
+        2.  **Generation:** If and only if the error is plausible (`is_valid_error: true`), identify 1 to 3 steps where the error could occur, then generate distinct, incorrect step-by-step solutions. Each solution should demonstrate the specific error related to `{failure_concept.name}`.
 
         **Output Format:**
-        Respond with a list of GeneratedErrorDetails, where each GeneratedErrorDetail contains the step number (step_number: int) where the error occurs and the corresponding incorrect solution (incorrect_solution: List[str]).
-        Each incorrect solution should be a list of strings, where each string represents a step in the flawed student's reasoning.
+        Respond with a single JSON object matching the `TeacherResponse` schema.
         """
 
     response = self.client.models.generate_content(
@@ -82,10 +92,17 @@ class TeacherModel:
       config={
         "system_instruction": system_instruction,
         "response_mime_type": "application/json",
-        "response_schema": list[GeneratedErrorDetail],
+        "response_schema": TeacherResponse.model_json_schema(),
       },
     )
-    my_recipes: list[GeneratedErrorDetail] = TypeAdapter(
-      list[GeneratedErrorDetail]
-    ).validate_python(response.parsed)
-    return my_recipes
+    assert response is not None, "API response is None"
+    assert response.text is not None, "API response text is None"
+
+    try:
+      # The API client with a response_schema defined in the request will
+      # automatically parse the JSON.
+      parsed_response = json.loads(response.text)
+      teacher_response = TeacherResponse.model_validate(parsed_response)
+      return teacher_response
+    except (ValidationError, json.JSONDecodeError):
+      return None

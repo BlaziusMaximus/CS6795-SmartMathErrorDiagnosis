@@ -14,12 +14,20 @@ class PrerequisiteEdge(BaseModel):
   weight: float
 
 
+class ProblemSolutionPair(BaseModel):
+  """A container for a canonical problem and its correct, step-by-step solution."""
+
+  problem: str
+  solution: str
+
+
 class ConceptNode(BaseModel):
   """Represents a single concept in the knowledge graph."""
 
   id: str
   name: str
   description: str
+  problem_and_solution: ProblemSolutionPair
   prerequisites: List[PrerequisiteEdge] = Field(default_factory=list)
 
 
@@ -38,6 +46,27 @@ class KnowledgeGraph(BaseModel):
         The ConceptNode object if found, otherwise None.
     """
     return self.nodes.get(node_id)
+
+  def get_prerequisites(self, node_id: str) -> List[ConceptNode]:
+    """Retrieves the prerequisites for a given node.
+
+    Args:
+        node_id: The ID of the concept node.
+
+    Returns:
+        A list of ConceptNode objects that are prerequisites.
+    """
+    node = self.get_node(node_id)
+    if not node:
+      return []
+
+    prerequisites = []
+    for p in node.prerequisites:
+      prerequisite_node = self.get_node(p.concept_id)
+      if prerequisite_node is not None:
+        prerequisites.append(prerequisite_node)
+
+    return prerequisites
 
   @classmethod
   def load_from_json(cls, file_path: Union[str, Path]) -> "KnowledgeGraph":
