@@ -53,7 +53,7 @@ def generate_failures(
     start_nodes = [
       node.id
       for node in knowledge_graph.nodes.values()
-      if node.problems_and_solutions
+      if node.problems_and_solutions and node.prerequisites
     ]
     print(f"Found {len(start_nodes)} problem nodes to process.")
 

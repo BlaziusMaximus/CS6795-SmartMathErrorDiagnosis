@@ -2,10 +2,13 @@
 
 import pytest
 from unittest.mock import MagicMock, patch
-from src.failure_data_generator import FailureDataGenerator
+from src.failure_data_generator import (
+  FailureDataGenerator,
+  SOLUTIONS_BASE,
+  SOLUTION_COUNT_DEPTH_DIVISOR,
+)
 from src.graph import KnowledgeGraph
 from src.teacher import (
-  PortfolioResponse,
   SingleProblemAnalysis,
   PrerequisiteAnalysis,
   TeacherResponse,
@@ -44,8 +47,9 @@ def test_generate_error_dataset_traversal_loop(
 
   # Act
   data_generator = FailureDataGenerator(knowledge_graph, mock_teacher)
-  data_generator.max_depth = 2
-  data_generator.generate_error_dataset(start_node_id=start_node_id)
+  data_generator.generate_error_dataset(
+    start_node_id=start_node_id, max_depth=2
+  )
 
   # Assert
   # The processor should be called for the start node and its one prerequisite
@@ -53,9 +57,9 @@ def test_generate_error_dataset_traversal_loop(
   # Verify it was called with the correct nodes and depths
   call_args_list = mock_process_portfolio.call_args_list
   assert call_args_list[0].args[0].id == start_node_id
-  assert call_args_list[0].args[2] == 0  # depth
+  assert call_args_list[0].args[1] == 1  # depth
   assert call_args_list[1].args[0].id == "154"
-  assert call_args_list[1].args[2] == 1  # depth
+  assert call_args_list[1].args[1] == 2  # depth
 
 
 def test_process_node_portfolio(mock_teacher, knowledge_graph):
@@ -72,45 +76,35 @@ def test_process_node_portfolio(mock_teacher, knowledge_graph):
   current_depth = 1  # Example depth
 
   # Mock the teacher's response
-  mock_teacher.analyze_problem_portfolio.return_value = PortfolioResponse(
-    portfolio_analysis=[
-      SingleProblemAnalysis(
-        problem_str="Problem 1",
-        prerequisite_analyses=[
-          PrerequisiteAnalysis(
-            concept_id=valid_prereq_id,
-            response=TeacherResponse(
-              is_valid_error=True,
-              reasoning="Valid.",
-              generated_solutions=[
-                GeneratedErrorDetail(step_number=1, incorrect_solution=["..."])
-              ],
-            ),
-          ),
-          PrerequisiteAnalysis(
-            concept_id=pruned_prereq_id,
-            response=TeacherResponse(is_valid_error=False, reasoning="Pruned."),
-          ),
-        ],
-      )
-    ]
+  mock_teacher.analyze_single_problem.return_value = SingleProblemAnalysis(
+    problem_str="Problem 1",
+    prerequisite_analyses=[
+      PrerequisiteAnalysis(
+        concept_id=valid_prereq_id,
+        response=TeacherResponse(
+          is_valid_error=True,
+          reasoning="Valid.",
+          generated_solutions=[
+            GeneratedErrorDetail(step_number=1, incorrect_solution=["..."])
+          ],
+        ),
+      ),
+      PrerequisiteAnalysis(
+        concept_id=pruned_prereq_id,
+        response=TeacherResponse(is_valid_error=False, reasoning="Pruned."),
+      ),
+    ],
   )
 
   # Act
   data_generator = FailureDataGenerator(knowledge_graph, mock_teacher)
   new_examples, nodes_to_visit = data_generator._process_node_portfolio(
-    current_node, visited=set(), current_depth=current_depth
+    current_node, current_depth=current_depth
   )
 
   # Assert
-  assert len(new_examples) == 1
+  # Since there are 5 problems in the test node, the teacher should be called 5 times.
+  assert mock_teacher.analyze_single_problem.call_count == 5
+  assert len(new_examples) == 5
   assert new_examples[0]["failure_concept_id"] == valid_prereq_id
-  assert "prerequisite_chain" in new_examples[0]
-  assert isinstance(new_examples[0]["prerequisite_chain"], list)
   assert nodes_to_visit == {valid_prereq_id}
-
-  # Check that the teacher was called with the correct max_solutions
-  expected_max_solutions = max(1, 10 // (2**current_depth))
-  mock_teacher.analyze_problem_portfolio.assert_called_once()
-  call_args = mock_teacher.analyze_problem_portfolio.call_args
-  assert call_args.kwargs["max_solutions_to_generate"] == expected_max_solutions

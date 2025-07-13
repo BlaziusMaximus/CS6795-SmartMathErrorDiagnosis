@@ -4,7 +4,7 @@ import os
 import json
 from unittest.mock import patch, MagicMock
 import pytest
-from src.teacher import TeacherModel, PortfolioResponse
+from src.teacher import TeacherModel, SingleProblemAnalysis
 from src.graph import ConceptNode, ProblemSolutionPair
 
 
@@ -42,38 +42,34 @@ def test_teacher_model_initialization_raises_error_if_no_api_key(
       TeacherModel(rate_limiter=mock_rate_limiter)
 
 
-def test_analyze_problem_portfolio_success(mock_env, mock_rate_limiter):
-  """Tests the successful analysis of a problem portfolio."""
+def test_analyze_single_problem_success(mock_env, mock_rate_limiter):
+  """Tests the successful analysis of a single problem."""
   with patch("google.genai.Client") as mock_client:
     # Arrange
     mock_api_response = {
-      "portfolio_analysis": [
+      "problem_str": "2 + 2",
+      "prerequisite_analyses": [
         {
-          "problem_str": "2 + 2",
-          "prerequisite_analyses": [
-            {
-              "concept_id": "1",
-              "response": {
-                "is_valid_error": True,
-                "reasoning": "This is a plausible error.",
-                "generated_solutions": [
-                  {
-                    "step_number": 1,
-                    "incorrect_solution": ["Solution 1"],
-                  }
-                ],
-              },
-            }
-          ],
+          "concept_id": "1",
+          "response": {
+            "is_valid_error": True,
+            "reasoning": "This is a plausible error.",
+            "generated_solutions": [
+              {
+                "step_number": 1,
+                "incorrect_solution": ["Solution 1"],
+              }
+            ],
+          },
         }
-      ]
+      ],
     }
     mock_client.return_value.models.generate_content.return_value.text = (
       json.dumps(mock_api_response)
     )
 
     teacher = TeacherModel(rate_limiter=mock_rate_limiter)
-    problems = [ProblemSolutionPair(problem="2 + 2", solution="4")]
+    problem = ProblemSolutionPair(problem="2 + 2", solution="4")
     concepts = [
       ConceptNode(
         id="1", name="Addition", description="...", problems_and_solutions=[]
@@ -81,17 +77,17 @@ def test_analyze_problem_portfolio_success(mock_env, mock_rate_limiter):
     ]
 
     # Act
-    result = teacher.analyze_problem_portfolio(
-      problems, concepts, max_solutions_to_generate=5
+    result = teacher.analyze_single_problem(
+      problem, concepts, solutions_to_generate=5
     )
 
     # Assert
     mock_rate_limiter.acquire.assert_called_once()
-    assert isinstance(result, PortfolioResponse)
-    assert len(result.portfolio_analysis) == 1
+    assert isinstance(result, SingleProblemAnalysis)
+    assert len(result.prerequisite_analyses) == 1
 
 
-def test_analyze_problem_portfolio_handles_malformed_json(
+def test_analyze_single_problem_handles_malformed_json(
   mock_env, mock_rate_limiter
 ):
   """Tests that the method handles malformed JSON and returns None."""
@@ -102,7 +98,7 @@ def test_analyze_problem_portfolio_handles_malformed_json(
     )
 
     teacher = TeacherModel(rate_limiter=mock_rate_limiter)
-    problems = [ProblemSolutionPair(problem="2 + 2", solution="4")]
+    problem = ProblemSolutionPair(problem="2 + 2", solution="4")
     concepts = [
       ConceptNode(
         id="1", name="Addition", description="...", problems_and_solutions=[]
@@ -110,15 +106,15 @@ def test_analyze_problem_portfolio_handles_malformed_json(
     ]
 
     # Act
-    result = teacher.analyze_problem_portfolio(
-      problems, concepts, max_solutions_to_generate=5
+    result = teacher.analyze_single_problem(
+      problem, concepts, solutions_to_generate=5
     )
 
     # Assert
     assert result is None
 
 
-def test_analyze_problem_portfolio_handles_validation_error(
+def test_analyze_single_problem_handles_validation_error(
   mock_env, mock_rate_limiter
 ):
   """
@@ -127,14 +123,14 @@ def test_analyze_problem_portfolio_handles_validation_error(
   with patch("google.genai.Client") as mock_client:
     # Arrange
     mock_api_response = {
-      "portfolio_analysis": [{"problem_str": "2 + 2"}]  # Missing fields
+      "prerequisite_analyses": [{"concept_id": "1"}]  # Missing fields
     }
     mock_client.return_value.models.generate_content.return_value.text = (
       json.dumps(mock_api_response)
     )
 
     teacher = TeacherModel(rate_limiter=mock_rate_limiter)
-    problems = [ProblemSolutionPair(problem="2 + 2", solution="4")]
+    problem = ProblemSolutionPair(problem="2 + 2", solution="4")
     concepts = [
       ConceptNode(
         id="1", name="Addition", description="...", problems_and_solutions=[]
@@ -142,8 +138,8 @@ def test_analyze_problem_portfolio_handles_validation_error(
     ]
 
     # Act
-    result = teacher.analyze_problem_portfolio(
-      problems, concepts, max_solutions_to_generate=5
+    result = teacher.analyze_single_problem(
+      problem, concepts, solutions_to_generate=5
     )
 
     # Assert
