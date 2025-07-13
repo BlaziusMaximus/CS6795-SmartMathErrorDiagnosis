@@ -3,20 +3,28 @@ import json
 import torch
 from transformers import AutoTokenizer
 from src.student import StudentModel
+from src.graph import KnowledgeGraph
 
 
-def diagnose(model_dir: str, problem_example: str, incorrect_solution: str):
+def diagnose(
+  model_dir: str,
+  target_concept_id: str,
+  problem_example: str,
+  incorrect_solution: str,
+):
   """
   Diagnoses the conceptual error in an incorrect solution using the fine-tuned
   StudentModel.
 
   Args:
       model_dir: The directory where the fine-tuned model is saved.
+      target_concept_id: The ID of the concept the problem belongs to.
       problem_example: The original problem text.
       incorrect_solution: The incorrect solution text to diagnose.
   """
   # --- 1. Load Model, Tokenizer, and Label Map ---
   print(f"--- Loading model from {model_dir} ---")
+  knowledge_graph = KnowledgeGraph.load_from_json("knowledge_graph.json")
   with open(f"{model_dir}/label_map.json", "r") as f:
     label_map = json.load(f)
 
@@ -32,11 +40,15 @@ def diagnose(model_dir: str, problem_example: str, incorrect_solution: str):
 
   # --- 2. Tokenize the Input ---
   print("\n--- Tokenizing Input ---")
-  text = f"Problem: {problem_example} Solution: {incorrect_solution}"
+  descendants = knowledge_graph.get_all_descendants(target_concept_id)
+  descendant_names = ", ".join([d.name for d in descendants])
+  prereq_context = f"Relevant Concepts: {descendant_names}"
+  text = f"Problem: {problem_example} [SEP] {prereq_context} [SEP] Solution: {incorrect_solution}"
+
   encoding = tokenizer.encode_plus(
     text,
     add_special_tokens=True,
-    max_length=256,
+    max_length=512,
     padding="max_length",
     truncation=True,
     return_attention_mask=True,
@@ -75,6 +87,12 @@ if __name__ == "__main__":
     help="Directory containing the fine-tuned model, tokenizer, and label map.",
   )
   parser.add_argument(
+    "--target-concept-id",
+    type=str,
+    required=True,
+    help="The ID of the concept the problem belongs to.",
+  )
+  parser.add_argument(
     "--problem",
     type=str,
     required=True,
@@ -90,6 +108,7 @@ if __name__ == "__main__":
 
   diagnose(
     model_dir=args.model_dir,
+    target_concept_id=args.target_concept_id,
     problem_example=args.problem,
     incorrect_solution=args.solution,
   )

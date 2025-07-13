@@ -4,7 +4,7 @@ from google import genai
 from pydantic import BaseModel, Field, ValidationError
 from typing import List
 from .graph import ConceptNode, ProblemSolutionPair
-from .ratelimiter import ThreadSafeRateLimiter
+from .rate_limiter import ThreadSafeRateLimiter
 
 
 class GeneratedErrorDetail(BaseModel):

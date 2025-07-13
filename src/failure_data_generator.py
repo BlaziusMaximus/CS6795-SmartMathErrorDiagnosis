@@ -80,15 +80,18 @@ class FailureDataGenerator:
         if prereq_analysis.response.is_valid_error:
           prereq_id = prereq_analysis.concept_id
           nodes_to_visit_next.add(prereq_id)
+          # Get the full prerequisite chain for this specific failure.
+          prereq_chain = self.graph.get_all_descendants(prereq_id)
+          prereq_chain_ids = [p.id for p in prereq_chain]
+
           for result in prereq_analysis.response.generated_solutions:
             new_examples.append(
               {
                 "problem_example": problem_analysis.problem_str,
                 "target_concept_id": current_node.id,
                 "failure_concept_id": prereq_id,
-                "incorrect_solution": "\n".join(
-                  result.incorrect_solution
-                ),
+                "prerequisite_chain": prereq_chain_ids,
+                "incorrect_solution": "\n".join(result.incorrect_solution),
                 "incorrect_step_number": result.step_number,
               }
             )

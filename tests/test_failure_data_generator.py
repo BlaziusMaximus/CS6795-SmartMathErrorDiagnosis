@@ -105,6 +105,8 @@ def test_process_node_portfolio(mock_teacher, knowledge_graph):
   # Assert
   assert len(new_examples) == 1
   assert new_examples[0]["failure_concept_id"] == valid_prereq_id
+  assert "prerequisite_chain" in new_examples[0]
+  assert isinstance(new_examples[0]["prerequisite_chain"], list)
   assert nodes_to_visit == {valid_prereq_id}
 
   # Check that the teacher was called with the correct max_solutions

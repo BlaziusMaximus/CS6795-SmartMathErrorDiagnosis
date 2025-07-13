@@ -5,7 +5,7 @@ import concurrent.futures
 from src.graph import KnowledgeGraph
 from src.teacher import TeacherModel
 from src.failure_data_generator import FailureDataGenerator
-from src.ratelimiter import ThreadSafeRateLimiter
+from src.rate_limiter import ThreadSafeRateLimiter
 
 
 def generate_data_for_node(
@@ -116,7 +116,7 @@ if __name__ == "__main__":
   parser.add_argument(
     "--max-workers",
     type=int,
-    default=5,
+    default=20,
     help="The maximum number of worker threads.",
   )
   args = parser.parse_args()

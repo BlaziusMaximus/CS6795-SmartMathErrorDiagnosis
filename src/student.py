@@ -3,6 +3,9 @@ from torch.utils.data import Dataset
 from transformers import BertTokenizer, BertForSequenceClassification
 
 
+from .graph import KnowledgeGraph
+
+
 class StudentModel(torch.nn.Module):
   """
   A lightweight classification model (the 'Student') that learns to diagnose
@@ -48,7 +51,8 @@ class ErrorDiagnosisDataset(Dataset):
     dataset: list[dict],
     tokenizer: BertTokenizer,
     label_map: dict,
-    max_length: int = 256,
+    knowledge_graph: KnowledgeGraph,
+    max_length: int = 512,  # Increased max_length for more context
   ):
     """
     Initializes the dataset.
@@ -57,11 +61,13 @@ class ErrorDiagnosisDataset(Dataset):
         dataset: The list of data examples from DataGenerator.
         tokenizer: The BERT tokenizer instance.
         label_map: A dictionary mapping concept_id strings to integer labels.
+        knowledge_graph: The full knowledge graph instance.
         max_length: The maximum token length for the model input.
     """
     self.dataset = dataset
     self.tokenizer = tokenizer
     self.label_map = label_map
+    self.knowledge_graph = knowledge_graph
     self.max_length = max_length
 
   def __len__(self):
@@ -76,7 +82,17 @@ class ErrorDiagnosisDataset(Dataset):
 
     problem = item["problem_example"]
     solution = item["incorrect_solution"]
-    text = f"Problem: {problem} Solution: {solution}"
+    target_concept_id = item["target_concept_id"]
+
+    # Get the names of all prerequisite descendants for the target concept
+    descendants = self.knowledge_graph.get_all_descendants(target_concept_id)
+    descendant_names = ", ".join([d.name for d in descendants])
+    prereq_context = f"Relevant Concepts: {descendant_names}"
+
+    # Combine all information into a single input string
+    text = (
+      f"Problem: {problem} [SEP] {prereq_context} [SEP] Solution: {solution}"
+    )
 
     # The label is the specific prerequisite concept that was the root cause.
     label_id = item["failure_concept_id"]
@@ -94,7 +110,7 @@ class ErrorDiagnosisDataset(Dataset):
     )
 
     return {
-      "input_ids": encoding["input_ids"].squeeze(),
-      "attention_mask": encoding["attention_mask"].squeeze(),
+      "input_ids": encoding["input_ids"].squeeze(),  # type: ignore
+      "attention_mask": encoding["attention_mask"].squeeze(),  # type: ignore
       "labels": torch.tensor(label, dtype=torch.long),
     }

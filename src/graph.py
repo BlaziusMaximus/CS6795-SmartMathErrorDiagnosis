@@ -3,6 +3,7 @@
 import json
 from pathlib import Path
 from typing import Dict, List, Union
+from collections import deque
 
 from pydantic import BaseModel, Field
 
@@ -86,3 +87,34 @@ class KnowledgeGraph(BaseModel):
       for node_data in data
     }
     return cls(nodes=nodes)
+
+  def get_all_descendants(self, node_id: str) -> List[ConceptNode]:
+    """
+    Performs a traversal to get all unique prerequisite descendants for a node.
+
+    Args:
+        node_id: The ID of the node to start the traversal from.
+
+    Returns:
+        A flat list of all unique descendant ConceptNode objects.
+    """
+    descendants = []
+    queue = deque([node_id])
+    visited = {node_id}
+
+    while queue:
+      current_id = queue.popleft()
+      current_node = self.get_node(current_id)
+      if not current_node:
+        continue
+
+      for prereq_edge in current_node.prerequisites:
+        prereq_id = prereq_edge.concept_id
+        if prereq_id not in visited:
+          visited.add(prereq_id)
+          prereq_node = self.get_node(prereq_id)
+          if prereq_node:
+            descendants.append(prereq_node)
+            queue.append(prereq_id)
+
+    return descendants

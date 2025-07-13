@@ -83,3 +83,29 @@ def test_node_without_prerequisites(knowledge_graph: KnowledgeGraph):
   assert node.prerequisites == []
   prerequisites = knowledge_graph.get_prerequisites("861")
   assert prerequisites == []
+
+
+def test_get_all_descendants(knowledge_graph: KnowledgeGraph):
+  """
+  Tests that all unique descendants for a node are retrieved correctly.
+  """
+  # The node "Solving 2x2 Systems" (934) has a known, multi-level tree.
+  # 934 -> 864 -> 152 -> 1166 -> 1167 -> 861 (and other branches)
+  start_node_id = "934"
+  descendants = knowledge_graph.get_all_descendants(start_node_id)
+
+  # Assertions
+  assert descendants is not None
+  descendant_ids = {d.id for d in descendants}
+
+  # Check for specific nodes at different depths
+  assert "864" in descendant_ids  # Direct prerequisite (depth 1)
+  assert "152" in descendant_ids  # Prereq of 864 (depth 2)
+  assert "1166" in descendant_ids  # Prereq of 152 (depth 3)
+  assert "861" in descendant_ids  # Deepest node
+
+  # Check that the start node itself is not in the list
+  assert start_node_id not in descendant_ids
+
+  # Check that there are no duplicates
+  assert len(descendants) == len(descendant_ids)

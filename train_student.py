@@ -14,6 +14,7 @@ from sklearn.model_selection import train_test_split
 # Your existing Pydantic/Dataset classes would be here or imported
 # For this script, we assume they are imported from src.student
 from src.student import StudentModel, ErrorDiagnosisDataset
+from src.graph import KnowledgeGraph
 
 
 def train(
@@ -30,6 +31,7 @@ def train(
   """
   # --- 1. Load and Split Dataset ---
   print("--- Step 1: Loading and Splitting Dataset ---")
+  knowledge_graph = KnowledgeGraph.load_from_json("knowledge_graph.json")
   with open(data_file, "r") as f:
     raw_dataset = json.load(f)
 
@@ -63,10 +65,14 @@ def train(
   with open(os.path.join(output_model_path, "label_map.json"), "w") as f:
     json.dump(label_map, f)
 
-  tokenizer = AutoTokenizer.from_pretrained(model_name)
+  tokenizer = AutoTokenizer.from_pretrained(model_name);
 
-  train_dataset = ErrorDiagnosisDataset(train_texts, tokenizer, label_map)
-  val_dataset = ErrorDiagnosisDataset(val_texts, tokenizer, label_map)
+  train_dataset = ErrorDiagnosisDataset(
+    train_texts, tokenizer, label_map, knowledge_graph
+  )
+  val_dataset = ErrorDiagnosisDataset(
+    val_texts, tokenizer, label_map, knowledge_graph
+  )
 
   train_dataloader = DataLoader(
     train_dataset, batch_size=batch_size, shuffle=True
