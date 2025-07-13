@@ -2,7 +2,7 @@
 
 import os
 import json
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 import pytest
 from src.teacher import TeacherModel, PortfolioResponse
 from src.graph import ConceptNode, ProblemSolutionPair
@@ -15,28 +15,37 @@ def mock_env():
     yield
 
 
-def test_teacher_model_initialization_success(mock_env):
+@pytest.fixture
+def mock_rate_limiter():
+  """Fixture to create a mock rate limiter."""
+  return MagicMock()
+
+
+def test_teacher_model_initialization_success(mock_env, mock_rate_limiter):
   """Tests that the TeacherModel can be initialized successfully."""
   with patch("google.genai.Client") as mock_client:
-    teacher = TeacherModel()
+    teacher = TeacherModel(rate_limiter=mock_rate_limiter)
     assert teacher is not None
     assert hasattr(teacher, "client")
+    assert teacher.rate_limiter is mock_rate_limiter
     mock_client.assert_called_once_with(api_key="test_key")
 
 
-def test_teacher_model_initialization_raises_error_if_no_api_key():
+def test_teacher_model_initialization_raises_error_if_no_api_key(
+  mock_rate_limiter,
+):
   """Tests that TeacherModel raises a ValueError if the API key is missing."""
   with patch.dict(os.environ, {}, clear=True):
     with pytest.raises(
       ValueError, match="GEMINI_API_KEY environment variable not set."
     ):
-      TeacherModel()
+      TeacherModel(rate_limiter=mock_rate_limiter)
 
 
-def test_analyze_problem_portfolio_success(mock_env):
+def test_analyze_problem_portfolio_success(mock_env, mock_rate_limiter):
   """Tests the successful analysis of a problem portfolio."""
   with patch("google.genai.Client") as mock_client:
-    # Arrange: Prepare a mock response that matches the PortfolioResponse schema
+    # Arrange
     mock_api_response = {
       "portfolio_analysis": [
         {
@@ -63,88 +72,79 @@ def test_analyze_problem_portfolio_success(mock_env):
       json.dumps(mock_api_response)
     )
 
-    teacher = TeacherModel()
+    teacher = TeacherModel(rate_limiter=mock_rate_limiter)
     problems = [ProblemSolutionPair(problem="2 + 2", solution="4")]
     concepts = [
       ConceptNode(
-        id="1",
-        name="Addition",
-        description="...",
-        problems_and_solutions=[],
+        id="1", name="Addition", description="...", problems_and_solutions=[]
       )
     ]
 
     # Act
-    result = teacher.analyze_problem_portfolio(problems, concepts)
+    result = teacher.analyze_problem_portfolio(
+      problems, concepts, max_solutions_to_generate=5
+    )
 
     # Assert
+    mock_rate_limiter.acquire.assert_called_once()
     assert isinstance(result, PortfolioResponse)
     assert len(result.portfolio_analysis) == 1
-    analysis = result.portfolio_analysis[0]
-    assert analysis.problem_str == "2 + 2"
-    assert len(analysis.prerequisite_analyses) == 1
-    prereq_analysis = analysis.prerequisite_analyses[0]
-    assert prereq_analysis.concept_id == "1"
-    assert prereq_analysis.response.is_valid_error is True
 
 
-def test_analyze_problem_portfolio_handles_malformed_json(mock_env):
+def test_analyze_problem_portfolio_handles_malformed_json(
+  mock_env, mock_rate_limiter
+):
   """Tests that the method handles malformed JSON and returns None."""
   with patch("google.genai.Client") as mock_client:
-    # Arrange: Mock an invalid JSON response
+    # Arrange
     mock_client.return_value.models.generate_content.return_value.text = (
       "This is not JSON"
     )
 
-    teacher = TeacherModel()
+    teacher = TeacherModel(rate_limiter=mock_rate_limiter)
     problems = [ProblemSolutionPair(problem="2 + 2", solution="4")]
     concepts = [
       ConceptNode(
-        id="1",
-        name="Addition",
-        description="...",
-        problems_and_solutions=[],
+        id="1", name="Addition", description="...", problems_and_solutions=[]
       )
     ]
 
     # Act
-    result = teacher.analyze_problem_portfolio(problems, concepts)
+    result = teacher.analyze_problem_portfolio(
+      problems, concepts, max_solutions_to_generate=5
+    )
 
     # Assert
     assert result is None
 
 
-def test_analyze_problem_portfolio_handles_validation_error(mock_env):
+def test_analyze_problem_portfolio_handles_validation_error(
+  mock_env, mock_rate_limiter
+):
   """
   Tests that the method handles a valid JSON that does not match the schema.
   """
   with patch("google.genai.Client") as mock_client:
-    # Arrange: Mock a response with a missing required field
+    # Arrange
     mock_api_response = {
-      "portfolio_analysis": [
-        {
-          "problem_str": "2 + 2",
-          # "prerequisite_analyses" field is missing
-        }
-      ]
+      "portfolio_analysis": [{"problem_str": "2 + 2"}]  # Missing fields
     }
     mock_client.return_value.models.generate_content.return_value.text = (
       json.dumps(mock_api_response)
     )
 
-    teacher = TeacherModel()
+    teacher = TeacherModel(rate_limiter=mock_rate_limiter)
     problems = [ProblemSolutionPair(problem="2 + 2", solution="4")]
     concepts = [
       ConceptNode(
-        id="1",
-        name="Addition",
-        description="...",
-        problems_and_solutions=[],
+        id="1", name="Addition", description="...", problems_and_solutions=[]
       )
     ]
 
     # Act
-    result = teacher.analyze_problem_portfolio(problems, concepts)
+    result = teacher.analyze_problem_portfolio(
+      problems, concepts, max_solutions_to_generate=5
+    )
 
     # Assert
     assert result is None

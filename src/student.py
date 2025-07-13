@@ -12,7 +12,7 @@ class StudentModel(torch.nn.Module):
   classification head to predict the correct error concept ID.
   """
 
-  def __init__(self, num_labels: int, model_name: str = "bert-base-uncased"):
+  def __init__(self, num_labels: int, model_name: str):
     """
     Initializes the StudentModel.
 
@@ -74,8 +74,9 @@ class ErrorDiagnosisDataset(Dataset):
     """
     item = self.dataset[idx]
 
-    # We'll use the incorrect solution as the primary input text.
-    text = item["incorrect_solution"]
+    problem = item["problem_example"]
+    solution = item["incorrect_solution"]
+    text = f"Problem: {problem} Solution: {solution}"
 
     # The label is the specific prerequisite concept that was the root cause.
     label_id = item["failure_concept_id"]

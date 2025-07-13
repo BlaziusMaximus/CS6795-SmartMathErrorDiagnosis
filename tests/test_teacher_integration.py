@@ -5,6 +5,7 @@ from pathlib import Path
 import re
 from src.teacher import TeacherModel
 from src.graph import KnowledgeGraph
+from src.ratelimiter import ThreadSafeRateLimiter
 
 
 def normalize_string(s: str) -> str:
@@ -23,16 +24,22 @@ def knowledge_graph() -> KnowledgeGraph:
   return KnowledgeGraph.load_from_json(json_path)
 
 
+@pytest.fixture(scope="module")
+def rate_limiter() -> ThreadSafeRateLimiter:
+  """Provides a shared rate limiter for integration tests."""
+  return ThreadSafeRateLimiter(max_requests=999, period_seconds=60)
+
+
 @pytest.mark.online
 def test_portfolio_analysis_plausible_and_implausible(
-  knowledge_graph: KnowledgeGraph,
+  knowledge_graph: KnowledgeGraph, rate_limiter: ThreadSafeRateLimiter
 ):
   """
   Tests that the teacher can analyze a portfolio containing both a plausible
   and an implausible prerequisite error for a single problem.
   """
   # Arrange
-  teacher = TeacherModel()
+  teacher = TeacherModel(rate_limiter=rate_limiter)
   problem_node = knowledge_graph.get_node("934")  # Solving 2x2 Systems
   assert problem_node and problem_node.problems_and_solutions
   problem_to_test = problem_node.problems_and_solutions[0]
@@ -47,6 +54,7 @@ def test_portfolio_analysis_plausible_and_implausible(
   portfolio_response = teacher.analyze_problem_portfolio(
     problems_and_solutions=[problem_to_test],
     failure_concepts=[plausible_prereq, implausible_prereq],
+    max_solutions_to_generate=2,
   )
 
   # Assert
@@ -88,13 +96,15 @@ def test_portfolio_analysis_plausible_and_implausible(
 
 
 @pytest.mark.online
-def test_portfolio_analysis_multiple_problems(knowledge_graph: KnowledgeGraph):
+def test_portfolio_analysis_multiple_problems(
+  knowledge_graph: KnowledgeGraph, rate_limiter: ThreadSafeRateLimiter
+):
   """
   Tests that the teacher can analyze a portfolio with multiple distinct
   problems against a single prerequisite.
   """
   # Arrange
-  teacher = TeacherModel()
+  teacher = TeacherModel(rate_limiter=rate_limiter)
 
   # Problem 1: Solving a 2x2 system
   problem_node_1 = knowledge_graph.get_node("934")
@@ -114,6 +124,7 @@ def test_portfolio_analysis_multiple_problems(knowledge_graph: KnowledgeGraph):
   portfolio_response = teacher.analyze_problem_portfolio(
     problems_and_solutions=[problem_1, problem_2],
     failure_concepts=[prereq],
+    max_solutions_to_generate=1,
   )
 
   # Assert

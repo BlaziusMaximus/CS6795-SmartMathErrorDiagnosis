@@ -111,10 +111,6 @@
       {
         "concept_id": "1729",
         "weight": 1.0
-      },
-      {
-        "concept_id": "1195",
-        "weight": 1.0
       }
     ]
   },
@@ -364,7 +360,7 @@
     ],
     "prerequisites": [
       {
-        "concept_id": "1166",
+        "concept_id": "861",
         "weight": 1.0
       }
     ]
@@ -397,7 +393,7 @@
     ],
     "prerequisites": [
       {
-        "concept_id": "861",
+        "concept_id": "146",
         "weight": 1.0
       }
     ]
@@ -438,7 +434,7 @@
         "weight": 1.0
       },
       {
-        "concept_id": "1166",
+        "concept_id": "862",
         "weight": 1.0
       }
     ]
@@ -475,7 +471,7 @@
         "weight": 1.0
       },
       {
-        "concept_id": "1166",
+        "concept_id": "862",
         "weight": 1.0
       }
     ]
@@ -539,12 +535,7 @@
         "solution": "Step 1: Analyze the dimensions. M is a 1x1 matrix.\n\nStep 2: Check 'Square'. A square matrix has the same number of rows and columns. 1=1, so it is a square matrix.\n\nStep 3: Check 'Diagonal'. A diagonal matrix is a square matrix where all off-diagonal entries are zero. In a 1x1 matrix, there are no off-diagonal entries. The condition is therefore trivially true. It is a diagonal matrix.\n\nStep 4: Check 'Identity'. An identity matrix is a diagonal matrix where all diagonal entries are 1. The diagonal entry here is 5, not 1. It is not an identity matrix.\n\nStep 5: Check 'Row Vector'. A row vector has only one row. M has one row, so it is a row vector.\n\nStep 6: Check 'Column Vector'. A column vector has only one column. M has one column, so it is a column vector.\n\nConclusion: The matrix M can be described as Square, Diagonal, a Row Vector, and a Column Vector."
       }
     ],
-    "prerequisites": [
-      {
-        "concept_id": "1167",
-        "weight": 1.0
-      }
-    ]
+    "prerequisites": []
   },
   {
     "id": "177",

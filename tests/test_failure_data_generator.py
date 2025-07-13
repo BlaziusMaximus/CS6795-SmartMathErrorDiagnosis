@@ -50,24 +50,28 @@ def test_generate_error_dataset_traversal_loop(
   # Assert
   # The processor should be called for the start node and its one prerequisite
   assert mock_process_portfolio.call_count == 2
-  # Verify it was called with the correct nodes
+  # Verify it was called with the correct nodes and depths
   call_args_list = mock_process_portfolio.call_args_list
   assert call_args_list[0].args[0].id == start_node_id
+  assert call_args_list[0].args[2] == 0  # depth
   assert call_args_list[1].args[0].id == "154"
+  assert call_args_list[1].args[2] == 1  # depth
 
 
 def test_process_node_portfolio(mock_teacher, knowledge_graph):
   """
   Tests the logic for processing a single node's portfolio, checking if it
-  correctly interprets the teacher's response.
+  correctly interprets the teacher's response and calls the teacher with
+  the correct number of solutions to generate.
   """
   # Arrange
   current_node = knowledge_graph.get_node("934")  # Solving 2x2 Systems
   assert current_node is not None
   valid_prereq_id = "864"
   pruned_prereq_id = "1729"
+  current_depth = 1  # Example depth
 
-  # Mock the teacher's response for the portfolio
+  # Mock the teacher's response
   mock_teacher.analyze_problem_portfolio.return_value = PortfolioResponse(
     portfolio_analysis=[
       SingleProblemAnalysis(
@@ -95,11 +99,16 @@ def test_process_node_portfolio(mock_teacher, knowledge_graph):
   # Act
   data_generator = FailureDataGenerator(knowledge_graph, mock_teacher)
   new_examples, nodes_to_visit = data_generator._process_node_portfolio(
-    current_node, visited=set()
+    current_node, visited=set(), current_depth=current_depth
   )
 
   # Assert
   assert len(new_examples) == 1
   assert new_examples[0]["failure_concept_id"] == valid_prereq_id
   assert nodes_to_visit == {valid_prereq_id}
+
+  # Check that the teacher was called with the correct max_solutions
+  expected_max_solutions = max(1, 10 // (2**current_depth))
   mock_teacher.analyze_problem_portfolio.assert_called_once()
+  call_args = mock_teacher.analyze_problem_portfolio.call_args
+  assert call_args.kwargs["max_solutions_to_generate"] == expected_max_solutions

@@ -6,3 +6,5 @@ tests/__pycache__/
 .vscode/
 scratchpad.txt
 GEMINI.md
+failure_data/
+student_model_finetuned*/

@@ -25,7 +25,7 @@ class FailureDataGenerator:
     self.max_depth = 3
 
   def _process_node_portfolio(
-    self, current_node: ConceptNode, visited: Set[str]
+    self, current_node: ConceptNode, visited: Set[str], current_depth: int
   ) -> Tuple[List[Dict], Set[str]]:
     """
     Analyzes a node's portfolio of problems against its prerequisites.
@@ -33,6 +33,7 @@ class FailureDataGenerator:
     Args:
         current_node: The node whose problems are to be analyzed.
         visited: A set of visited node IDs.
+        current_depth: The current depth in the graph traversal.
 
     Returns:
         A tuple containing:
@@ -55,14 +56,19 @@ class FailureDataGenerator:
     if not prerequisites_to_process:
       return [], set()
 
+    # Calculate how many solutions to generate based on depth
+    # Depth 0 (direct prereqs) -> 10, Depth 1 -> 5, Depth 2 -> 2, etc.
+    max_solutions = max(1, 10 // (2**current_depth))
+
     print(
       f"  -> Analyzing a portfolio of {len(current_node.problems_and_solutions)} problems "
-      f"against {len(prerequisites_to_process)} prerequisites..."
+      f"against {len(prerequisites_to_process)} prerequisites (gen up to {max_solutions} sols)..."
     )
 
     portfolio_response = self.teacher.analyze_problem_portfolio(
       problems_and_solutions=current_node.problems_and_solutions,
       failure_concepts=prerequisites_to_process,
+      max_solutions_to_generate=max_solutions,
     )
 
     if not portfolio_response:
@@ -77,9 +83,12 @@ class FailureDataGenerator:
           for result in prereq_analysis.response.generated_solutions:
             new_examples.append(
               {
+                "problem_example": problem_analysis.problem_str,
                 "target_concept_id": current_node.id,
                 "failure_concept_id": prereq_id,
-                "incorrect_solution": result.incorrect_solution,
+                "incorrect_solution": "\n".join(
+                  result.incorrect_solution
+                ),
                 "incorrect_step_number": result.step_number,
               }
             )
@@ -131,7 +140,7 @@ class FailureDataGenerator:
       )
 
       new_examples, nodes_to_visit_next = self._process_node_portfolio(
-        current_node, visited
+        current_node, visited, current_depth
       )
       full_dataset.extend(new_examples)
 
