@@ -52,4 +52,5 @@ class ThreadSafeRateLimiter:
           )
 
       if time_to_wait > 0:
+        print(f"Rate limit exceeded. Waiting for {time_to_wait:.2f} seconds...")
         time.sleep(time_to_wait)

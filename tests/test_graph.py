@@ -57,43 +57,6 @@ def test_get_prerequisites(knowledge_graph: KnowledgeGraph):
   assert "934" in prereq_ids
 
 
-def test_get_prerequisites_at_depth(knowledge_graph: KnowledgeGraph):
-  """Tests retrieving prerequisites at a depth greater than 1."""
-  # The node "Solving 4x4 Systems" (1023) has prerequisites at multiple depths.
-  # A known prerequisite path is:
-  # 1023 -> 934 ("Solving 2x2 Systems") -> 864 ("Inverse of 2x2") -> 152 ("Determinant of 2x2")
-  start_node_id = "1023"
-
-  # Get prerequisites at depth 2
-  prerequisites_depth_2 = knowledge_graph.get_prerequisites(
-    start_node_id, depth=2
-  )
-  prereq_ids_depth_2 = {p.id for p in prerequisites_depth_2}
-
-  # Assertions for depth 2
-  # We expect to find the prerequisites of this node's direct prerequisites
-  # ("154", "155", "934"). From other tests, we know "864" is a prereq of "934".
-  assert "864" in prereq_ids_depth_2
-
-  # Get prerequisites at depth 3
-  prerequisites_depth_3 = knowledge_graph.get_prerequisites(
-    start_node_id, depth=3
-  )
-  prereq_ids_depth_3 = {p.id for p in prerequisites_depth_3}
-
-  # From other tests, we know "152" is a prereq of "864".
-  assert "152" in prereq_ids_depth_3
-
-  # Test that the function returns unique nodes, even if reached via multiple paths.
-  assert len(prerequisites_depth_2) == len(prereq_ids_depth_2)
-
-
-def test_get_prerequisites_with_invalid_depth(knowledge_graph: KnowledgeGraph):
-  """Tests that get_prerequisites raises an error for invalid depth."""
-  with pytest.raises(AssertionError, match="Depth must be at least 1"):
-    knowledge_graph.get_prerequisites("1023", depth=0)
-
-
 def test_node_with_problems_and_solutions(knowledge_graph: KnowledgeGraph):
   """Tests that a node with problems and solutions is loaded correctly."""
   # Get a node with a problem

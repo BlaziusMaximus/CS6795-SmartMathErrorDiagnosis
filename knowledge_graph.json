@@ -504,15 +504,19 @@
     ],
     "prerequisites": [
       {
+        "concept_id": "29",
+        "weight": 1.0
+      },
+      {
         "concept_id": "861",
         "weight": 1.0
       }
     ]
   },
   {
-    "id": "1166",
+    "id": "862",
     "name": "Zero, Square, Diagonal and Identity Matrices",
-    "description": "A square matrix has the same number of rows and columns. An identity matrix is a diagonal matrix where all diagonal entries are 1.",
+    "description": "An n x m matrix in which all entries are zeros is called a zero matrix. A square matrix has the same number of rows and columns (n x n). A diagonal matrix is a square matrix where all off-diagonal entries are zero. An identity matrix is a diagonal matrix where all diagonal entries are 1.",
     "problems_and_solutions": [
       {
         "problem": "Identify which of the following matrices is a square matrix: \nA = [[1, 2], [3, 4], [5, 6]] \nB = [[1, 2, 3], [4, 5, 6]] \nC = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]",
@@ -533,6 +537,39 @@
       {
         "problem": "Which of the following terms correctly describes the matrix M = [[5]]? (Select all that apply: Square, Diagonal, Identity, Row Vector, Column Vector)",
         "solution": "Step 1: Analyze the dimensions. M is a 1x1 matrix.\n\nStep 2: Check 'Square'. A square matrix has the same number of rows and columns. 1=1, so it is a square matrix.\n\nStep 3: Check 'Diagonal'. A diagonal matrix is a square matrix where all off-diagonal entries are zero. In a 1x1 matrix, there are no off-diagonal entries. The condition is therefore trivially true. It is a diagonal matrix.\n\nStep 4: Check 'Identity'. An identity matrix is a diagonal matrix where all diagonal entries are 1. The diagonal entry here is 5, not 1. It is not an identity matrix.\n\nStep 5: Check 'Row Vector'. A row vector has only one row. M has one row, so it is a row vector.\n\nStep 6: Check 'Column Vector'. A column vector has only one column. M has one column, so it is a column vector.\n\nConclusion: The matrix M can be described as Square, Diagonal, a Row Vector, and a Column Vector."
+      }
+    ],
+    "prerequisites": [
+      {
+        "concept_id": "1167",
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "1166",
+    "name": "Three-Dimensional Vectors in Component Form",
+    "description": "A vector in three-dimensional space can be represented by its components along the x, y, and z axes. This is often written as <x, y, z> or xi + yj + zk, where i, j, and k are the standard basis unit vectors.",
+    "problems_and_solutions": [
+      {
+        "problem": "A point P has coordinates (5, -2, 3). Express its position vector OP in component form using i, j, and k.",
+        "solution": "Step 1: The position vector of a point with coordinates (x, y, z) is given by xi + yj + zk.\n\nStep 2: Substitute the given coordinates into the formula.\nOP = 5i + (-2)j + 3k\n\nStep 3: Simplify the expression.\nOP = 5i - 2j + 3k."
+      },
+      {
+        "problem": "Write the vector v = <-1, 0, 7> in column vector notation.",
+        "solution": "Step 1: A vector represented as <x, y, z> corresponds to a 3x1 column matrix.\n\nStep 2: Place the components in a vertical array.\nThe column vector is [[-1], [0], [7]]."
+      },
+      {
+        "problem": "Find the components of the vector AB, where the initial point A is (2, 4, 1) and the terminal point B is (5, 1, 6).",
+        "solution": "Step 1: The vector AB is found by subtracting the coordinates of the initial point A from the coordinates of the terminal point B.\nVector AB = (x_B - x_A, y_B - y_A, z_B - z_A).\n\nStep 2: Perform the subtraction for each component.\nx-component: 5 - 2 = 3\ny-component: 1 - 4 = -3\nz-component: 6 - 1 = 5\n\nStep 3: The vector AB in component form is <3, -3, 5>."
+      },
+      {
+        "problem": "If the vector u = 4i - j is a three-dimensional vector, what is its component form <x, y, z>?",
+        "solution": "Step 1: The coefficients of the standard basis vectors i, j, and k correspond to the x, y, and z components, respectively.\n\nStep 2: The coefficient of i is 4, so x = 4.\n\nStep 3: The coefficient of j is -1, so y = -1.\n\nStep 4: The k vector is not present, which means its coefficient is 0. So, z = 0.\n\nStep 5: The component form is <4, -1, 0>."
+      },
+      {
+        "problem": "Two vectors are equal if their corresponding components are equal. If u = <a+1, 5, -1> and v = <4, b-2, c>, find the values of a, b, and c that make u = v.",
+        "solution": "Step 1: Set the x-components equal to each other to solve for a.\na + 1 = 4  =>  a = 3\n\nStep 2: Set the y-components equal to each other to solve for b.\n5 = b - 2  =>  b = 7\n\nStep 3: Set the z-components equal to each other to solve for c.\n-1 = c  =>  c = -1\n\nThe values are a=3, b=7, and c=-1."
       }
     ],
     "prerequisites": []
@@ -594,6 +631,39 @@
       {
         "problem": "A 3x3 matrix is defined by the rule A_ij = 2i + j. Construct the matrix A.",
         "solution": "Step 1: We need to calculate the value for each entry from i=1 to 3 and j=1 to 3.\n\nStep 2: Calculate the first row (i=1).\nA_11 = 2(1) + 1 = 3\nA_12 = 2(1) + 2 = 4\nA_13 = 2(1) + 3 = 5\n\nStep 3: Calculate the second row (i=2).\nA_21 = 2(2) + 1 = 5\nA_22 = 2(2) + 2 = 6\nA_23 = 2(2) + 3 = 7\n\nStep 4: Calculate the third row (i=3).\nA_31 = 2(3) + 1 = 7\nA_32 = 2(3) + 2 = 8\nA_33 = 2(3) + 3 = 9\n\nStep 5: Assemble the matrix A.\nA = [[3, 4, 5], [5, 6, 7], [7, 8, 9]]."
+      }
+    ],
+    "prerequisites": [
+      {
+        "concept_id": "861",
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "29",
+    "name": "Adding and Subtracting Matrices",
+    "description": "To add or subtract two matrices, they must have the same dimensions. The operation is performed by adding or subtracting the corresponding entries in each position.",
+    "problems_and_solutions": [
+      {
+        "problem": "Given matrices A = [[1, 2], [3, 4]] and B = [[5, 6], [7, 8]], calculate the sum A + B.",
+        "solution": "Step 1: Verify that both matrices have the same dimensions. Both A and B are 2x2 matrices, so they can be added.\n\nStep 2: Add the corresponding entries.\nTop-left: 1 + 5 = 6\nTop-right: 2 + 6 = 8\nBottom-left: 3 + 7 = 10\nBottom-right: 4 + 8 = 12\n\nStep 3: The resulting matrix is [[6, 8], [10, 12]]."
+      },
+      {
+        "problem": "Given matrices C = [[8, -3], [-5, 10]] and D = [[-2, 3], [4, -4]], calculate the difference C - D.",
+        "solution": "Step 1: Verify that both matrices have the same dimensions. Both C and D are 2x2 matrices, so they can be subtracted.\n\nStep 2: Subtract the corresponding entries of D from C.\nTop-left: 8 - (-2) = 8 + 2 = 10\nTop-right: -3 - 3 = -6\nBottom-left: -5 - 4 = -9\nBottom-right: 10 - (-4) = 10 + 4 = 14\n\nStep 3: The resulting matrix is [[10, -6], [-9, 14]]."
+      },
+      {
+        "problem": "Is it possible to calculate the sum of matrix E = [[1, 2, 3], [4, 5, 6]] and matrix F = [[7, 8], [9, 10], [11, 12]]? Explain why or why not.",
+        "solution": "Step 1: To add two matrices, they must have the exact same dimensions.\n\nStep 2: Determine the dimensions of matrix E. It has 2 rows and 3 columns, so it is a 2x3 matrix.\n\nStep 3: Determine the dimensions of matrix F. It has 3 rows and 2 columns, so it is a 3x2 matrix.\n\nStep 4: Compare the dimensions. Since 2x3 is not the same as 3x2, the matrices cannot be added. Their sum is undefined."
+      },
+      {
+        "problem": "Find the values of x, y, and z in the following matrix equation: [[5, x], [y, -2]] + [[3, 7], [1, z]] = [[8, 10], [6, 4]].",
+        "solution": "Step 1: Perform the matrix addition on the left side of the equation.\n[[5+3, x+7], [y+1, -2+z]] = [[8, x+7], [y+1, -2+z]]\n\nStep 2: Set the resulting matrix equal to the matrix on the right side.\n[[8, x+7], [y+1, -2+z]] = [[8, 10], [6, 4]]\n\nStep 3: Equate the corresponding entries to solve for each variable.\nFor x (top-right): x + 7 = 10  =>  x = 3\nFor y (bottom-left): y + 1 = 6  =>  y = 5\nFor z (bottom-right): -2 + z = 4  =>  z = 6"
+      },
+      {
+        "problem": "Calculate the result of the operation: [[10, 20]] - [[5, 25]] + [[1, -2]].",
+        "solution": "Step 1: Verify that all matrices have the same dimensions. All three are 1x2 row vectors, so the operations are valid.\n\nStep 2: Perform the operations from left to right. First, calculate the subtraction.\n[[10, 20]] - [[5, 25]] = [[10-5, 20-25]] = [[5, -5]]\n\nStep 3: Now, perform the addition with the result from the previous step.\n[[5, -5]] + [[1, -2]] = [[5+1, -5+(-2)]] = [[6, -7]]\n\nStep 4: The final result is the row vector [[6, -7]]."
       }
     ],
     "prerequisites": [

@@ -48,41 +48,26 @@ class KnowledgeGraph(BaseModel):
     """
     return self.nodes.get(node_id)
 
-  def get_prerequisites(
-    self, node_id: str, depth: int = 1
-  ) -> List[ConceptNode]:
-    """Retrieves the prerequisites for a given node at a specific depth.
+  def get_prerequisites(self, node_id: str) -> List[ConceptNode]:
+    """Retrieves the direct prerequisites for a given node.
 
     Args:
         node_id: The ID of the concept node.
-        depth: The depth of prerequisites to retrieve. depth=1 returns
-               direct prerequisites, depth=2 returns prerequisites of
-               prerequisites, and so on.
 
     Returns:
-        A list of unique ConceptNode objects at the specified prerequisite depth.
+        A list of ConceptNode objects that are direct prerequisites.
     """
-    assert depth >= 1, "Depth must be at least 1"
-
     node = self.get_node(node_id)
     if not node:
       return []
 
-    # Base case for recursion: depth is 1, return direct prerequisites
-    if depth == 1:
-      return [
-        p_node
-        for p in node.prerequisites
-        if (p_node := self.get_node(p.concept_id))
-      ]
+    prerequisites = []
+    for p in node.prerequisites:
+      prerequisite_node = self.get_node(p.concept_id)
+      if prerequisite_node is not None:
+        prerequisites.append(prerequisite_node)
 
-    # Recursive step: get prerequisites from the next level down
-    deeper_prereqs = []
-    for direct_prereq in self.get_prerequisites(node_id, depth=1):
-      deeper_prereqs.extend(self.get_prerequisites(direct_prereq.id, depth - 1))
-
-    # Return a list of unique nodes by their ID
-    return list({p.id: p for p in deeper_prereqs}.values())
+    return prerequisites
 
   @classmethod
   def load_from_json(cls, file_path: Union[str, Path]) -> "KnowledgeGraph":

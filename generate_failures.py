@@ -104,7 +104,7 @@ if __name__ == "__main__":
   parser.add_argument(
     "--max-depth",
     type=int,
-    default=2,
+    default=7,
     help="The maximum depth to traverse the knowledge graph.",
   )
   parser.add_argument(
