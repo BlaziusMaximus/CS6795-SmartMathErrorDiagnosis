@@ -1,12 +1,12 @@
 from collections import deque
 from typing import Deque, Dict, List, Set, Tuple
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from .graph import KnowledgeGraph, ConceptNode
+from .graph import KnowledgeGraph
 from .teacher import TeacherModel
 
 # The base number of incorrect solutions to generate for direct prerequisites.
 # This number is halved for each level deeper into the prerequisite graph.
-SOLUTIONS_BASE = 70
+SOLUTIONS_BASE = 50
 
 # The divisor used to reduce the number of solutions generated at each
 # increasing level of prerequisite depth.
@@ -32,72 +32,14 @@ class FailureDataGenerator:
     self.graph = knowledge_graph
     self.teacher = teacher_model
 
-  def _process_node_portfolio(
-    self,
-    current_node: ConceptNode,
-    prerequisites_to_process: List[ConceptNode],
-    current_depth: int,
-  ) -> Tuple[List[Dict], Set[str]]:
-    """
-    Analyzes a node's portfolio of problems against its prerequisites using a thread pool.
-    """
-    new_examples = []
-    nodes_to_visit_next = set()
-    if not current_node.problems_and_solutions or not prerequisites_to_process:
-      return [], set()
-
-    # Calculate how many solutions to generate based on depth
-    max_solutions = max(
-      1, SOLUTIONS_BASE // (SOLUTION_COUNT_DEPTH_DIVISOR**current_depth)
-    )
-
-    print(
-      f"  -> Analyzing {len(current_node.problems_and_solutions)} problems "
-      f"against {len(prerequisites_to_process)} prerequisites (gen up to {max_solutions} sols)..."
-    )
-
-    with ThreadPoolExecutor() as executor:
-      futures = {
-        executor.submit(
-          self.teacher.analyze_single_problem,
-          problem,
-          prerequisites_to_process,
-          max_solutions,
-        ): problem
-        for problem in current_node.problems_and_solutions
-      }
-
-      for future in as_completed(futures):
-        problem_analysis = future.result()
-        if not problem_analysis:
-          print("    - Problem analysis failed or returned no data.")
-          continue
-
-        for prereq_analysis in problem_analysis.prerequisite_analyses:
-          if not prereq_analysis.response.is_valid_error:
-            print(
-              f"    - Skipping invalid prerequisite {prereq_analysis.concept_id} for problem. Reasoning: {prereq_analysis.response.reasoning}"
-            )
-            continue
-
-          nodes_to_visit_next.add(prereq_analysis.concept_id)
-          for result in prereq_analysis.response.generated_solutions:
-            new_examples.append(
-              {
-                "problem_example": problem_analysis.problem_str,
-                "target_concept_id": current_node.id,
-                "failure_concept_id": prereq_analysis.concept_id,
-                "incorrect_solution": "\n".join(result.incorrect_solution),
-                "incorrect_step_number": result.step_number,
-              }
-            )
-    return new_examples, nodes_to_visit_next
-
   def generate_error_dataset(
     self, start_node_id: str, max_depth: int = 3
   ) -> list[dict]:
     """
     Generates a dataset by performing a breadth-first traversal.
+
+    For each node, it creates a batch of API calls to analyze every
+    problem against every direct prerequisite, and processes them in parallel.
     """
     full_dataset: List[Dict] = []
     queue: Deque[Tuple[str, int]] = deque([(start_node_id, 0)])
@@ -114,37 +56,74 @@ class FailureDataGenerator:
 
       if current_depth >= max_depth:
         print(
-          f"Stopping traversal at depth {current_depth}. Reached max depth."
+          f"Stopping traversal for this path at depth {current_depth}. Reached max depth."
         )
         continue
 
       current_node = self.graph.get_node(current_node_id)
-      if not current_node:
-        print(f"Warning: Node '{current_node_id}' not found. Skipping.")
+      if not current_node or not current_node.problems_and_solutions:
+        print(
+          f"Warning: Node '{current_node_id}' not found or has no problems. Skipping."
+        )
         continue
 
       print(
-        f"\nProcessing node '{current_node.id}':'{current_node.name}' at depth {current_depth}..."
+        f"\nProcessing node '{current_node_id}':'{current_node.name}' at depth {current_depth}..."
       )
 
-      # Get direct prerequisites and filter out any we have already visited
       direct_prereqs = self.graph.get_prerequisites(current_node.id)
-      prereqs_to_visit = [p for p in direct_prereqs if p.id not in visited]
+      prereqs_to_process = [p for p in direct_prereqs if p.id not in visited]
 
-      if not prereqs_to_visit:
+      if not prereqs_to_process:
         print("  -> No new prerequisites to process for this node.")
         continue
 
       print(
-        f"  -> Processing direct prerequisites {[p.id for p in prereqs_to_visit]}."
+        f"  -> Found prerequisites to process: {[p.id for p in prereqs_to_process]}"
       )
 
-      new_examples, nodes_to_visit_next = self._process_node_portfolio(
-        current_node, prereqs_to_visit, current_depth
+      # --- NEW, SIMPLIFIED PARALLEL LOGIC ---
+      nodes_to_visit_next = set()
+      max_solutions = max(
+        1, SOLUTIONS_BASE // (SOLUTION_COUNT_DEPTH_DIVISOR**current_depth)
       )
-      full_dataset.extend(new_examples)
 
-      # Add the newly processed prerequisites to the queue and visited set
+      with ThreadPoolExecutor() as executor:
+        # Create a future for each (problem, prerequisite) pair
+        future_to_pair = {
+          executor.submit(
+            self.teacher.analyze_error, problem, prereq, max_solutions
+          ): (problem, prereq)
+          for problem in current_node.problems_and_solutions
+          for prereq in prereqs_to_process
+        }
+
+        for future in as_completed(future_to_pair):
+          problem, prereq = future_to_pair[future]
+          teacher_response = future.result()
+
+          if teacher_response and teacher_response.is_valid_error:
+            print(f"  -> Valid error found for problem/prereq: {prereq.name}")
+            nodes_to_visit_next.add(prereq.id)
+            for result in teacher_response.generated_solutions:
+              full_dataset.append(
+                {
+                  "problem_example": problem.problem,
+                  "target_concept_id": current_node.id,
+                  "failure_concept_id": prereq.id,
+                  "incorrect_solution": "\n".join(result.incorrect_solution),
+                  "incorrect_step_number": result.step_number,
+                }
+              )
+          else:
+            reason = (
+              teacher_response.reasoning if teacher_response else "No response"
+            )
+            print(
+              f"  -> Skipping invalid prerequisite '{prereq.name}' for one problem. Reasoning: {reason}"
+            )
+
+      # Add all newly discovered valid nodes to the queue
       for node_id in nodes_to_visit_next:
         if node_id not in visited:
           visited.add(node_id)

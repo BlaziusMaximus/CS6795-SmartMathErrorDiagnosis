@@ -65,8 +65,7 @@ def train(
   with open(os.path.join(output_model_path, "label_map.json"), "w") as f:
     json.dump(label_map, f)
 
-  tokenizer = AutoTokenizer.from_pretrained(model_name);
-
+  tokenizer = AutoTokenizer.from_pretrained(model_name)
   train_dataset = ErrorDiagnosisDataset(
     train_texts, tokenizer, label_map, knowledge_graph
   )
@@ -159,7 +158,7 @@ if __name__ == "__main__":
   )
   # Add arguments as before...
   parser.add_argument(
-    "--data-file", type=str, default="./data/synthetic_dataset.json"
+    "--data-file", type=str, default="./failure_data/synthetic_dataset.json"
   )
   parser.add_argument(
     "--model-name", type=str, default="distilbert-base-uncased"

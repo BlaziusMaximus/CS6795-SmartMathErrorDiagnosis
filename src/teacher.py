@@ -22,20 +22,6 @@ class TeacherResponse(BaseModel):
   generated_solutions: List[GeneratedErrorDetail] = Field(default_factory=list)
 
 
-class PrerequisiteAnalysis(BaseModel):
-  """A container for a single prerequisite's analysis."""
-
-  concept_id: str
-  response: TeacherResponse
-
-
-class SingleProblemAnalysis(BaseModel):
-  """Represents the analysis for one problem against all its prerequisites."""
-
-  problem_str: str
-  prerequisite_analyses: List[PrerequisiteAnalysis]
-
-
 class TeacherModel:
   """A model representing the 'Teacher' component for generating synthetic errors."""
 
@@ -52,76 +38,77 @@ class TeacherModel:
     self.client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
     self.rate_limiter = rate_limiter
 
-  def analyze_single_problem(
+  def analyze_error(
     self,
     problem_and_solution: ProblemSolutionPair,
-    failure_concepts: List[ConceptNode],
+    failure_concept: ConceptNode,
     solutions_to_generate: int,
-  ) -> SingleProblemAnalysis | None:
+  ) -> TeacherResponse | None:
     """
-    Analyzes a single problem against a batch of prerequisite concepts.
+    Analyzes a single problem and a single potential prerequisite failure.
+
+    This is a more focused method designed to produce higher-quality,
+    more reliable validation from the LLM.
 
     Args:
         problem_and_solution: The problem-solution pair to analyze.
-        failure_concepts: A list of prerequisite concepts to check for errors.
-        solutions_to_generate: The number of incorrect solutions
-                                   to generate for each plausible error.
+        failure_concept: The single prerequisite concept to check for errors.
+        solutions_to_generate: The max number of incorrect solutions to generate.
 
     Returns:
-        A SingleProblemAnalysis object containing the full analysis, or None if
-        the API response is invalid.
+        A TeacherResponse object containing the analysis, or None if the
+        API response is invalid.
     """
     system_instruction = (
-      "You are an expert in math pedagogy. Your task is to perform a "
-      "comprehensive analysis of a math problem against a batch of potential "
-      "prerequisite errors. For EACH prerequisite, determine if making that "
-      "error is a plausible reason for failing the problem. If it is, "
-      "generate incorrect solutions. The output must be a single, nested "
-      "JSON object."
+      "You are an expert in math pedagogy. Your task is to analyze a math problem and a "
+      "potential prerequisite error. Your primary goal is to determine if a student's "
+      "misunderstanding of the prerequisite concept could plausibly lead to an incorrect "
+      "solution for the main problem. Think like a real tutor: consider how concepts are "
+      "truly connected, even if not explicitly stated. If the connection is plausible, "
+      "generate examples of the error."
     )
 
-    problem_str = f'Problem: "{problem_and_solution.problem}"\nSolution: "{problem_and_solution.solution}"'
-
-    concepts_str = ""
-    for concept in failure_concepts:
-      concepts_str += f'\n- Concept ID: "{concept.id}"\n  - Name: "{concept.name}"\n  - Description: "{concept.description}"'
-
     prompt = f"""
-        Analyze the following problem against the batch of potential prerequisite errors.
+        **Problem Context:**
+        Problem: "{problem_and_solution.problem}"
+        Correct Solution Steps: "{problem_and_solution.solution}"
 
-        **Problem to Analyze:**
-        {problem_str}
-
-        **Batch of Potential Prerequisite Causes for Error:**
-        {concepts_str}
+        **Potential Prerequisite Error to Analyze:**
+        Concept Name: "{failure_concept.name}"
+        Description: "{failure_concept.description}"
 
         **Your Tasks:**
-        For EACH prerequisite concept in the batch:
-          1.  **Validation:** Is the prerequisite concept actively used in the correct solution for this specific problem? Is it plausible that a student could get this problem wrong because of a mistake in this specific prerequisite? Set `is_valid_error` to true or false and provide your `reasoning`.
-          2.  **Generation:** If and only if the error is plausible (`is_valid_error: true`), generate exactly {solutions_to_generate} distinct, incorrect step-by-step solutions for this problem that demonstrate the specific prerequisite error.
+        1.  **Validation:** Based on the problem and its solution, is it plausible that a misunderstanding of the prerequisite concept '{failure_concept.name}' could cause an error? The connection can be direct or indirect.
+        2.  **Generation:** If and only if the error is plausible, generate up to {solutions_to_generate} distinct, incorrect step-by-step solutions that demonstrate this specific error.
 
         **Output Format:**
-        Respond with a single JSON object matching the `SingleProblemAnalysis` schema.
+        Respond with a single JSON object matching the `TeacherResponse` schema.
         """
 
     # Acquire a permit from the rate limiter before making the API call
     self.rate_limiter.acquire()
 
-    response = self.client.models.generate_content(
-      model="gemini-2.5-flash",
-      contents=prompt,
-      config={
-        "system_instruction": system_instruction,
-        "response_mime_type": "application/json",
-        "response_schema": SingleProblemAnalysis.model_json_schema(),
-      },
-    )
-    assert response is not None, "API response is None"
-    assert response.text is not None, "API response text is None"
-
     try:
-      parsed_response = json.loads(response.text)
-      return SingleProblemAnalysis.model_validate(parsed_response)
+      response = self.client.models.generate_content(
+        model="gemini-2.5-flash",  # Using flash for speed and cost
+        contents=prompt,
+        config={
+          "system_instruction": system_instruction,
+          "response_mime_type": "application/json",
+          "response_schema": TeacherResponse.model_json_schema(),
+          "temperature": 0.7,  # Add some creativity to the generated errors
+        },
+      )
+      assert response is not None, "API response is None"
+      assert response.text is not None, "API response text is empty"
+      return TeacherResponse.model_validate_json(response.text)
     except (ValidationError, json.JSONDecodeError) as e:
-      print(f"Failed to parse or validate teacher response: {e}")
+      print(
+        f"Error: Failed to parse or validate teacher response for concept {failure_concept.id}. Details: {e}"
+      )
+      return None
+    except Exception as e:
+      print(
+        f"Error: An unexpected API error occurred for concept {failure_concept.id}. Details: {e}"
+      )
       return None
