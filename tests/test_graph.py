@@ -26,7 +26,7 @@ def test_load_from_json():
   # Assertions
   assert graph is not None
   assert isinstance(graph, KnowledgeGraph)
-  assert len(graph.nodes) == 18
+  assert len(graph.nodes) == 20
 
 
 def test_get_node(knowledge_graph: KnowledgeGraph):
@@ -92,20 +92,25 @@ def test_get_all_descendants(knowledge_graph: KnowledgeGraph):
   # The node "Solving 2x2 Systems" (934) has a known, multi-level tree.
   # 934 -> 864 -> 152 -> 1166 -> 1167 -> 861 (and other branches)
   start_node_id = "934"
-  descendants = knowledge_graph.get_all_descendants(start_node_id)
+  descendants_and_depths = knowledge_graph.get_all_descendants(start_node_id)
 
   # Assertions
-  assert descendants is not None
-  descendant_ids = {d.id for d in descendants}
+  assert descendants_and_depths is not None
+  descendant_ids_and_depths = {
+    (d.id, depth) for d, depth in descendants_and_depths
+  }
 
   # Check for specific nodes at different depths
-  assert "864" in descendant_ids  # Direct prerequisite (depth 1)
-  assert "152" in descendant_ids  # Prereq of 864 (depth 2)
-  assert "1166" in descendant_ids  # Prereq of 152 (depth 3)
-  assert "861" in descendant_ids  # Deepest node
+  assert (
+    "864",
+    1,
+  ) in descendant_ids_and_depths  # Direct prerequisite (depth 1)
+  assert ("152", 2) in descendant_ids_and_depths  # Prereq of 864 (depth 2)
+  assert ("177", 3) in descendant_ids_and_depths  # Prereq of 1195 (depth 3)
+  assert ("1166", 4) in descendant_ids_and_depths  # Deepest node
 
   # Check that the start node itself is not in the list
-  assert start_node_id not in descendant_ids
+  assert (start_node_id, 0) not in descendant_ids_and_depths
 
   # Check that there are no duplicates
-  assert len(descendants) == len(descendant_ids)
+  assert len(descendants_and_depths) == len(descendant_ids_and_depths)

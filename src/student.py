@@ -86,7 +86,7 @@ class ErrorDiagnosisDataset(Dataset):
 
     # Get the names of all prerequisite descendants for the target concept
     descendants = self.knowledge_graph.get_all_descendants(target_concept_id)
-    descendant_names = ", ".join([d.name for d in descendants])
+    descendant_names = ", ".join([d.name for d, _ in descendants])
     prereq_context = f"Relevant Concepts: {descendant_names}"
 
     # Combine all information into a single input string

@@ -41,7 +41,7 @@ def diagnose(
   # --- 2. Tokenize the Input ---
   print("\n--- Tokenizing Input ---")
   descendants = knowledge_graph.get_all_descendants(target_concept_id)
-  descendant_names = ", ".join([d.name for d in descendants])
+  descendant_names = ", ".join([d.name for d, _ in descendants])
   prereq_context = f"Relevant Concepts: {descendant_names}"
   text = f"Problem: {problem_example} [SEP] {prereq_context} [SEP] Solution: {incorrect_solution}"
 

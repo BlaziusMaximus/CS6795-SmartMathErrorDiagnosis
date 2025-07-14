@@ -79,7 +79,7 @@ class TeacherModel:
 
         **Your Tasks:**
         1.  **Validation:** Based on the problem and its solution, is it plausible that a misunderstanding of the prerequisite concept '{failure_concept.name}' could cause an error? The connection can be direct or indirect.
-        2.  **Generation:** If and only if the error is plausible, generate up to {solutions_to_generate} distinct, incorrect step-by-step solutions that demonstrate this specific error.
+        2.  **Generation:** If and only if the error is plausible, generate as close to {solutions_to_generate} distinct, incorrect step-by-step solutions that demonstrate this specific error as possible.
 
         **Output Format:**
         Respond with a single JSON object matching the `TeacherResponse` schema.
@@ -90,7 +90,7 @@ class TeacherModel:
 
     try:
       response = self.client.models.generate_content(
-        model="gemini-2.5-flash",  # Using flash for speed and cost
+        model="gemini-2.5-flash-lite-preview-06-17",  # Using flash for speed and cost
         contents=prompt,
         config={
           "system_instruction": system_instruction,
@@ -101,7 +101,12 @@ class TeacherModel:
       )
       assert response is not None, "API response is None"
       assert response.text is not None, "API response text is empty"
-      return TeacherResponse.model_validate_json(response.text)
+      teacher_response = TeacherResponse.model_validate_json(response.text)
+      if teacher_response.is_valid_error:
+        return teacher_response
+      else:
+        return None
+
     except (ValidationError, json.JSONDecodeError) as e:
       print(
         f"Error: Failed to parse or validate teacher response for concept {failure_concept.id}. Details: {e}"
